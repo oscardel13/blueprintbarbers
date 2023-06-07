@@ -1,4 +1,5 @@
 
+import BarberSection from "../../components/barbers-section/barbers-section.component";
 
 import { HeroSectionContainer, HeroSectionTitleContainer, BarbersSectionContainer } from "./landing.style";
 
@@ -10,10 +11,7 @@ const Landing = () => {
                     <h1>BLUEPRINT BARBERS</h1>
                 </HeroSectionTitleContainer>
             </HeroSectionContainer>
-            <BarbersSectionContainer>
-                <h3>Barbers</h3>
-
-            </BarbersSectionContainer>
+            <BarberSection/>
         </>
     )
 }

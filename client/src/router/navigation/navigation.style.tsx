@@ -12,6 +12,13 @@ export const Navbar = styled.nav`
     width: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: white;
+
+    h3{
+        text-align:right;
+        padding-right:3rem;
+        padding-top:2rem;
+    }
 }
 `
 

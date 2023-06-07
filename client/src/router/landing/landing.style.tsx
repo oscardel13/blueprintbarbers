@@ -11,16 +11,17 @@ export const HeroSectionContainer = styled.section`
     bottom: 0;
     left: 0;
     margin: 0;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     overflow: hidden;
     box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 40%);
+    height: 100vh;
 ` 
 
 export const HeroSectionTitleContainer = styled.div`
     padding: 20%;
     text-align: center;
-
+    color: white;
     h1 {
         font-size: 4rem;
     }

@@ -6,7 +6,7 @@ const Navigation = () => {
     return(
         <>
             <Navbar>
-                <h1>Nav</h1>
+                <h3>Meet the Barbers</h3>
             </Navbar>
             <Outlet/>
         </>
