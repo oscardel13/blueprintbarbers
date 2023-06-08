@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import Container from "react-bootstrap/Container";
 
 import bgImage from '../../assets/pexels-stefan-lorentz-668196.jpg'
 import enrique from '../../assets/IMG_0225.jpg'
@@ -16,23 +17,13 @@ export const HeroSectionContainer = styled.section`
     overflow: hidden;
     box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 40%);
     height: 100vh;
+    position: sticky;
+    z-index: -99;
 ` 
 
-export const HeroSectionTitleContainer = styled.div`
-    padding: 20%;
-    text-align: center;
+export const HeroSectionTitleContainer = styled(Container)`
     color: white;
     h1 {
         font-size: 4rem;
-    }
-`
-
-export const BarbersSectionContainer = styled.section`
-    padding-top: 2rem;
-    padding-bottom: 7.5rem;
-    text-align: center;
-
-    h3 {
-        font-size: 3rem;
     }
 `

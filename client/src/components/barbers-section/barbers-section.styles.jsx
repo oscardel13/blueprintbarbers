@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 export const BarberDirectorySection = styled.section`
     overflow-x: hidden;
+    padding-bottom: 5rem;
     .titlecontainer{
         text-align: center;
         padding:4rem;

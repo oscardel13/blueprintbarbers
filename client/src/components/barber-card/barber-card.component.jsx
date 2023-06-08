@@ -5,15 +5,13 @@ import Figure from 'react-bootstrap/Figure'
 import Button from "react-bootstrap/Button"
 import InstagramIcon from '@mui/icons-material/Instagram';
 
-import profilePic from "../../assets/enrique-profile-picture.jpg"
-
-import InstagramEmbed from 'react-instagram-embed';
 import InstagramGrid from "../instagram-grid/instagram-grid.component"
+import { BooksyButton, InstagramButton, BarberCardContainer } from "./barber-card.styles"
 
-const BarberCard = () => {
+const BarberCard = ({profilePic, name, bio}) => {
     console.log(process.env.REACT_APP_INSTAGRAM_OSCAR_CODE)
     return(
-        <Card>
+        <BarberCardContainer>
             <Row>
                 <Col md={6}>
                     <Card.Body>
@@ -29,13 +27,13 @@ const BarberCard = () => {
                 </Col>
                 <Col md={6}>
                     <Card.Body>
-                        <Card.Title>Enrique</Card.Title>
+                        <Card.Title>{name}</Card.Title>
                         <Card.Subtitle>8 years</Card.Subtitle>
-                        <Card.Text>Enrique the barber. The one and only</Card.Text>
+                        <Card.Text>{bio}</Card.Text>
                     </Card.Body>
                     <Card.Body>
-                        <Button href="https://www.instagram.com/enriquethebarber__/"><InstagramIcon/></Button>{' '}
-                        <Button href="https://booksy.com/en-us/382802_enrique-the-barber_barber-shop_134761_denver#ba_s=sh_1" style={{backgroundColor:"#0ba3ad"}}>Booksy</Button>
+                        <InstagramButton href="https://www.instagram.com/enriquethebarber__/"><InstagramIcon fontSize="large"/></InstagramButton>{' '}
+                        <BooksyButton href="https://booksy.com/en-us/dl/show-business/382802">Booksy</BooksyButton>
                     </Card.Body>
                     <Card.Body>
                         {/* <Row>
@@ -104,7 +102,7 @@ const BarberCard = () => {
                     </Card.Body>
                 </Col>
             </Row>
-        </Card>
+        </BarberCardContainer>
     )
 }
 
