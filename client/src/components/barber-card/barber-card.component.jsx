@@ -13,7 +13,6 @@ const BarberCard = ({ barber }) => {
     const{ name,nickname,bio,instagramUrl,booksyUrl, profilePicUrl, posts } = barber
     const [picUrl, setPicUrl] = useState("enrique-profile-picture.jpg");
     const profilePicture = require("../../assets/" + picUrl );
-    console.log(barber.instagram)
     useEffect(()=>{
         if (profilePicUrl)
             setPicUrl(profilePicUrl)

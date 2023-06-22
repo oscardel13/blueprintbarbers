@@ -8,13 +8,21 @@ import BarberCard from "../barber-card/barber-card.component"
 
 import { BarberDirectorySection } from "./barbers-section.styles"
 
+const API_URL = process.env.REACT_APP_DEV_URL || ""
+
 const BarberSection = () => {
     const [barbersList, setBarbersList] = useState([])
     useEffect(()=>{
-        axios.get('http://localhost:8000/barbers')
-        .then(res => {
-            setBarbersList(res.data.barbers)
+        try{
+            axios.get(`${API_URL}/api/barbers`)
+                .then(res => {
+                    setBarbersList(res.data.barbers)
         })
+        }
+        catch(err){
+            console.log(err)
+        }
+        
     },[])
 
     return (
@@ -28,7 +36,7 @@ const BarberSection = () => {
                     <Col lg={{span: 10, offset:1}}>
                         {
                             barbersList.map(barber=>
-                                <div key={barber.id}>
+                                <div key={barber._id}>
                                     <BarberCard barber={barber}/>
                                     <br/>
                                 </div>
