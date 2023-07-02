@@ -36,12 +36,11 @@ const BarberCard = ({ barber }) => {
                 <Col md={6}>
                     <Card.Body>
                         <Card.Title>{name}</Card.Title>
-                        <Card.Subtitle>{nickname}</Card.Subtitle>
                         <Card.Text>{bio}</Card.Text>
                     </Card.Body>
                     <Card.Body>
                         <InstagramButton href={instagramUrl}><InstagramIcon fontSize="large"/></InstagramButton>{' '}
-                        <BooksyButton href={booksyUrl}>Booksy</BooksyButton>
+                        <BooksyButton href={booksyUrl}>Book</BooksyButton>
                     </Card.Body>
                     <Card.Body>
                         <InstagramGrid posts={barber.instagram}/>

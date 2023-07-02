@@ -14,7 +14,7 @@ const BarberSection = () => {
     const [barbersList, setBarbersList] = useState([])
     useEffect(()=>{
         try{
-            axios.get(`${API_URL}/api/barbers`)
+            axios.get(`/api/barbers`)
                 .then(res => {
                     setBarbersList(res.data.barbers)
         })

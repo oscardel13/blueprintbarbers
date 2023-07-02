@@ -11,10 +11,10 @@ const Navigation = () => {
         <>
             <Navbar bg="dark" variant="dark">
                 <Container>
-                <Navbar.Brand href="/">Home</Navbar.Brand>
+                {/* <Navbar.Brand href="/">Home</Navbar.Brand> */}
                 <Nav className="me-auto">
-                    {/* <Nav.Link href="/">Home</Nav.Link> */}
-                    <Nav.Link href="/barbers">Barbers</Nav.Link>
+                    <Nav.Link href="/">HOME</Nav.Link>
+                    <Nav.Link href="/barbers">BARBERS</Nav.Link>
                 </Nav>
                 </Container>
             </Navbar>
