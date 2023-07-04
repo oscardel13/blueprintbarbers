@@ -14,7 +14,7 @@ function BarbersTabs() {
     const [barbersList, setBarbersList] = useState([])
     useEffect(()=>{
         try{
-            axios.get(`/api/barbers`)
+            axios.get(`${API_URL}/api/barbers`)
                 .then(res => {
                     setBarbersList(res.data.barbers)
         })

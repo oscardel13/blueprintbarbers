@@ -5,6 +5,12 @@ export const GLobalStyle = createGlobalStyle`
         font-family: "CenturyGothic";
         src: url("./fonts/CenturyGothic.ttf") format("truetype");
     }
+    html{
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: relative;
+        width: 100%;
+    }
     body {
         margin: 0;
         font-family: 'Sawarabi Gothic', sans-serif,'Adamina', serif,'Bigelow Rules',-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,7 +18,6 @@ export const GLobalStyle = createGlobalStyle`
         sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        // padding: 20px 40px;
     }
     
     code {
