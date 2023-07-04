@@ -17,8 +17,6 @@ COPY server/ server/
 
 USER node
 
-ENV MONGO_URL="mongodb+srv://server:pm6VsBBoIzVuky5V@cluster0.dzoamsn.mongodb.net/Blueprint_Barbers_DB?retryWrites=true&w=majority"
-
 CMD ["npm", "start", "--prefix", "server"]
 
 EXPOSE 8000
