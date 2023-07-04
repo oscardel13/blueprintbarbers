@@ -15,7 +15,7 @@ app.use(
 );
 
 app.use(cors({
-    origin: ['http://192.168.86.44:3000/','http://localhost:3000', 'https://oscarshub.com', 'https://blueprintbarbers.oscarshub.com']
+    origin: ['http://192.168.86.44:3000','https://192.168.86.44:3000','http://localhost:3000', 'https://oscarshub.com', 'https://blueprintbarbers.oscarshub.com']
 }));
 
 app.use(morgan("combined"));

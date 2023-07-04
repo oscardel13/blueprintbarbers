@@ -10,7 +10,7 @@ import InstagramGrid from "../instagram-grid/instagram-grid.component"
 import { BooksyButton, InstagramButton, BarberCardContainer } from "./barber-card.styles"
 
 const BarberCard = ({ barber }) => {
-    const{ name,nickname,bio,instagramUrl,booksyUrl, profilePicUrl, posts } = barber
+    const{ name,bio,instagramUrl,booksyUrl, profilePicUrl } = barber
     const [picUrl, setPicUrl] = useState("enrique-profile-picture.jpg");
     const profilePicture = require("../../assets/" + picUrl );
     useEffect(()=>{
