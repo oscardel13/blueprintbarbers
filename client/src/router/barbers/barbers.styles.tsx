@@ -1,11 +1,10 @@
 import { styled } from "styled-components";
 
-import bgImage1 from "../../assets/Barbers-background1.jpg"
-import bgImage2 from "../../assets/Barbers-background2.jpg"
+import bgImage from "../../assets/Barbers-background1.jpg"
 
 export const BarbersSectionContainer = styled.section`
     text-align: center;
-    background: url(${bgImage1});
+    background: url(${bgImage});
     background-size: auto;
     background-position: center;
     top: 0;

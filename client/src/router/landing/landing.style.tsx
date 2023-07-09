@@ -1,11 +1,11 @@
 import { styled } from "styled-components";
 import Container from "react-bootstrap/Container";
 
-import bgImage from '../../assets/dark_barber_pole.jpg'
-import enrique from '../../assets/IMG_0225.jpg'
+import bgImage1 from '../../assets/landing_bg_1.jpg'
+import bgImage2 from '../../assets/landing_bg_2.jpg'
 
-export const HeroSectionContainer = styled.section`
-    background: url(${bgImage});
+export const HeroSectionContainer = styled.section<{smallScreen: string}>`
+    background: url(${props => props.smallScreen === 'true' ? bgImage1 : bgImage2});
     transform: scale(1);
     top: 0;
     right: 0;
@@ -18,6 +18,7 @@ export const HeroSectionContainer = styled.section`
     height: 100vh;
     position: sticky;
     z-index: -99;
+    background-size: cover;
     @media only screen and (max-width: 576px){
         background-size: cover;
     }
