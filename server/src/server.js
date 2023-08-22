@@ -12,7 +12,7 @@ const NETWORK_IP = process.env.NETWORK_IP_ADDRESS || "127.0.0.1"
 async function startServer() {
   const server = http.createServer(app)
   await mongoConnect()
-  server.listen(PORT,process.env.NETWORK_IP_ADDRESS,()=>{
+  server.listen(PORT,()=>{
     console.log(`listening on port: ${PORT} \nnetwork: ${NETWORK_IP}:3000`)
   })
 }

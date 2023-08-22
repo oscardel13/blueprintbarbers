@@ -22,6 +22,9 @@ export const HeroSectionContainer = styled.section<{smallScreen: string}>`
     @media only screen and (max-width: 576px){
         background-size: cover;
     }
+    p{
+        text-align: center;
+    }
 ` 
 
 export const HeroSectionTitleContainer = styled(Container)`

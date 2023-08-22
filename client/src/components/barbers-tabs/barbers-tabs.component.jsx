@@ -5,25 +5,54 @@ import Tab from 'react-bootstrap/Tab';
 
 import BarberCard from "../barber-card/barber-card.component"
 
+import EnriqueGrid from "../image-grids/enrique-grid.component"
+import LuisGrid from "../image-grids/luis-grid.component"
+import JavierGrid from "../image-grids/javier-grid.component"
+import TonyGrid from "../image-grids/tony-grid.component"
+import ElvinGrid from "../image-grids/elvin-grid.component"
+
 import { BarbersTab } from './barbers-tabs.styles';
 
-const API_URL = process.env.REACT_APP_DEV_URL || ""
+const BARBERLIST = [
+    {
+        name:"Enrique",
+        profilePicUrl:"enrique-profile-picture.jpg",
+        instagramUrl:"https://www.instagram.com/enriquethebarber__/",
+        booksyUrl:"https://booksy.com/en-us/dl/show-business/382802",
+        ImageGrid: <EnriqueGrid/>
+    },
+    {
+        name:"Luis",
+        profilePicUrl:"luis-profile-picture.jpg",
+        instagramUrl:"https://www.instagram.com/frezcoo/",
+        booksyUrl:"https://booksy.com/en-us/467029_frezcoo_barber-shop_134761_denver",
+        ImageGrid: <LuisGrid/>
+    },   
+    {
+        name: "Javier",
+        profilePicUrl: "javier-profile-picture.jpg",
+        instagramUrl: "https://www.instagram.com/artist_fadez/",
+        booksyUrl: "https://booksy.com/en-us/500075_javier-guero-barber_barber-shop_134761_denver#ba_s=sh_1",
+        ImageGrid: <JavierGrid/>
+    },
+    {
+        name:"Tony",
+        profilePicUrl:"tony-profile-picture.jpg",
+        instagramUrl:"https://www.instagram.com/tonyblurrz/",
+        booksyUrl:"https://booksy.com/en-us/602202_tony-blurrz_barber-shop_134761_denver#ba_s=sh_",
+        ImageGrid: <TonyGrid/>
+    },
+    {
+        name:"Elvin",
+        profilePicUrl:"elvin-profile-picture.jpg",
+        instagramUrl:"https://www.instagram.com/astro_blendzz/",
+        booksyUrl:"https://booksy.com/en-us/497516_astro-blendzz_barber-shop_134761_denver#ba_s=sr_1",
+        ImageGrid: <ElvinGrid/>
+    }
+]
 
 function BarbersTabs() {
     const [key, setKey] = useState('Enrique');
-    const [barbersList, setBarbersList] = useState([])
-    useEffect(()=>{
-        try{
-            axios.get(`${API_URL}/api/barbers`)
-                .then(res => {
-                    setBarbersList(res.data.barbers)
-        })
-        }
-        catch(err){
-            console.log(err)
-        }
-        
-    },[])
 
     return (
         <BarbersTab
@@ -34,8 +63,8 @@ function BarbersTabs() {
         className="xs-auto"
         >
         {
-            barbersList.map(barber=>
-                <Tab key={barber._id} eventKey={barber.name} title={barber.name}>
+            BARBERLIST.map(barber=>
+                <Tab key={barber.name} eventKey={barber.name} title={barber.name}>
                     <BarberCard barber={barber}/>
                 </Tab>
             )

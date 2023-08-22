@@ -12,10 +12,11 @@ const instagramPosts = async (key) =>{
         userData = axios
             .get(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,caption&limit=6&access_token=${key}`)
             .then((resp) => {
+                console.log(resp.data.data)
                 return resp.data.data
             })
       } catch (err) {
-          console.log('error', err)
+        //   console.log('error', err)
       }
       return userData
 

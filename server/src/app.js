@@ -33,14 +33,19 @@ app.use((req, res, next) => {
 
   app.get('/api/barbers', async (req,res) => {
     const barbersList = await getBarbersList()
-    // console.log(barbersList)
+    
     const barbers = await  Promise.all(barbersList.map(async el => {
+      try{
         posts = await instagramPosts(el.instagram)
-        // console.log(el.instagram)
+      }
+      catch{
+        
+      }
         const updatedEl = {...el.toObject(), instagram: posts}
-        console.log(updatedEl)
+        console.log(el.name)
         return updatedEl
     }))
+
     res.status(200).json({barbers : barbers});
   });
 

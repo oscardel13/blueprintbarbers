@@ -28,6 +28,12 @@ const Landing = () => {
         <Row className="row d-flex justify-content-center align-items-center h-100">
           <Col xs="auto">
             <Logo />
+            <p>
+              11178 huron st, Suite 200, Northglenn, 80234
+            </p>
+            <p>
+              Appointment Only
+            </p>
           </Col>
         </Row>
       </HeroSectionTitleContainer>

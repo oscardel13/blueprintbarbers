@@ -6,11 +6,11 @@ import Card from "react-bootstrap/Card"
 import Figure from 'react-bootstrap/Figure'
 import InstagramIcon from '@mui/icons-material/Instagram';
 
-import InstagramGrid from "../instagram-grid/instagram-grid.component"
+import InstagramGrid from "../image-grids/enrique-grid.component"
 import { BooksyButton, InstagramButton, BarberCardContainer } from "./barber-card.styles"
 
 const BarberCard = ({ barber }) => {
-    const{ name,bio,instagramUrl,booksyUrl, profilePicUrl } = barber
+    const{ name,bio,instagramUrl,booksyUrl, profilePicUrl, ImageGrid } = barber
     const [picUrl, setPicUrl] = useState("enrique-profile-picture.jpg");
     const profilePicture = require("../../assets/" + picUrl );
     useEffect(()=>{
@@ -36,14 +36,12 @@ const BarberCard = ({ barber }) => {
                 <Col md={6}>
                     <Card.Body>
                         <Card.Title>{name}</Card.Title>
-                        <Card.Text>{bio}</Card.Text>
-                    </Card.Body>
-                    <Card.Body>
+                        <br/>
                         <InstagramButton href={instagramUrl}><InstagramIcon fontSize="large"/></InstagramButton>{' '}
                         <BooksyButton href={booksyUrl}>Book</BooksyButton>
                     </Card.Body>
                     <Card.Body>
-                        <InstagramGrid posts={barber.instagram}/>
+                        {ImageGrid}
                     </Card.Body>
                 </Col>
             </Row>
