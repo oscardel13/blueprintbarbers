@@ -45,7 +45,7 @@ jobs:
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker-compose down
-            docker-compose up --pull=true -d
+            docker-compose up --pull -d
 
   deploy_client:
     needs: build
