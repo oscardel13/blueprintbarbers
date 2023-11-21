@@ -132,3 +132,4 @@ blueprintbarberssh.pem
 
 #pem
 *.pem
+*.bash
