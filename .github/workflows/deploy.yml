@@ -22,10 +22,10 @@ jobs:
       # - run: docker run -e CI=true blueprintbarbers/react-test npm test
 
       # Build Production Images
-      - run: docker build -t blueprintbarbers/server ./server
+      - run: docker build -t oscardel13/blueprintbarbers ./server
 
       # Push Images to docker hub
-      - run: docker push blueprintbarbers/server
+      - run: docker push oscardel13/blueprintbarbers
 
   deploy_server:
     needs: build
