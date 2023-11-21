@@ -19,7 +19,7 @@ app.use(
 );
 
 app.use(cors({
-    origin: ['http://192.168.86.44:3000','https://192.168.86.44:3000','http://localhost:3000', 'https://blueprintbarbers.co', 'https://blueprintbarbers.oscarshub.com'],
+    origin: ['http://192.168.86.44:3000','https://192.168.86.44:3000','http://localhost:3000', 'https://blueprintbarbers.co', 'https://beta.blueprintbarbers.co'],
     credentials: true
 }));
 
@@ -44,6 +44,10 @@ app.use((req, res, next) => {
   });
 
   app.use(express.json());
+
+  app.get('/', (req, res) => {
+    res.send('Hello from BluePrint Barbers!');
+  })
 
   app.use('/', api)
 
