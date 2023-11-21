@@ -22,10 +22,10 @@ jobs:
       # - run: docker run -e CI=true blueprintbarbers/react-test npm test
 
       # Build Production Images
-      - run: docker build -t oscardel13/blueprintbarbers ./server
+      - run: docker build -t oscardel13/blueprintbarbers ./server #UPDATE THIS FOR PROD TO: blueprintbarbers/server
 
       # Push Images to docker hub
-      - run: docker push oscardel13/blueprintbarbers
+      - run: docker push oscardel13/blueprintbarbers #UPDATE THIS FOR PROD TO: blueprintbarbers/server
 
   deploy_server:
     needs: build
@@ -77,11 +77,11 @@ jobs:
       - name: Build React app (inside the client directory)
         run: |
           cd client
-          CI=false npm run build
+          npm run build
 
       - name: Deploy to S3
         run: |
-          aws s3 cp client/build/ s3://empower-canine/ --recursive
+          aws s3 cp client/build/ s3://${{ secrets.S3_CLIENT_ID }}/ --recursive 
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
