@@ -2,25 +2,25 @@ function Logo() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="100px"
-      height="100px"
+      width="450px"
+      height="150px"
       version="1.1"
-      viewBox="0 0 600 600"
+      viewBox="0 0 450 150"
       xmlSpace="preserve"
     >
-      <g strokeLinecap="square">
+      <g >
         <path
-          fill="#fff"
+          fill="white"
           stroke="none"
           strokeDasharray="none"
           strokeLinejoin="miter"
           strokeMiterlimit="4"
           strokeWidth="5.348"
-          d="M0 0.001H600V600.001H0z"
+          d="M0 0.001H450V150.001H0z"
           opacity="0"
           paintOrder="stroke fill markers"
         ></path>
-        <g fill="#fff" transform="translate(196.416 96.981) scale(1.69951)">
+        <g fill="white" transform="translate(121-129) scale(1.69951)">
           <path
             style={{}}
             strokeWidth="2.446"
@@ -96,7 +96,7 @@ function Logo() {
                 InkscapeFontSpecification: "'Century Gothic'",
                 InkscapeStroke: "none",
               }}
-              fill="#fff"
+              fill="white"
               stroke="none"
               strokeLinecap="butt"
               d="M-50.726 102.15h6.565q3.962 0 6.09.95 2.128.93 3.35 2.876 1.246 1.947 1.246 4.324 0 2.219-1.087 4.053-1.086 1.81-3.192 2.943 2.604.883 4.007 2.083 1.404 1.177 2.174 2.875.792 1.675.792 3.645 0 4.007-2.943 6.792-2.92 2.762-7.856 2.762h-9.146zm3.26 3.26v10.663h1.902q3.463 0 5.093-.634 1.63-.656 2.581-2.037.951-1.404.951-3.102 0-2.286-1.607-3.577-1.585-1.313-5.071-1.313zm0 14.014v12.769h4.12q3.645 0 5.343-.702 1.698-.725 2.717-2.242 1.041-1.516 1.041-3.282 0-2.219-1.449-3.872-1.449-1.652-3.984-2.264-1.698-.407-5.909-.407z"
@@ -132,11 +132,11 @@ function Logo() {
           >
             <tspan
               style={{}}
-              x="106.999"
+              x="105"
               y="154.793"
-              fill="#fff"
+              fill="white"
               stroke="none"
-              strokeWidth="16.599"
+              strokeWidth="50"
               fontFamily="Century Gothic"
               fontStretch="normal"
               fontStyle="normal"

@@ -24,4 +24,9 @@ export const GLobalStyle = createGlobalStyle`
         font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;
     }
+
+    // ::-webkit-scrollbar {
+    //     width: 0px;
+    //     background: transparent; /* make scrollbar transparent */
+    //   }
 `

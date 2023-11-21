@@ -1,3 +1,4 @@
+import { NavLink as Link  } from "react-router-dom";
 import { styled } from "styled-components";
 
 export const Navbar = styled.nav`
@@ -19,10 +20,27 @@ export const Navbar = styled.nav`
         padding-right:3rem;
         padding-top:2rem;
     }
+
+    &.active{
+        background: white;
+        border-radius: 2rem;
+        display: inline-block;
+        color: white;
+    }
 }
 `
+export const NavLink = styled(Link)`
+  padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+  text-decoration: none;
+  padding-right: var(--bs-navbar-nav-link-padding-x);
+  padding-left: var(--bs-navbar-nav-link-padding-x);
+  &.active{
+    border-radius: 2rem;
+    display: inline-block;
+    color: white;
+  }
 
-export const Nav = styled.nav`
-    
-}
+  &:hover{
+    color: white;
+  }
 `

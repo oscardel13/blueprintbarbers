@@ -25,7 +25,7 @@ const Landing = () => {
   return (
     <HeroSectionContainer smallScreen={smallScreen.toString()}>
       <HeroSectionTitleContainer className="container-fluid py-5 h-100">
-        <Row className="row d-flex justify-content-center align-items-center h-100">
+        <Row className="row d-flex justify-content-center align-items-center ">
           <Col xs="auto">
             <Logo />
             <p>

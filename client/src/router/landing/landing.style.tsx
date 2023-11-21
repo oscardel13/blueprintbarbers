@@ -12,7 +12,7 @@ export const HeroSectionContainer = styled.section<{smallScreen: string}>`
     bottom: 0;
     left: 0;
     margin: 0;
-    background-position: center;
+    background-position: bottom center;
     overflow: hidden;
     box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 40%);
     height: 100vh;

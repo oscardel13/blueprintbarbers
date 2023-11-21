@@ -3,8 +3,12 @@ const cors = require('cors');
 const morgan = require("morgan");
 const helmet = require("helmet");
 const path = require('path');
+const api = require('./routes/api');
 
-const { getBarbersList, instagramPosts } = require('./models/barbers.data');
+const { getBarbersList, instagramPosts } = require('./models/barber/barbers.data');
+
+const cookieSession = require('cookie-session');
+const { config, clientPassport } = require("./utils/secruity");
 
 const app = express();
 
@@ -15,8 +19,20 @@ app.use(
 );
 
 app.use(cors({
-    origin: ['http://192.168.86.44:3000','https://192.168.86.44:3000','http://localhost:3000', 'https://oscarshub.com', 'https://blueprintbarbers.oscarshub.com']
+    origin: ['http://192.168.86.44:3000','https://192.168.86.44:3000','http://localhost:3000', 'https://blueprintbarbers.co', 'https://blueprintbarbers.oscarshub.com'],
+    credentials: true
 }));
+
+app.use(cookieSession({
+  name: 'session',
+  maxAge: config.COOKIE_MAX_AGE,
+  keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
+  sameSite: false,
+  // secure: true // Set to true if using HTTPS
+}));
+app.use(clientPassport.initialize());
+
+app.use(clientPassport.session());
 
 app.use(morgan("combined"));
 
@@ -29,7 +45,7 @@ app.use((req, res, next) => {
 
   app.use(express.json());
 
-//   app.use('/', api)
+  app.use('/', api)
 
   app.get('/api/barbers', async (req,res) => {
     const barbersList = await getBarbersList()
@@ -39,7 +55,7 @@ app.use((req, res, next) => {
         posts = await instagramPosts(el.instagram)
       }
       catch{
-        
+        posts = []
       }
         const updatedEl = {...el.toObject(), instagram: posts}
         console.log(el.name)
