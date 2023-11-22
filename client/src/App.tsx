@@ -43,8 +43,9 @@ function App() {
             <Route index element={<Landing/>}/>
             <Route path='barbers' element={<Barbers/>}/>
             <Route path='sign-in' element={<SignInPage/>}/>
-            <Route path='profile'>
+            <Route path="user">
               <Route index element={<ProfilePage/>}/>
+              <Route path="orders" element={<ProfilePage/>}/>
             </Route>
             <Route path='store'>
               <Route index element={<Store/>}/>

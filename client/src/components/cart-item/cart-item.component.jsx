@@ -53,8 +53,8 @@ const CartItem = memo(({ item }) => {
       </div>
       <button
         onClick={() => onRemove()}
-        className={`border-0 bg-red-500 cursor-pointer font-bold text-white h-full w-0 ${
-          isRemoving || isHovered ? 'w-16 px-2' : ''
+        className={`border-0 bg-red-500 cursor-pointer font-bold text-gray-300 h-full w-0 ${
+          isRemoving || isHovered ? 'w-16 px-2 text-white' : ''
         }`}
       >
         X

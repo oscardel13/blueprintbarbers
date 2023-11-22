@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../product_card/product_card.component';
 
-import { products as productsHolder } from './product_list_holder.data'
 import { getAPI } from '../../../../utils/api';
 
 const ProductList = () => {
-    const [products, setProducts] = useState(productsHolder);
+    const [products, setProducts] = useState([]);
     useEffect(()=>{
         const fetchProducts = async () => {
             try{
-                const response = await getAPI("/products")
+                const response = await getAPI("/products/published")
                 setProducts(response.data)
             }
             catch(err){

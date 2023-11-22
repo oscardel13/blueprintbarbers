@@ -5,10 +5,9 @@ import ProductCard from './components/product-card/product-card.component';
 import PageHeader from '../../compoenents/page-header/page-header.component';
 
 import { getAPI } from '../../../../utils/api';
-import { products as mockProducts } from '../../../store/components/product_list/product_list_holder.data'; 
 
 const ProductsPage = () => {
-    const [products, setProducts] = useState(mockProducts)
+    const [products, setProducts] = useState([])
 
     useEffect(() => {
         const getProducts = async () => {

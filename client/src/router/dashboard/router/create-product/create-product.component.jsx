@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import PageHeader from '../../compoenents/page-header/page-header.component';
 
 import { postAPIMultipart } from '../../../../utils/api';
-import { Form } from 'react-router-dom';
 
 const CreateProductPage = () => {
   const [productData, setProductData] = useState({
@@ -13,11 +12,10 @@ const CreateProductPage = () => {
     pricing: '',
     category: '',
     sizes: {
-      xs: 0,
-      s: 0,
-      m: 0,
-      l: 0,
-      xl: 0,
+      small: 0,
+      medium: 0,
+      large: 0,
+      "extra-large": 0,
     },
   });
   const handleInputChange = (e) => {
@@ -144,7 +142,7 @@ const CreateProductPage = () => {
             <div className="flex space-x-2 flex-col lg:flex-row space-y-3 lg:space-y-0">
               {Object.entries(productData.sizes).map(([size, quantity]) => (
                 <div key={size} className="flex items-center">
-                  <label className="mr-2 text-gray-700">{size.toUpperCase()}:</label>
+                  <label className="mr-2 text-gray-700">{size}:</label>
                   <input
                     type="number"
                     name={`sizes.${size}`}

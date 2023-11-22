@@ -26,15 +26,19 @@ const deleteProduct = async (id) => {
     return await productCollection.deleteOne({ _id: id })
 }
 
-const archiveProduct = async (id) => {
-    product = await getProduct(id);
-    archived = product.archived;
-    return await productCollection.findOneAndUpdate({ _id: id }, { archived: !product.archived }, {returnDocument: 'after'})
+const archiveProduct = async (name) => {
+    product = await getProduct(name);
+    return await productCollection.findOneAndUpdate({ name: name }, { archived: !product.archived, published: false }, {returnDocument: 'after'})
 }
 
-const publishProduct = async (id) => {
-    product = await getProduct(id);
-    return await productCollection.findOneAndUpdate({ _id: id }, { published: !product.published }, {returnDocument: 'after'})
+const publishProduct = async (name) => {
+    product = await getProduct(name);
+    if (product.archived === true){
+        return {
+            error: 'Product is already archived'
+        }
+    }
+    return await productCollection.findOneAndUpdate({ name: name }, { published: !product.published }, {returnDocument: 'after'})
 }
 
 module.exports = {

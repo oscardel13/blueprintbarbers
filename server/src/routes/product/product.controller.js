@@ -12,6 +12,32 @@ async function httpGetProducts(req,res){
     
 }
 
+// MAYBE ADD LOGIC TO DATA INSTEAD OF HERE
+async function httpGetArchivedProducts(req, res){
+    try{
+        const products = await getProducts();
+        const archivedProducts = products.filter(product => product.archived === true)
+        return res.status(200).json(archivedProducts);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message});
+    }  
+  
+}
+
+// MAYBE ADD LOGIC TO DATA INSTEAD OF HERE
+async function httpGetPublishedProducts(req, res){
+    try{
+        const products = await getProducts();
+        const publishedProducts = products.filter(product => product.published === true)
+        return res.status(200).json(publishedProducts);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message});
+    }
+
+}
+
 async function httpGetProduct(req,res){
     try{
         const product = await getProduct(req.params.name);
@@ -39,7 +65,6 @@ async function httpCreateProduct(req,res){
     product.sizes = sizes
     try{
         product.images = await processImages(product, files.images)
-        console.log(product)
         const productRes = await createProduct(product);
         return res.status(200).json(productRes);
         // return res.status(200).json("product");
@@ -70,7 +95,6 @@ async function httpUpdateProduct(req,res){
         return res.status(400).json({message:"Invalid product id"});
     }
     product.updatedAt = Date.now();
-    console.log(product)
     try{
         const updatedProduct = await updateProduct(req.params.id,product);
         return res.status(200).json(updatedProduct);
@@ -103,6 +127,9 @@ async function httpArchiveProduct(req,res){
 async function httpPublishProduct(req,res){
     try{
         const product = await publishProduct(req.params.id);
+        if (product.error){
+            return res.status(400).json(product);
+        }
         return res.status(200).json(product);
     }
     catch(e){
@@ -117,5 +144,7 @@ module.exports = {
     httpUpdateProduct,
     httpDeleteProduct,
     httpArchiveProduct,
-    httpPublishProduct
+    httpPublishProduct,
+    httpGetArchivedProducts,
+    httpGetPublishedProducts
 }

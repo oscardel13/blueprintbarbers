@@ -9,11 +9,11 @@ export const CartDropdownContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   border: 1px solid black;
-  background-color: white;
+  background-color: rgb(209 213 219);
   top: 60px;
   right: 15px;
   z-index: 5;
-
+  
   .empty-message {
     font-size: 18px;
     margin: 50px auto;

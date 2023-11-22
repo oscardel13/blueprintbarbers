@@ -11,6 +11,8 @@ import Barber from './router/barber/barber.router';
 import Order from './router/order/order.router';
 import Orders from './router/orders/orders.router';
 import Account from './router/account/account.router';
+import EditProduct from './router/edit-product/edit-product.router';
+import ViewProduct from './router/view-product/view-product.router';
 
 function DashboardRoutes() {
   return (
@@ -19,6 +21,8 @@ function DashboardRoutes() {
           <Route index element={<Home/>}/>
           <Route path='products' element={<ProductsPage/>}/>
           <Route path='products/create' element={<CreateProduct/>}/>
+          <Route path='products/:productName' element={<ViewProduct/>}/>
+          <Route path='products/:productName/edit' element={<EditProduct/>}/>
           <Route path='clients' element={<Clients/>}/>
           <Route path='clients/:id' element={<Client/>}/>
           <Route path='barbers' element={<Barbers/>}/>

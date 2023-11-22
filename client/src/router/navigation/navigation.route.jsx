@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink  } from "./navigation.style";
-// import { selectCurrentUser } from "../../store/user/user.selector";
+import Dropdown from "../../components/dropdown/dropdown.component";
 import { selectIsCartOpen } from "../../store/cart/cart.selector";
 
 import CartIcon from "../../components/cart-icon/cart-icon.component";
@@ -23,9 +24,10 @@ const Navigation = () => {
     const dispatch = useDispatch()
     const isCartOpen = useSelector(selectIsCartOpen)
     const currentUser = useSelector(selectCurrentUser)
-
+    console.log(currentUser)
     const logout = async () => {
         try{
+            console.log("Here")
             dispatch(setCurrentUser(null))
             await getAPI("/auth/logout"); 
         }
@@ -39,21 +41,29 @@ const Navigation = () => {
             return <NavLink to='/sign-in' className="block text-gray-400 p-2">SIGN IN</NavLink>
         }
         if (currentUser.accessLevel === 0){
-            <></>
+            return ( 
+                <Dropdown logout={logout} currentUser={currentUser}>
+                    <NavLink to="/user" className="block p-2 hover:text-white">PROFILE</NavLink>
+                    <NavLink to="/user/orders" className="block p-2 hover:text-white">ORDERS</NavLink>
+
+                </Dropdown>
+            )
+        }
+        if (currentUser.accessLevel === 1){
             return ( 
                 <>
-                    <NavLink to="/profile" className="block text-gray-400 p-2 hover:text-white">PROFILE</NavLink>
+                    <NavLink to="/dashboard" className="block text-gray-400 p-2 hover:text-white">DASHBOARD</NavLink>
                     <a className="block text-gray-400 p-2 cursor-pointer hover:text-white" onClick={logout}>SIGN OUT</a>
                 </>
             )
         }
         else{
             return (
-                <>
-                    <NavLink to="/profile" className="block text-gray-400 p-2 hover:text-white">PROFILE</NavLink>
-                    <NavLink to="/dashboard" className="block text-gray-400 p-2 hover:text-white">DASHBOARD</NavLink>
-                    <a className="block text-gray-400 p-2 cursor-pointer hover:text-white" onClick={logout}>SIGN OUT</a>
-                </>
+                <Dropdown logout={logout} currentUser={currentUser} >
+                    <NavLink to="/user" className="block p-2 hover:text-white">PROFILE</NavLink>
+                    <NavLink to="/user/orders" className="block p-2 hover:text-white">ORDERS</NavLink>
+                    <NavLink to="/dashboard" className="block p-2 hover:text-white">DASHBOARD</NavLink>
+                </Dropdown>
             )
         }
     }

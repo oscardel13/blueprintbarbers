@@ -27,6 +27,10 @@ export const Navbar = styled.nav`
         display: inline-block;
         color: white;
     }
+
+    &.dropdown-menu{
+      background: black;
+    }
 }
 `
 export const NavLink = styled(Link)`

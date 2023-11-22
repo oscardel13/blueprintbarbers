@@ -18,12 +18,16 @@ const {
     httpGetProducts,
     httpGetProduct,
     httpUpdateProduct,
-    httpPublishProduct
+    httpPublishProduct,
+    httpGetArchivedProducts,
+    httpGetPublishedProducts
  } = require('./product.controller')
 
 const ProductAPI = express.Router();
 
 ProductAPI.get('/', httpGetProducts)
+ProductAPI.get('/archives', httpGetArchivedProducts)
+ProductAPI.get('/published', httpGetPublishedProducts)
 ProductAPI.get('/:name', httpGetProduct)
 //ADMIN/TRAINER ONLY
 ProductAPI.post('/', upload.fields([
@@ -32,7 +36,7 @@ ProductAPI.post('/', upload.fields([
   ]),httpCreateProduct) 
 ProductAPI.put('/:id', httpUpdateProduct)
 ProductAPI.delete('/:id', httpDeleteProduct)
-ProductAPI.put('/archive/:id', httpArchiveProduct)
+ProductAPI.put('/archives/:id', httpArchiveProduct)
 ProductAPI.put('/publish/:id', httpPublishProduct)
 
 module.exports = ProductAPI;

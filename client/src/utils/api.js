@@ -26,6 +26,15 @@ export const postAPI = async (path, body) => {
     return await response
 }
 
+export const putAPI = async (path, body) => {
+    const response = await API.put(`${API_URL}${path}`,JSON.stringify(body),{
+        headers: {
+            'Content-Type': "application/json"
+        }
+    })
+    return await response
+}
+
 export const postAPIMultipart = async (path, body) => {
     const response = await API.post(`${API_URL}${path}`, body, {
         headers: {

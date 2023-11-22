@@ -1,5 +1,7 @@
 // ProductCard.js
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
@@ -15,7 +17,10 @@ const ProductCard = ({ _id, name, stock, pricing, images, published }) => {
                 />
                 &nbsp;
                 &nbsp;
-                <div className='flex items-center cursor-pointer text-left'>{name}</div>
+                <div className='flex flex-col items-center cursor-pointer text-left justify-center'>
+                    <h3>{name}</h3>
+                    <Link className='underline' to={`/dashboard/products/${name}`}>View</Link>    
+                </div>
             </div>
 
             <div className="w-1/6">{stock} in stock</div>
@@ -29,7 +34,7 @@ const ProductCard = ({ _id, name, stock, pricing, images, published }) => {
             {/* Add actions or additional information here */}
             <div className="w-1/6">
             {/* Add your action buttons or other elements */}
-                <button className="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-md">Edit</button>
+                <Link to={`/dashboard/products/${name}/edit`} className="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-md">Edit</Link>
             {/* Add more action buttons as needed */}
             </div>
         </div>
