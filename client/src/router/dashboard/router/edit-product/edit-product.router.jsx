@@ -88,6 +88,23 @@ const EditProduct = () => {
         }
     }
 
+    const handleDelete = async () => {
+        //are you sure
+        const sure = window.confirm("Are you sure you want to delete this product?")
+        if (!sure) return
+        try{
+            const res = await putAPI(`/products/delete/${productData.name}`)
+            if (res.status === 200){
+                window.location.reload();            }
+            else
+                window.alert("Product not deleted")
+        }
+        catch(err){
+            console.log(err)
+            window.alert("Product not deleted")
+        }
+    }
+
     // UPDATE THIS 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -135,7 +152,7 @@ const EditProduct = () => {
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                 />
             </div>
-            <div className='grid grid-cols-4'>
+            <div className='flex flex-row overflow-auto gap-2'>
                 { 
                 // SO THIS IS REVERSED FOR WINDOWS BUT IPHONE HAS ORDERING WITH UPLOADING MULTIPLE FILES
                 productData.images.slice().reverse().map((image, index) => {
@@ -224,6 +241,12 @@ const EditProduct = () => {
                         productData.archived ? "Unarchive" : "Archive" 
                     }
                 </span>
+                {
+                    productData.archived ?
+                        <span type="delete" onClick={handleDelete} className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-500 h-12 flex justify-center items-center col-span-2">Delete</span> 
+                        :
+                        null
+                }
             </div>
             </form>
         </div>
