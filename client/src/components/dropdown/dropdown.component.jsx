@@ -18,7 +18,7 @@ const NavigationDropdown = (props) => {
                 </div>
             </div>
             {isDropdownOpen && (
-                <div className='p-3 text-gray-400 grid grid-cols-1 gap-2 lg:absolute lg:flex lg:flex-col lg:justify-center lg:w-max lg:top-[100%] lg:right-3 lg:bg-gray-300 lg:text-black lg:border-solid lg:border-black lg:border-[1px]'>
+                <div className='p-3 text-gray-400 grid grid-cols-1 gap-2 lg:absolute lg:flex lg:flex-col lg:justify-center lg:w-max lg:top-[52px] lg:right-3 lg:bg-gray-300 lg:text-black lg:border-solid lg:border-black lg:border-[1px]'>
                     <div className="flex flex-row p-2 items-center">
                         <img src={currentUser.picture} className="h-16 rounded-full p-1"/>
                         &nbsp;
