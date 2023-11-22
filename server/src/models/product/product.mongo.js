@@ -26,7 +26,7 @@ const productSchema = new Schema({
   },
   images: {
     type: [String],
-    required: true
+    default: ['https://blue-print-static.s3.amazonaws.com/product_defult.jpg']
   },
   pricing: {
     type: Number,

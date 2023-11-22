@@ -62,12 +62,16 @@ async function httpCreateProduct(req,res){
         }
         
     }
+    product.name = product.name.replace(/\s+$/, ''); // deletes trailing whitespace
     product.sizes = sizes
     try{
-        product.images = await processImages(product, files.images)
+        if (files && (Array.isArray(files) ? files.length > 0 : Object.keys(files).length > 0)) //checks files exist
+            product.images = await processImages(product, files.images)
+        else{
+            delete product.images;
+        }
         const productRes = await createProduct(product);
         return res.status(200).json(productRes);
-        // return res.status(200).json("product");
     }
     catch(e){
         return res.status(500).json({message:e.message});

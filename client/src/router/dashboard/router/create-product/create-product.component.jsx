@@ -56,7 +56,7 @@ const CreateProductPage = () => {
     try{
       const res = postAPIMultipart('/products',productFormData)
       console.log(res)
-      window.alert("Product created successfully")
+      window.location.href = '/dashboard/products';
     }
     catch(err){
       console.log(err)
@@ -77,6 +77,7 @@ const CreateProductPage = () => {
               value={productData.name}
               onChange={handleInputChange}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              required
             />
           </div>
 
@@ -87,6 +88,7 @@ const CreateProductPage = () => {
               value={productData.description}
               onChange={handleInputChange}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              required
             />
           </div>
           <div className='grid grid-cols-4'>
@@ -116,6 +118,7 @@ const CreateProductPage = () => {
               value={productData.pricing}
               onChange={handleInputChange}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              required
             />
           </div>
 
@@ -126,6 +129,7 @@ const CreateProductPage = () => {
               value={productData.category}
               onChange={handleCategoryChange}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              required
             >
               <option value="">Select Category</option>
               <option value="Hats">Hats</option>

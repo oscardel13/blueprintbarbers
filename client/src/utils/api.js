@@ -14,7 +14,7 @@ export const getAPI = async (path, body) => {
             'Content-Type': "application/json"
         }
     })
-    return await response
+    return response
 }
 
 export const postAPI = async (path, body) => {
@@ -23,7 +23,7 @@ export const postAPI = async (path, body) => {
             'Content-Type': "application/json"
         }
     })
-    return await response
+    return response
 }
 
 export const putAPI = async (path, body) => {
@@ -32,7 +32,16 @@ export const putAPI = async (path, body) => {
             'Content-Type': "application/json"
         }
     })
-    return await response
+    return response
+}
+
+export const deleteAPI = async (path, body) => {
+    const response = await API.delete(`${API_URL}${path}`,JSON.stringify(body),{
+        headers: {
+            'Content-Type': "application/json"
+        }
+    })
+    return response
 }
 
 export const postAPIMultipart = async (path, body) => {

@@ -11,7 +11,7 @@ const productHolder = {
     name: '',
     description: '',
     pricing: 0,
-    images: [],
+    images: ['https://blue-print-static.s3.amazonaws.com/product_defult.jpg'],
     category: '',
     sizes: [],
     size: ''
@@ -28,6 +28,7 @@ const ProductView = () => {
         const fetchProduct = async () => {
         try{
             const response = await getAPI(`/products/${productName}`)
+            console.log(response.data)
             setProduct(response.data)
         }
         catch(err){

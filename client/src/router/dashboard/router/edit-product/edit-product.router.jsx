@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import PageHeader from '../../compoenents/page-header/page-header.component';
 
-import { getAPI, postAPIMultipart, putAPI, putAPIMultipart } from '../../../../utils/api';
+import { deleteAPI, getAPI, postAPIMultipart, putAPI, putAPIMultipart } from '../../../../utils/api';
 
 const EditProduct = () => {
     const { productName } = useParams();
@@ -93,9 +93,10 @@ const EditProduct = () => {
         const sure = window.confirm("Are you sure you want to delete this product?")
         if (!sure) return
         try{
-            const res = await putAPI(`/products/delete/${productData.name}`)
+            const res = await deleteAPI(`/products/${productData._id}`)
             if (res.status === 200){
-                window.location.reload();            }
+                window.location.href = '/dashboard/products';      
+            }
             else
                 window.alert("Product not deleted")
         }
