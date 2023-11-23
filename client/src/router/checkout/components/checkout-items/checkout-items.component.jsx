@@ -6,7 +6,8 @@ const CheckOutItems = () => {
     const cartItems = useSelector(selectCartItems);
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.pricing * item.quantity, 0);
-      };
+    };
+    console.log(cartItems);
 
     return (
         <>
@@ -16,8 +17,8 @@ const CheckOutItems = () => {
                 <div className="font-bold text-center hidden md:block">Quantity</div>
                 <div className="font-bold text-center hidden md:block">Total</div>
             </div>
-            {cartItems.map((item) => (
-                <CheckoutItem item={item} key={item._id}/>
+            {cartItems.map((item,index) => (
+                <CheckoutItem item={item} key={index}/>
             ))}
             <div className="grid grid-cols-4 py-2">
                 <div className="col-span-3 font-bold text-right">Subtotal:</div>
