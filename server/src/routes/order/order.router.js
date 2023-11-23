@@ -15,6 +15,6 @@ OrderAPI.get('/', httpGetOrders)
 OrderAPI.get('/:id', httpGetOrder)
 OrderAPI.post('/', httpCreateOrder)
 OrderAPI.put('/:id', httpUpdateOrder)
-OrderAPI.put('/:id', httpCancelOrder)
+OrderAPI.put('/:id/cancel', httpCancelOrder)
 
 module.exports = OrderAPI

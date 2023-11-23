@@ -9,6 +9,7 @@ const getOrder = async (id) => {
     return await orderSchema.findOne({_id: id});
 }
 
+//calculate order total here
 const createOrder = async (order) => {
     return await orderSchema.create(order);
 }
