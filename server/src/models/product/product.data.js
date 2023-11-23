@@ -1,4 +1,3 @@
-const { options } = require('../../routes/api')
 const productCollection = require('./product.mongo')
 
 // TODO: make 3 different ones! one for all products, one for published, one for archived
