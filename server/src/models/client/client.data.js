@@ -20,11 +20,17 @@ const deleteClient = async (id) => {
     return await clientCollection.deleteOne({ _id: id })
 }
 
+const checkIfAdmin = async (id) => {
+    const client = await getClient(id)
+    return client.accessLevel > 0
+}
+
 
 module.exports = {
     getClients,
     getClient,
     updateClient,
     deleteClient,
-    createClient
+    createClient,
+    checkIfAdmin
 }

@@ -12,6 +12,9 @@ import ProductPage from './router/store/routes/[product]/product.route';
 import Checkout from './router/checkout/checkout.route';
 import SignInPage from './router/sign-in/sign-in.router';
 import ProfilePage from './router/profile/profile.router';
+import OrdersPage from './router/orders/orders.router';
+import OrderPage from './router/order/order.router';
+
 // import Dashboard from './router/dashboard/dashboard-layout.router';
 // import ProductsPage from './router/dashboard/router/products/products.router';
 // import Home from './router/dashboard/router/home/home.router';
@@ -43,9 +46,12 @@ function App() {
             <Route index element={<Landing/>}/>
             <Route path='barbers' element={<Barbers/>}/>
             <Route path='sign-in' element={<SignInPage/>}/>
-            <Route path="user">
+            <Route path="account">
               <Route index element={<ProfilePage/>}/>
-              <Route path="orders" element={<ProfilePage/>}/>
+              <Route path="orders">
+                <Route index element={<OrdersPage/>}/>
+                <Route path=':orderId' element={<OrderPage/>}/>
+              </Route>
             </Route>
             <Route path='store'>
               <Route index element={<Store/>}/>

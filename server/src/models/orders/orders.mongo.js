@@ -56,7 +56,21 @@ const orderSchema = new mongoose.Schema({
       }
       // You can add more fields related to the logs if needed
     }
-  ]
+  ],
+  address: {
+    street: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    zipcode: {
+      type: String,
+    }
+  },
 });
 
 module.exports = mongoose.model('Order', orderSchema);

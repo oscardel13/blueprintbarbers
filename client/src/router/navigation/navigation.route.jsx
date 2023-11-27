@@ -43,8 +43,8 @@ const Navigation = () => {
         if (currentUser.accessLevel === 0){
             return ( 
                 <Dropdown logout={logout} currentUser={currentUser}>
-                    <NavLink to="/user" className="block p-2 hover:text-white">PROFILE</NavLink>
-                    <NavLink to="/user/orders" className="block p-2 hover:text-white">ORDERS</NavLink>
+                    <NavLink to="/account" className="block p-2 hover:text-white">PROFILE</NavLink>
+                    <NavLink to="/account/orders" className="block p-2 hover:text-white">ORDERS</NavLink>
 
                 </Dropdown>
             )
@@ -60,8 +60,8 @@ const Navigation = () => {
         else{
             return (
                 <Dropdown logout={logout} currentUser={currentUser} >
-                    <NavLink to="/user" className="block p-2 hover:text-white">PROFILE</NavLink>
-                    <NavLink to="/user/orders" className="block p-2 hover:text-white">ORDERS</NavLink>
+                    <NavLink to="/account" className="block p-2 hover:text-white">PROFILE</NavLink>
+                    <NavLink to="/account/orders" className="block p-2 hover:text-white">ORDERS</NavLink>
                     <NavLink to="/dashboard" className="block p-2 hover:text-white">DASHBOARD</NavLink>
                 </Dropdown>
             )
