@@ -106,7 +106,7 @@ const EditProduct = () => {
         }
     }
 
-    // UPDATE THIS 
+    // TODO: 
     const handleSubmit = (e) => {
         e.preventDefault();
         const productFormData = new FormData();
@@ -118,8 +118,8 @@ const EditProduct = () => {
         console.log(`${pair[0]}, ${pair[1]}`);
         }
         try{
-        // const res = putAPIMultipart('/products',productFormData)
-        // console.log(res)
+        const res = putAPIMultipart('/products',productFormData)
+        console.log(res)
         window.alert("Product created successfully")
         }
         catch(err){

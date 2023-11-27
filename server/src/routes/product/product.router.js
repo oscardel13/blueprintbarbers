@@ -31,10 +31,13 @@ ProductAPI.get('/published', httpGetPublishedProducts)
 ProductAPI.get('/:name', httpGetProduct)
 //ADMIN/TRAINER ONLY
 ProductAPI.post('/', upload.fields([
-    { name: 'user', maxCount: 1 },
+    { name: 'form', maxCount: 1 },
     { name: 'images', maxCount: 10}
   ]),httpCreateProduct) 
-ProductAPI.put('/:id', httpUpdateProduct)
+ProductAPI.put('/:id', upload.fields([
+  { name: 'form', maxCount: 1 },
+  { name: 'images', maxCount: 10}
+]),httpUpdateProduct)
 ProductAPI.delete('/:id', httpDeleteProduct)
 ProductAPI.put('/archives/:id', httpArchiveProduct)
 ProductAPI.put('/publish/:id', httpPublishProduct)

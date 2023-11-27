@@ -7,11 +7,16 @@ const itemSchema = new Schema({
     type: String,
     required: false // Make it optional
   },
+  status: {
+    type: String,
+    enum: ['initialized', 'printing', 'ready'],
+    default: 'initialized'
+  },
   owner: {
     type: String,
     default: null // Default value for owner field
   }
-});
+}); 
 
 // Define the Product schema
 const productSchema = new Schema({

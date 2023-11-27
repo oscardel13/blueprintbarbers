@@ -1,5 +1,6 @@
 const { getProducts, getProduct, createProduct, updateProduct, deleteProduct, archiveProduct, publishProduct } = require("../../models/product/product.data");
 const { uploadObjectsToStatic } = require("../../utils/aws");
+const { createProductItemList, processImages, createReducedSizeList } = require("./product.helper");
 
 async function httpGetProducts(req,res){
     try{
@@ -48,22 +49,14 @@ async function httpGetProduct(req,res){
     }
 }
 
-/* 
-TODO
-1. Create the items with the sizes.
-*/
 async function httpCreateProduct(req,res){
     const { session, body, files } = req;
     product = JSON.parse(body.form);
-    const sizes = []
-    for (const key of Object.keys(product.sizes)){
-        if (product.sizes[key] > 0){
-            sizes.push(key)
-        }
-        
-    }
+    const reducedSizes = createReducedSizeList(product.sizes)
+    const Items = createProductItemList(product.sizes)
     product.name = product.name.replace(/\s+$/, ''); // deletes trailing whitespace
-    product.sizes = sizes
+    product.sizes = reducedSizes
+    product.items = Items
     try{
         if (files && (Array.isArray(files) ? files.length > 0 : Object.keys(files).length > 0)) //checks files exist
             product.images = await processImages(product, files.images)
@@ -78,24 +71,10 @@ async function httpCreateProduct(req,res){
     }
 }
 
-async function processImages(product, files){
-    const imagesBuffer = []
-    for (let j = 0; j < files.length; j++){
-        i = files.length - j - 1;
-        s3Path = `products/${product.name}/images/${j.toString()}.jpg` //edit so checked mimetype
-        imagesBuffer.push({Key: s3Path,Body: files[i].buffer})
-    }
-    const imageRes = await uploadObjectsToStatic(imagesBuffer)
-    const images = []
-    for (const res of imageRes){
-        images.push(res.Location)
-    }
-    return images
-}
-
 async function httpUpdateProduct(req,res){
-    const product = req.body;
-    if (product._id != req.params.id){
+    const { session, body, files } = req;
+    product = JSON.parse(body.form);
+    if (product.name != req.params.id){
         return res.status(400).json({message:"Invalid product id"});
     }
     product.updatedAt = Date.now();

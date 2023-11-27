@@ -24,7 +24,6 @@ const Navigation = () => {
     const dispatch = useDispatch()
     const isCartOpen = useSelector(selectIsCartOpen)
     const currentUser = useSelector(selectCurrentUser)
-    console.log(currentUser)
     const logout = async () => {
         try{
             console.log("Here")

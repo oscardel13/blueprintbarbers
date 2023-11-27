@@ -1,42 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { addItemToCart } from '../../store/cart/cart.reducer';
-import { getAPI } from '../../utils/api';
 import ImageGallery from '../product-image-gallery/product-image-gallery.component';
 
-
-const productHolder = {
-    name: '',
-    description: '',
-    pricing: 0,
-    images: ['https://blue-print-static.s3.amazonaws.com/product_defult.jpg'],
-    category: '',
-    sizes: [],
-    size: ''
-  }
-
-const ProductView = () => {
+const ProductView = ({ product, setProduct }) => {
     const dispatch = useDispatch();
-    const { productName } = useParams();
-    const [product, setProduct] = useState(productHolder)
     const [showAddedMessage, setShowAddedMessage] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-        try{
-            const response = await getAPI(`/products/${productName}`)
-            console.log(response.data)
-            setProduct(response.data)
-        }
-        catch(err){
-            console.log(err)
-        }
-        }
-        fetchProduct()
-    },[])
+    
 
     const handleSizeChange = (e) => {
         setProduct({...product, size: e.target.value})

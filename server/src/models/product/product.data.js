@@ -17,8 +17,8 @@ const createProduct = async (product) => {
     return await productCollection.create(product);
 }
 
-const updateProduct = async (id, product) => {
-    return await productCollection.findOneAndUpdate({ _id: id }, { $set: product }, {returnDocument: 'after'})
+const updateProduct = async (name, product) => {
+    return await productCollection.findOneAndUpdate({ name: name }, { $set: product }, {returnDocument: 'after'})
 }
 
 const deleteProduct = async (id) => {

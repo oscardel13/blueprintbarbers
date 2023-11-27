@@ -14,7 +14,7 @@ import SignInPage from './router/sign-in/sign-in.router';
 import ProfilePage from './router/profile/profile.router';
 import OrdersPage from './router/orders/orders.router';
 import OrderPage from './router/order/order.router';
-
+import ProductItemPage from './router/store/routes/product-item/product-item.router';
 // import Dashboard from './router/dashboard/dashboard-layout.router';
 // import ProductsPage from './router/dashboard/router/products/products.router';
 // import Home from './router/dashboard/router/home/home.router';
@@ -56,6 +56,7 @@ function App() {
             <Route path='store'>
               <Route index element={<Store/>}/>
               <Route path=':productName' element={<ProductPage/>}/>
+              <Route path=':productName/:itemId' element={<ProductItemPage/>}/>
             </Route>
             <Route path='checkout'>
               <Route index element={<Checkout/>}/>

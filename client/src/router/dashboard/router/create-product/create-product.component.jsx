@@ -43,7 +43,7 @@ const CreateProductPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const productFormData = new FormData();
     productFormData.append('form', JSON.stringify(productData))
@@ -54,9 +54,10 @@ const CreateProductPage = () => {
       console.log(`${pair[0]}, ${pair[1]}`);
     }
     try{
-      const res = postAPIMultipart('/products',productFormData)
+      const res = await postAPIMultipart('/products',productFormData)
       console.log(res)
-      window.location.href = '/dashboard/products';
+      if (res.status === 200)
+        window.location.href = '/dashboard/products';
     }
     catch(err){
       console.log(err)
@@ -79,6 +80,7 @@ const CreateProductPage = () => {
               className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
               required
             />
+            <small className='text-gray-500'>Name must be unique!</small>
           </div>
 
           <div className="mb-4">
