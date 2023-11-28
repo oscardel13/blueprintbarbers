@@ -1,14 +1,23 @@
-import CheckOutItems from './components/checkout-items/checkout-items.component';
+import { useSelector } from 'react-redux';
+import { selectCartItems } from '../../store/cart/cart.selector';
 
-const Checkout = () => {
+import DeliveryMethod from "./components/delivery-method/delivery-method.component";
+import OrderSummary from "../cart/components/order-summary/order-summary.component";
+import Payment from './components/payment/payment.component';
+
+const Checkout = ({stripePromise}) => {
+    const cartItems = useSelector(selectCartItems);
+
     return (
-        <div className="container mx-auto py-4 px-4 min-h-screen md:px-40">
-            <h1 className="text-2xl font-bold mb-4">Checkout</h1>
-            <CheckOutItems />
-            <div className='text-right'>
-                <button className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md mt-4">
-                    Proceed to Payment
-                </button>
+        <div className="flex flex-col lg:flex-row min-h-screen overflow-x-hidden">
+            <div className="flex bg-gray-100 lg:h-screen lg:w-3/6 flex-col shadow-md">
+                <div className='overflow-y-auto pb-12'>
+                    <DeliveryMethod />
+                    <Payment stripePromise={stripePromise}/>
+                </div>
+            </div>
+            <div className="bg-gray-300 lg:h-screen lg:w-3/6 shadow-md ">
+                <OrderSummary items={cartItems}/>
             </div>
         </div>
     )

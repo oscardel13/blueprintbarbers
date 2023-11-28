@@ -16,9 +16,9 @@ const CartDropdown = () => {
 
     const navigate = useNavigate()
 
-    const goToCheckoutHandler = useCallback(() =>{
+    const goToCartHandler = useCallback(() =>{
         dispatch(setIsCartOpen());
-        navigate('/checkout');
+        navigate('/cart');
     },[]);
     
     return (
@@ -31,7 +31,7 @@ const CartDropdown = () => {
                         <EmptyMessage>Your Cart Is Empty</EmptyMessage>
                 )}
             </CartItemStyle>
-            <button onClick={goToCheckoutHandler} className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md">GO TO CHECKOUT</button>
+            <button onClick={goToCartHandler} className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md">GO TO CART</button>
         </CartDropdownContainer>
     )
 };  
