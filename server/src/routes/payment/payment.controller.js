@@ -18,17 +18,17 @@ const calculateOrderAmount = (items) => {
 const httpPaymentIntent = async (req, res) => {
     const user = req.user;
     const { items } = req.body;
-    let itemsMetaData = {
-        user: user.gid
-    }
-    itemsMetaData = items.reduce((acc, item, index) => {
-        const prefix = `${index}_`;
-      
-        acc[`${prefix}id`] = String(item._id);
-        acc[`${prefix}quantity`] = String(item.quantity);
-        return acc;
-      }, itemsMetaData);
-    console.log(itemsMetaData)
+    itemsTrim = items.map(item => {
+        return {
+            _id: item._id,
+            name: item.name,
+            pricing: item.pricing,
+            size: item.size,
+            quantity: item.quantity,
+        }
+    
+    })
+    console.log("itemsTrim: ", itemsTrim)
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
         amount: calculateOrderAmount(items),
@@ -36,7 +36,10 @@ const httpPaymentIntent = async (req, res) => {
         automatic_payment_methods: {
         enabled: true,
         },
-        metadata: itemsMetaData
+        metadata: {
+            user: user.gid,
+            items: JSON.stringify(itemsTrim)
+        }
     });
 
     res.send({
@@ -58,6 +61,7 @@ const httpWebhook = async (req, res) => {
     // Handle the event
     switch (event.type) {
         case 'payment_intent.succeeded':
+            // TODO: Create Order
             // const paymentIntentSucceeded = event.data.object;
             // await stripe.paymentIntents.update(paymentIntent.id, {
             //     metadata: {
@@ -67,10 +71,9 @@ const httpWebhook = async (req, res) => {
             //   });
         
             console.log("paymentIntentSucceeded")
-        case 'checkout.session.completed':
-        // const checkoutSessionCompleted = event.data.object;
-        console.log("charge.succeeded")
         case 'charge.succeeded':
+            // TODO: Update Order to Processing and update items owner to client gid 
+            //       and add to client inventory
             console.log("CHARGE COMPLETED")
         break;
         // ... handle other event types

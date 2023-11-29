@@ -22,6 +22,7 @@ import {
   
       setIsLoading(true);
   
+      // TODO PULL ADDRESS FROM FORMS
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
