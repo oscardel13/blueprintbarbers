@@ -1,7 +1,10 @@
 // This is a public sample test API key.
 // Don’t submit any personally identifiable information in requests made with this key.
 // Sign in to see your own test API key embedded in code samples.
-const stripe = require("stripe")('sk_test_51OHepjEaoH01PH0iCPRv3uArCggOAUTdMICRiLUGRHspf7LqJpmP1idpwhodNXDB96PpFIMQgQTOm2JmgfJmCa5w00feaxaZdo');
+
+require('dotenv').config();
+
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const endpointSecret = "whsec_390a14c1ab72312dcd9188cd30c7d48363428f95b115b4248c57e08b9874729d";
 

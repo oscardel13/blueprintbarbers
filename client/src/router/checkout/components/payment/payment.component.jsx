@@ -4,7 +4,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import {Elements} from '@stripe/react-stripe-js';
 import CheckoutForm from '../checkout-form/checkout-form.component'
 
-const API_URL = process.env.REACT_APP_API_URL || "https://beta.blueprintbarbers.co"
+const API_URL = process.env.REACT_APP_API_URL || "https://api.blueprintbarbers.co"
 
 function Payment(props) {
     const stripePromise = loadStripe("pk_test_51OHepjEaoH01PH0iCraMmXrYUt5t1PXWn3cDtQmCiBZBw5bB1VEuS6SqhfJ35JjnfOEz9JU9hEUtjn00YIeWrOqh006HbEkOFJ");
