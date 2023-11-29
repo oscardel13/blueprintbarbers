@@ -7,10 +7,7 @@ import CheckoutForm from '../checkout-form/checkout-form.component'
 import { selectCartItems } from '../../../../store/cart/cart.selector';
 import { postAPI } from '../../../../utils/api';
 
-
-const API_URL = process.env.REACT_APP_API_URL || "https://api.blueprintbarbers.co"
-
-function Payment(props) {
+function Payment({method, deliveryAddress}) {
     const cartItems = useSelector(selectCartItems);
     const user = useSelector(state => state.user.currentUser);
     const paymentIntent = {
@@ -18,8 +15,7 @@ function Payment(props) {
         items: cartItems,
     }
 
-    const stripePromise = loadStripe("pk_test_51OHepjEaoH01PH0iCraMmXrYUt5t1PXWn3cDtQmCiBZBw5bB1VEuS6SqhfJ35JjnfOEz9JU9hEUtjn00YIeWrOqh006HbEkOFJ");
-    // const { stripePromise } = props;
+    const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY);
     const [ clientSecret, setClientSecret ] = useState('');
 
     useEffect(() => {
@@ -40,7 +36,7 @@ function Payment(props) {
         <h2 className="text-2xl font-bold mb-6 w-screen">Payment</h2>
         {clientSecret && stripePromise && (
             <Elements stripe={stripePromise} options={{ clientSecret, appearance}}>
-                <CheckoutForm />
+                <CheckoutForm method={method} deliveryAddress={deliveryAddress}/>
             </Elements>
         )}
         </div>

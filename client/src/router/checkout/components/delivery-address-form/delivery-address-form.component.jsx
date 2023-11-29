@@ -1,6 +1,4 @@
-
-
-const DeliverAddressForm = ({deliveryAddress, handleChange, handleSubmit }) => {
+const DeliverAddressForm = ({deliveryAddress, handleChange}) => {
     return (
         <>
             <h2 className="text-2xl font-bold mb-6 mt-10">Delivery Address</h2>
@@ -21,26 +19,16 @@ const DeliverAddressForm = ({deliveryAddress, handleChange, handleSubmit }) => {
                 </div>
                 <div className="mb-4">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-600">
-                    First Name Last Name
+                    Name
                 </label>
-                <div className="grid lg:grid-cols-2 lg:space-x-2">
+                <div className="grid lg:space-x-2">
                     <input
                     type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={deliveryAddress.firstName}
+                    id="name"
+                    name="name"
+                    value={deliveryAddress.name}
                     className="mt-1 p-2 flex-1 border rounded-md"
-                    placeholder="First Name"
-                    onChange={handleChange}
-                    required
-                    />
-                    <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={deliveryAddress.lastName}
-                    className="mt-1 p-2 flex-1 border rounded-md"
-                    placeholder="Last Name"
+                    placeholder="Name"
                     onChange={handleChange}
                     required
                     />
@@ -52,9 +40,9 @@ const DeliverAddressForm = ({deliveryAddress, handleChange, handleSubmit }) => {
                 </label>
                 <input
                     type="text"
-                    id="address"
-                    name="address"
-                    value={deliveryAddress.address}
+                    id="line1"
+                    name="line1"
+                    value={deliveryAddress.line1}
                     placeholder="Address"
                     className="mt-1 p-2 border rounded-md w-full"
                     onChange={handleChange}
@@ -66,10 +54,10 @@ const DeliverAddressForm = ({deliveryAddress, handleChange, handleSubmit }) => {
                 </label>
                 <input
                     type="text"
-                    id="apartment"
-                    name="apartment"
+                    id="line2"
+                    name="line2"
                     placeholder="Optional"
-                    value={deliveryAddress.apartment}
+                    value={deliveryAddress.line2}
                     className="mt-1 p-2 border rounded-md w-full"
                     onChange={handleChange}
                 />
@@ -101,30 +89,15 @@ const DeliverAddressForm = ({deliveryAddress, handleChange, handleSubmit }) => {
                     />
                     <input
                     type="text"
-                    id="zipCode"
-                    name="zipCode"
-                    value={deliveryAddress.zipCode}
+                    id="postal_code"
+                    name="postal_code"
+                    value={deliveryAddress.postal_code}
                     className="mt-1 p-2 flex border rounded-md"
                     placeholder="Zip Code"
                     onChange={handleChange}
                     required
                     />
                 </div>
-                </div>
-                <div className="mb-4">
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-600">
-                    Phone
-                </label>
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    placeholder="Phone"
-                    value={deliveryAddress.phone}
-                    className="mt-1 p-2 border rounded-md w-full"
-                    onChange={handleChange}
-                    required
-                />
                 </div>
             </form>
         </>

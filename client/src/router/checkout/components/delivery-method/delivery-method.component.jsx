@@ -1,35 +1,7 @@
-import { useState } from "react"
 import DeliverAddressForm from "../delivery-address-form/delivery-address-form.component";
 
 
-const DeliveryMethod = () => {
-    const [method, setMethod] = useState('delivery')
-    const [deliveryAddress, setDeliveryAddress] = useState({
-        country: '',
-        firstName: '',
-        lastName: '',
-        address: '',
-        apartment: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        phone: '',
-      })
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setDeliveryAddress((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission logic with deliveryAddress
-        console.log('Form submitted:', deliveryAddress);
-      };
-
+const DeliveryMethod = ({method, setMethod, deliveryAddress, handleChange}) => {
     return (
         <>
             <div className="w-full mt-8 py-6 pl-5 pr-5 lg:pr-12 lg:pl-40">
@@ -59,7 +31,7 @@ const DeliveryMethod = () => {
                     </div>
                 </div>
                 {method === 'delivery' && (
-                <DeliverAddressForm deliveryAddress={deliveryAddress} handleChange={handleChange} handleSubmit={handleSubmit}/>
+                <DeliverAddressForm deliveryAddress={deliveryAddress} handleChange={handleChange}/>
                 )}
             </div>
         </>

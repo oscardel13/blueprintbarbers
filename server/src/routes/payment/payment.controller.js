@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-const endpointSecret = "whsec_8a2b7b20360bb42a898f1fddb97e2c87dcba46e91291ff6977e13d0b10a2f5ae";
+const endpointSecret = process.env.STRIPE_END_POINT_SECRET;
 
 const calculateOrderAmount = (items) => {
     const total = items.reduce((acc, item) => acc + item.pricing * item.quantity, 0);
@@ -28,8 +28,7 @@ const httpPaymentIntent = async (req, res) => {
         }
     
     })
-    console.log("itemsTrim: ", itemsTrim)
-    // Create a PaymentIntent with the order amount and currency
+
     const paymentIntent = await stripe.paymentIntents.create({
         amount: calculateOrderAmount(items),
         currency: "usd",
@@ -41,12 +40,11 @@ const httpPaymentIntent = async (req, res) => {
             items: JSON.stringify(itemsTrim)
         }
     });
-
     res.send({
         clientSecret: paymentIntent.client_secret,
     });
 };
-
+ 
 const httpWebhook = async (req, res) => {
     const sig = req.headers['stripe-signature'];
     let event;
@@ -54,10 +52,10 @@ const httpWebhook = async (req, res) => {
     try {
         event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     } catch (err) {
+        console.log(`Webhook Error: ${err.message}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
         return;
     }
-    console.log("event: ", event.data.object)
     // Handle the event
     switch (event.type) {
         case 'payment_intent.succeeded':
@@ -69,11 +67,15 @@ const httpWebhook = async (req, res) => {
             //       // Add other metadata fields as needed
             //     },
             //   });
-        
-            console.log("paymentIntentSucceeded")
+            console.log("event: ", event.data.object)
         case 'charge.succeeded':
-            // TODO: Update Order to Processing and update items owner to client gid 
-            //       and add to client inventory
+            /*
+            TODO: 
+                1. Update Order to Processing
+                2. update items owner to client gid 
+                3. add items to client inventory 
+                4. send email to client
+            */
             console.log("CHARGE COMPLETED")
         break;
         // ... handle other event types

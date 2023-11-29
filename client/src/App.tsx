@@ -28,7 +28,6 @@ import { getAPI } from './utils/api';
 
 function App() {
   const dispatch = useDispatch();
-  const stripePromise = loadStripe('pk_test_51MVmanJs5AxisWVj8UwPq1KYjavDf5yQh2u1V9Qt424V11EGFT49z8Q7j8RQCiqPQmKnYjsoos1JJuVPRkXYZoBG00DuKgCjVK');
   useEffect(()=>{
     const setUser = async () => {
       try{
@@ -64,7 +63,7 @@ function App() {
             <Route path='cart'>
               <Route index element={<Cart/>}/>
             </Route>
-            <Route path='checkout' element={<Checkout stripePromise={stripePromise}/>}/>
+            <Route path='checkout' element={<Checkout/>}/>
           </Route>
           {/* <Route path='dashboard' element={<Dashboard/>}>
             <Route index element={<Home/>}/>
