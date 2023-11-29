@@ -86,6 +86,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          REACT_APP_STRIPE_PUBLISH_KEY: ${{ secrets.REACT_APP_STRIPE_PUBLISH_KEY }}
 
       - name: Invalidate CloudFront Cache
         run: |
