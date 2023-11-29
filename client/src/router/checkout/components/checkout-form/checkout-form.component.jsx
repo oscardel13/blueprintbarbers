@@ -43,7 +43,7 @@ const validateDeliveryAddress = (address) => {
 
 
 export default function CheckoutForm({method, deliveryAddress}) {
-  const client_name = useSelector((state) => state.user.currentUser.name)
+  const client_email = useSelector((state) => state.user.currentUser.email)
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -76,14 +76,14 @@ export default function CheckoutForm({method, deliveryAddress}) {
         address : address
       }
     }
-    console.log(shippingAddress)
-    // TODO PULL ADDRESS FROM FORMS
+    console.log(client_email)
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
         return_url: `${window.location.origin}/completion`,
-        shipping: shippingAddress
+        shipping: shippingAddress,
+        receipt_email: client_email
       },
     });
 
@@ -103,7 +103,7 @@ export default function CheckoutForm({method, deliveryAddress}) {
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
-      <LinkAuthenticationElement id="link-authentication-element"
+      {/* <LinkAuthenticationElement id="link-authentication-element"
         // Access the email value like so:
         // onChange={(event) => {
         //  setEmail(event.value.email);
@@ -111,7 +111,7 @@ export default function CheckoutForm({method, deliveryAddress}) {
         //
         // Prefill the email field like so:
         // options={{defaultValues: {email: 'foo@bar.com'}}}
-        />
+        /> */}
       <PaymentElement id="payment-element" />
       <br/>
       <br/>
