@@ -11,7 +11,7 @@ const Checkout = ({stripePromise}) => {
     return (
         <div className="flex flex-col lg:flex-row min-h-screen overflow-x-hidden">
             <div className="flex bg-gray-100 lg:h-screen lg:w-3/6 flex-col shadow-md">
-                <div className='overflow-y-auto pb-12'>
+                <div className='overflow-y-auto overflow-x-hidden pb-12'>
                     <DeliveryMethod />
                     <Payment stripePromise={stripePromise}/>
                 </div>

@@ -57,6 +57,7 @@ import {
           />
         <PaymentElement id="payment-element" />
         <br/>
+        <br/>
         <button disabled={isLoading || !stripe || !elements} id="submit" className='bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 h-12'>
           <span id="button-text">
             {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
