@@ -6,61 +6,80 @@ require('dotenv').config();
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-const endpointSecret = "whsec_390a14c1ab72312dcd9188cd30c7d48363428f95b115b4248c57e08b9874729d";
+const endpointSecret = "whsec_8a2b7b20360bb42a898f1fddb97e2c87dcba46e91291ff6977e13d0b10a2f5ae";
 
 const calculateOrderAmount = (items) => {
-    // Replace this constant with a calculation of the order's amount
-    // Calculate the order total on the server to prevent
-    // people from directly manipulating the amount on the client
-    return 1400;
+    const total = items.reduce((acc, item) => acc + item.pricing * item.quantity, 0);
+    // const total = total + shipping 
+    // const total = total * tax 
+    return total*100;
   };
   
 const httpPaymentIntent = async (req, res) => {
-  const { items } = req.body;
+    const user = req.user;
+    const { items } = req.body;
+    let itemsMetaData = {
+        user: user.gid
+    }
+    itemsMetaData = items.reduce((acc, item, index) => {
+        const prefix = `${index}_`;
+      
+        acc[`${prefix}id`] = String(item._id);
+        acc[`${prefix}quantity`] = String(item.quantity);
+        return acc;
+      }, itemsMetaData);
+    console.log(itemsMetaData)
+    // Create a PaymentIntent with the order amount and currency
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: calculateOrderAmount(items),
+        currency: "usd",
+        automatic_payment_methods: {
+        enabled: true,
+        },
+        metadata: itemsMetaData
+    });
 
-  // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
-    currency: "usd",
-    automatic_payment_methods: {
-      enabled: true,
-    },
-  });
-
-  res.send({
-    clientSecret: paymentIntent.client_secret,
-  });
+    res.send({
+        clientSecret: paymentIntent.client_secret,
+    });
 };
 
-const httpWebhook = async (request, response) => {
-  const sig = request.headers['stripe-signature'];
+const httpWebhook = async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
 
-  let event = request.body.event
+    try {
+        event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    } catch (err) {
+        res.status(400).send(`Webhook Error: ${err.message}`);
+        return;
+    }
+    console.log("event: ", event.data.object)
+    // Handle the event
+    switch (event.type) {
+        case 'payment_intent.succeeded':
+            // const paymentIntentSucceeded = event.data.object;
+            // await stripe.paymentIntents.update(paymentIntent.id, {
+            //     metadata: {
+            //       orderId: orderId,
+            //       // Add other metadata fields as needed
+            //     },
+            //   });
+        
+            console.log("paymentIntentSucceeded")
+        case 'checkout.session.completed':
+        // const checkoutSessionCompleted = event.data.object;
+        console.log("charge.succeeded")
+        case 'charge.succeeded':
+            console.log("CHARGE COMPLETED")
+        break;
+        // ... handle other event types
+        default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
 
-  // try {
-  //   event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-  // } catch (err) {
-  //   response.status(400).send(`Webhook Error: ${err.message}`);
-  //   return;
-  // }
-
-  // Handle the event
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      const paymentIntentSucceeded = event.data.object;
-      console.log(paymentIntentSucceeded)
-    case 'checkout.session.completed':
-      const checkoutSessionCompleted = event.data.object;
-      console.log(checkoutSessionCompleted)
-      // Then define and call a function to handle the event checkout.session.completed
-      break;
-    // ... handle other event types
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
-
-  // Return a 200 response to acknowledge receipt of the event
-  response.send();
+    // Return a 200 response to acknowledge receipt of the event
+    res.send();
 }
 
 module.exports = {

@@ -43,8 +43,6 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.baseUrl}${req.url} ${delta}ms`);
   });
 
-  app.use(express.json());
-
   app.get('/', (req, res) => {
     res.send('Hello from BluePrint Barbers!');
   })

@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { selectCartItems } from '../../../../store/cart/cart.selector';
 
 const OrderSummary = ({items}) => {
-    const subtotal = items.reduce( (total, item) => total + item.pricing, 0)
+    const subtotal = items.reduce( (total, item) => total + item.pricing * item.quantity, 0)
     const shipping = 5
     const total = subtotal + shipping
     return (

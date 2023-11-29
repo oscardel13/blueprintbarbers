@@ -10,11 +10,11 @@ const PaymentRouter = require('./payment/payment.router');
 
 const api = express.Router();
 
-api.use('/clients', ClientRouter)
-api.use('/auth', AuthRouter)
-api.use('/products', ProductRouter)
-api.use('/payment', PaymentRouter)
-api.use('/orders', OrderRouter)
+api.use('/clients', express.json(),ClientRouter)
+api.use('/auth', express.json(),AuthRouter)
+api.use('/products', express.json(),ProductRouter)
+api.use('/payment',PaymentRouter)
+api.use('/orders', express.json(),OrderRouter)
 
 
 module.exports = api;

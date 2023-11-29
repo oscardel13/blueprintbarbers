@@ -27,6 +27,17 @@ import {
         confirmParams: {
           // Make sure to change this to your payment completion page
           return_url: `${window.location.origin}/completion`,
+          shipping: {
+            name: "test",
+            address: {
+              line1: "test",
+              line2: "test",
+              city: "test",
+              state: "test",
+              postal_code: "12345",
+              country: "test",
+            },
+          }
         },
       });
   
