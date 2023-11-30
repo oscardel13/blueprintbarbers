@@ -55,7 +55,6 @@ const httpWebhook = async (req, res) => {
 
     const eventObj = event.data.object;
  
-    // Handle the event
     switch (event.type) {
         case 'payment_intent.canceled':
             paymentIntentCanceled(eventObj)

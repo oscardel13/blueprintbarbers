@@ -46,7 +46,7 @@ const CartItem = memo(({ item }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img src={product.images[0]} alt={`${product.name}`} className="w-14"/>
+      <img src={product.images[0]} alt={`${product.name}`} className="w-16 object-cover rounded-md"/>
       <div className="w-70 flex flex-col items-start justify-center p-3">
         <span className="text-base">{product.name}</span>
         <span className="text-base">Size: {product.size[0]}</span>

@@ -37,8 +37,8 @@ const ProductView = ({ product, setProduct }) => {
 
 
     return (
-        <div className="my-custom-class flex px-5 sm:px-10 md:px-40 py-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-        <div className="flex justify-center items-center">
+      <div className="my-custom-class flex px-5 sm:px-10 md:px-40 py-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="flex justify-center items-center md:justify-end md:pr-32">
           <ImageGallery
             images={product.images}
             currentImageIndex={currentImageIndex}
@@ -50,7 +50,7 @@ const ProductView = ({ product, setProduct }) => {
           <p>{product.description}</p>
           <h3>${product.pricing} USD</h3>
           { product.sizes.length > 0 && 
-          <select className="bg-gray-200 p-2 rounded-md max-w-lg" onChange={handleSizeChange}>
+          <select className="bg-gray-200 p-2 rounded-md lg:max-w-lg" onChange={handleSizeChange}>
             <option value="">Select Size</option>
             {
               product.sizes.map((size) => (
@@ -60,7 +60,7 @@ const ProductView = ({ product, setProduct }) => {
           </select>}
           <br />
           <button
-            className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md max-w-lg"
+            className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md lg:max-w-lg"
             onClick={handleAddToCart}
           >
             {showAddedMessage ? (

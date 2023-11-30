@@ -14,7 +14,7 @@ const OrderCard = ({ _id, total, date, status, client }) => {
             </div>
             <div className="w-1/6">{client}</div>
             <div className="w-2/6">{_id}</div>
-            <div className="w-1/6">${total}.00</div>
+            <div className="w-1/6">${total/100.00}</div>
             {/* {published ? 
                 <div className="w-1/6"><span className='bg-[rgba(16,185,129,0.12)] text-[rgb(11,129,90)] text-bold rounded-full font-semibold p-2'>PUBLISHED</span></div> 
                 : 

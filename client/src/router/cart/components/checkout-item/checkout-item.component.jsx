@@ -23,7 +23,7 @@ const CheckoutItem = ({item}) => {
     return (
         <div className={`grid grid-cols-2 md:grid-cols-4 border-b border-gray-300 py-2`} key={item.id}>
             <div className='p-1 flex'>
-                <img src={item.images[0]} alt={item.name} className="w-20" />
+                <img src={item.images[0]} alt={item.name} className="w-28 sm:w-32 object-cover rounded-md" />
                 <div className="p-5 text-center flex flex-col gap-2">
                     <a className="text-md font-semibold cursor-pointer underline" onClick={handleNameClick}>{item.name}</a>
                     <p className="text-sm ">Size: {item.size}</p>
