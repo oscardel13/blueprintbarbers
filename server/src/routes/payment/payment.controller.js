@@ -2,6 +2,8 @@
 // Don’t submit any personally identifiable information in requests made with this key.
 // Sign in to see your own test API key embedded in code samples.
 
+const { paymentIntentCreated, paymentIntentSucceeded, paymentIntentFailed, paymentIntentCanceled } = require('./webhooks');
+
 require('dotenv').config();
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -18,26 +20,20 @@ const calculateOrderAmount = (items) => {
 const httpPaymentIntent = async (req, res) => {
     const user = req.user;
     const { items } = req.body;
-    itemsTrim = items.map(item => {
-        return {
-            _id: item._id,
-            name: item.name,
-            pricing: item.pricing,
-            size: item.size,
-            quantity: item.quantity,
-        }
-    
+    const order = await paymentIntentCreated({
+        client: user.gid,
+        total: calculateOrderAmount(items),
+        items: items,
     })
-
+  
     const paymentIntent = await stripe.paymentIntents.create({
-        amount: calculateOrderAmount(items),
+        amount: order.total,
         currency: "usd",
         automatic_payment_methods: {
         enabled: true,
         },
         metadata: {
-            user: user.gid,
-            items: JSON.stringify(itemsTrim)
+            orderId: order._id.toString()
         }
     });
     res.send({
@@ -52,35 +48,22 @@ const httpWebhook = async (req, res) => {
     try {
         event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     } catch (err) {
-        console.log(`Webhook Error: ${err.message}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
         return;
     }
+
+    const eventObj = event.data.object;
+ 
     // Handle the event
     switch (event.type) {
+        case 'payment_intent.canceled':
+            paymentIntentCanceled(eventObj)
         case 'payment_intent.succeeded':
-            // TODO: Create Order
-            // const paymentIntentSucceeded = event.data.object;
-            // await stripe.paymentIntents.update(paymentIntent.id, {
-            //     metadata: {
-            //       orderId: orderId,
-            //       // Add other metadata fields as needed
-            //     },
-            //   });
-            console.log("event: ", event.data.object)
-        case 'charge.succeeded':
-            /*
-            TODO: 
-                1. Update Order to Processing
-                2. update items owner to client gid 
-                3. add items to client inventory 
-                4. send email to client
-            */
-            console.log("CHARGE COMPLETED")
-        break;
-        // ... handle other event types
+            paymentIntentSucceeded(eventObj)
+        case 'payment_intent.failed':
+            paymentIntentFailed(eventObj)
         default:
-        console.log(`Unhandled event type ${event.type}`);
+            console.log(`Unhandled event type ${event.type}`);
     }
 
     // Return a 200 response to acknowledge receipt of the event

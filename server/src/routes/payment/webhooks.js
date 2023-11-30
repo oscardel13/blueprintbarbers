@@ -1,24 +1,58 @@
 const { sendMail } = require("../../utils/mailer");
-const { addPayment } = require("../../models/payments/payments.data");
+const { createOrder, updateOrder, deleteOrder, getOrder } = require("../../models/orders/orders.data"); 
 
-const checkoutSessionCompleted = (event) =>{
-    // TODO: email reciept to custoemr, email hector about purchase details, add services to client profile
-    const { customer_details, created, amount_total, metadata } = event;
-    const respondSubject = "Reciept"
-    const respondMessage = `Thanks ${customer_details.name}, we have confirmed your payment of $${amount_total}, your account will be updated accordanly.`
-    sendMail(body.email, respondSubject, respondMessage)
+const paymentIntentCreated = async (order) =>{
+    order.items = order.items.map(item => {
+        return {
+            product: item._id,
+            name: item.name,
+            pricing: item.pricing,
+            size: item.size,
+            quantity: item.quantity,
+        }
+    
+    })
+    const createdOrder = await createOrder(order)
+    return createdOrder
+}
 
-    const userSubject = "Empower Canine New Purchase"
-    const userMessage = `Name: ${customer_details.name} \nEmail: ${customer_details.email}\nPurchased: ${metadata.service} \nDate: ${created}`
-    sendMail("oscardel413@gmail.com", userSubject, userMessage)
+/*
+TODO: 
+    2. update items owner to client gid 
+    3. add items to client inventory 
+    4. send email to client
+*/
+const paymentIntentSucceeded = async (event) =>{
+    const { metadata, shipping } = event
+    const { orderId } = metadata
+    const order = await getOrder(orderId)
+    order.status = "processing"
+    order.shipping = shipping
+    await updateOrder(order)
+}
 
-    addPayment(event)
+/*
+TODO: 
+    1. Update Order to faliled
+    4. send email to client
+*/
+const paymentIntentFailed = async(event) =>{
+    const { metadata } = event
+    const { orderId } = metadata
+    const order = await getOrder(orderId)
+    order.status = "failed"
+    await updateOrder(order)
+}
 
-    // addServices(service)
-
-    return event
+const paymentIntentCanceled = async(event) =>{
+    const { metadata } = event
+    const { orderId } = metadata
+    await deleteOrder(orderId)
 }
 
 module.exports = {
-    checkoutSessionCompleted
+    paymentIntentCreated,
+    paymentIntentSucceeded,
+    paymentIntentFailed,
+    paymentIntentCanceled
 }

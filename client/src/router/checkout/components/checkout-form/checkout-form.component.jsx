@@ -49,6 +49,8 @@ export default function CheckoutForm({method, deliveryAddress}) {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(elements)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,7 +60,7 @@ export default function CheckoutForm({method, deliveryAddress}) {
       return;
     }
 
-    setIsLoading(true);
+    // setIsLoading(true);
     
     let shippingAddress = null
     if (method === 'delivery') {
@@ -76,7 +78,7 @@ export default function CheckoutForm({method, deliveryAddress}) {
         address : address
       }
     }
-    console.log(client_email)
+
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -84,7 +86,7 @@ export default function CheckoutForm({method, deliveryAddress}) {
         return_url: `${window.location.origin}/completion`,
         shipping: shippingAddress,
         receipt_email: client_email
-      },
+      }
     });
 
     // This point will only be reached if there is an immediate error when

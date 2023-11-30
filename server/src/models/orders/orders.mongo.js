@@ -30,7 +30,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true
       },
-      price: {
+      pricing: {
         type: Number,
         required: true
       },
@@ -57,20 +57,40 @@ const orderSchema = new mongoose.Schema({
       // You can add more fields related to the logs if needed
     }
   ],
-  address: {
-    street: {
+  shipping: {
+    name: {
       type: String,
     },
-    city: {
+    address: {
+      line1: {
+        type: String,
+      },
+      line2: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      postal_code: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+    },
+    carrier: {
       type: String,
     },
-    state: {
+    phone: {
       type: String,
     },
-    zipcode: {
+    tracking_number: {
       type: String,
-    }
-  },
+    },
+  }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

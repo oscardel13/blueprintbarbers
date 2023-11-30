@@ -9,17 +9,20 @@ const getOrder = async (id) => {
     return await orderSchema.findOne({_id: id});
 }
 
-//calculate order total here
 const createOrder = async (order) => {
     return await orderSchema.create(order);
 }
 
-const updateOrder = async (id, order) => {
-    return await orderSchema.findOneAndUpdate({ _id: id }, { $set: order }, {returnDocument: 'after'})
+const updateOrder = async (order) => {
+    return await orderSchema.findOneAndUpdate({ _id: order._id }, order, {returnDocument: 'after'})
 }
 
 const cancelOrder = async (id) => {
     return await orderSchema.findOneAndUpdate({ _id: id }, { $set: { status: 'canceled' } }, {returnDocument: 'after'})
+}
+
+const deleteOrder = async (id) => {
+    return await orderSchema.deleteOne({ _id: id })
 }
 
 module.exports = {
@@ -27,5 +30,6 @@ module.exports = {
     getOrder,
     createOrder,
     updateOrder,
-    cancelOrder
+    cancelOrder,
+    deleteOrder
 }
