@@ -19,6 +19,7 @@ const calculateOrderAmount = (items) => {
   
 const httpPaymentIntent = async (req, res) => {
     const user = req.user;
+    if (!user) return res.status(401).send('Unauthorized');
     const { items } = req.body;
     const order = await paymentIntentCreated({
         client: user.gid,

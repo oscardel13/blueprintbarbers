@@ -6,6 +6,7 @@ import {Elements} from '@stripe/react-stripe-js';
 import CheckoutForm from '../checkout-form/checkout-form.component'
 import { selectCartItems } from '../../../../store/cart/cart.selector';
 import { postAPI } from '../../../../utils/api';
+import { Link } from 'react-router-dom';
 
 function Payment({method, deliveryAddress}) {
     const cartItems = useSelector(selectCartItems);
@@ -21,8 +22,14 @@ function Payment({method, deliveryAddress}) {
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
         const createPaymentIntent = async () => {
-            const res = await postAPI(`/payment/create-payment-intent`, paymentIntent)
-            setClientSecret(res.data.clientSecret)
+            try{
+                const res = await postAPI(`/payment/create-payment-intent`, paymentIntent)
+                setClientSecret(res.data.clientSecret)
+            }
+            catch(err){
+                console.log(err)
+            }
+            
         }
 
         createPaymentIntent()
@@ -38,7 +45,12 @@ function Payment({method, deliveryAddress}) {
             <Elements stripe={stripePromise} options={{ clientSecret, appearance}}>
                 <CheckoutForm method={method} deliveryAddress={deliveryAddress}/>
             </Elements>
-        )}
+        ) || 
+            <div className='flex flex-col'>
+                <p>Must be signed in!</p>
+                <Link to="/sign-in" className='underline font-semibold text-xl mt-2'>Sign In</Link> {/* BUILD MODAL SIGN IN LATER */}
+            </div>
+        }
         </div>
     );
 }
