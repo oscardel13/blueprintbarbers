@@ -15,7 +15,7 @@ function Payment({method, deliveryAddress}) {
         items: cartItems,
     }
 
-    const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY);
+    const stripePromise = loadStripe("pk_test_51OHepjEaoH01PH0iCraMmXrYUt5t1PXWn3cDtQmCiBZBw5bB1VEuS6SqhfJ35JjnfOEz9JU9hEUtjn00YIeWrOqh006HbEkOFJ");
     const [ clientSecret, setClientSecret ] = useState('');
 
     useEffect(() => {
