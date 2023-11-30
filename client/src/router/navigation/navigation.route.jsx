@@ -69,7 +69,7 @@ const Navigation = () => {
 
     return(
         <>
-            <Navbar bg="dark" expand="lg" variant="dark" className="z-10 " > {/*fixed="top" */}
+            <Navbar bg="dark" expand="lg" variant="dark" className="z-10" > {/*fixed="top" */}
                 <Container>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Brand href="/">BLUEPRINT</Navbar.Brand>

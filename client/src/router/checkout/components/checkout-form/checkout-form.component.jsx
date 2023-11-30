@@ -60,7 +60,7 @@ export default function CheckoutForm({method, deliveryAddress}) {
       return;
     }
 
-    // setIsLoading(true);
+    setIsLoading(true);
     
     let shippingAddress = null
     if (method === 'delivery') {
@@ -83,7 +83,7 @@ export default function CheckoutForm({method, deliveryAddress}) {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/completion`,
+        return_url: `${window.location.origin}/payment-confirmation`,
         shipping: shippingAddress,
         receipt_email: client_email
       }

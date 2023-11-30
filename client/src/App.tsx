@@ -17,6 +17,7 @@ import OrdersPage from './router/orders/orders.router';
 import OrderPage from './router/order/order.router';
 import ProductItemPage from './router/store/routes/product-item/product-item.router';
 import Checkout from './router/checkout/checkout.route';
+import PaymentConfirmationPage from './router/payment-confirmation/payment-confirmation.route';
 // import Dashboard from './router/dashboard/dashboard-layout.router';
 // import ProductsPage from './router/dashboard/router/products/products.router';
 // import Home from './router/dashboard/router/home/home.router';
@@ -64,6 +65,7 @@ function App() {
               <Route index element={<Cart/>}/>
             </Route>
             <Route path='checkout' element={<Checkout/>}/>
+            <Route path='payment-confirmation' element={<PaymentConfirmationPage/>}/>'
           </Route>
           {/* <Route path='dashboard' element={<Dashboard/>}>
             <Route index element={<Home/>}/>
