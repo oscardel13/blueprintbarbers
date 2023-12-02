@@ -17,7 +17,7 @@ const paymentIntentCreated = async (order) =>{
 }
 
 /*
-TODO: 
+TODO:  
     2. update items owner to client gid 
     3. add items to client inventory 
     4. send email to client
@@ -28,7 +28,7 @@ const paymentIntentSucceeded = async (event) =>{
     const order = await getOrder(orderId)
     order.status = "processing"
     order.shipping = shipping
-    await updateOrder(order)
+    await updateOrder(order) 
 }
 
 /*

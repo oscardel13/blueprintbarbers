@@ -26,7 +26,7 @@ const httpPaymentIntent = async (req, res) => {
         total: calculateOrderAmount(items),
         items: items,
     })
-  
+    const orderId = order._id.toString()
     const paymentIntent = await stripe.paymentIntents.create({
         amount: order.total,
         currency: "usd",
@@ -34,11 +34,12 @@ const httpPaymentIntent = async (req, res) => {
         enabled: true,
         },
         metadata: {
-            orderId: order._id.toString()
+            orderId: orderId
         }
     });
     res.send({
         clientSecret: paymentIntent.client_secret,
+        orderId: orderId,
     });
 };
  

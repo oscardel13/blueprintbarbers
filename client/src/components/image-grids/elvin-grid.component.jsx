@@ -2,12 +2,12 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Figure from 'react-bootstrap/Figure'
 
-import image1 from "../../assets/Barbers/Elvin/1.jpg"
-import image2 from "../../assets/Barbers/Elvin/2.jpg"
-import image3 from "../../assets/Barbers/Elvin/3.jpg"
-import image4 from "../../assets/Barbers/Elvin/4.jpg"
-// import image5 from "../../assets/Barbers/Elvin/5.jpg"
-// import image6 from "../../assets/Barbers/Elvin/6.jpg"
+import image1 from "../../assets/barbers/elvin/1.jpg"
+import image2 from "../../assets/barbers/elvin/2.jpg"
+import image3 from "../../assets/barbers/elvin/3.jpg"
+import image4 from "../../assets/barbers/elvin/4.jpg"
+import image5 from "../../assets/barbers/elvin/5.jpg"
+import image6 from "../../assets/barbers/elvin/6.jpg"
 
 const InstagramGrid = (props) => {
     const { name } = props
@@ -18,8 +18,8 @@ const InstagramGrid = (props) => {
         image2,
         image3,
         image4,
-        // image5,
-        // image6
+        image5,
+        image6
       ];
 
     return (

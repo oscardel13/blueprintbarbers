@@ -18,6 +18,7 @@ function Payment({method, deliveryAddress}) {
 
     const stripePromise = loadStripe("pk_test_51OHepjEaoH01PH0iCraMmXrYUt5t1PXWn3cDtQmCiBZBw5bB1VEuS6SqhfJ35JjnfOEz9JU9hEUtjn00YIeWrOqh006HbEkOFJ");
     const [ clientSecret, setClientSecret ] = useState('');
+    const [ orderId, setOrderId ] = useState('') 
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
@@ -25,6 +26,7 @@ function Payment({method, deliveryAddress}) {
             try{
                 const res = await postAPI(`/payment/create-payment-intent`, paymentIntent)
                 setClientSecret(res.data.clientSecret)
+                setOrderId(res.data.orderId)
             }
             catch(err){
                 console.log(err)
@@ -43,7 +45,7 @@ function Payment({method, deliveryAddress}) {
         <h2 className="text-2xl font-bold mb-6 w-screen">Payment</h2>
         {clientSecret && stripePromise && (
             <Elements stripe={stripePromise} options={{ clientSecret, appearance}}>
-                <CheckoutForm method={method} deliveryAddress={deliveryAddress}/>
+                <CheckoutForm method={method} deliveryAddress={deliveryAddress} orderId={orderId}/>
             </Elements>
         ) || 
             <div className='flex flex-col'>
