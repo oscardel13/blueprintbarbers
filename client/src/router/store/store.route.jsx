@@ -1,7 +1,5 @@
 import Logo from '../../components/logo/logo_store.component'
-import bgImage1 from '../../assets/IMG_0225.jpg'
 import bgImage2 from '../../assets/Barbers-background2.jpg'
-import bgImage3 from '../../assets/pexels-stefan-lorentz-668196.jpg'
 
 import ProductList from './components/product_list/product_list.component';
 
