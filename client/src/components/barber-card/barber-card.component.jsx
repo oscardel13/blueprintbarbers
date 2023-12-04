@@ -24,11 +24,7 @@ const BarberCard = ({ barber }) => {
                 <Col md={6}>
                     <Card.Body>
                         <Figure>
-                            <Figure.Image
-                                // width={171}
-                                // height={180}
-                                alt="171x180"
-                                src={profilePicture}
+                            <img className="d-block w-100 max-h-[800px]" src={profilePicture}
                             />
                         </Figure>
                     </Card.Body>
