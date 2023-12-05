@@ -29,7 +29,6 @@ const OrderPage = () => {
         return (total / 100.00).toFixed(2)
     }
     return (
-        <div className="flex flex-col min-h-screen bg-gray-300 py-5 px-3 sm:px-5">
             <PageHeader title="Order" />
             <h5>Orderd on {new Date(order.date).toLocaleDateString('en-US', {
                             month: 'short',
