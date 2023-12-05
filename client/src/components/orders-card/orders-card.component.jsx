@@ -1,8 +1,6 @@
-// ProductCard.js
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const OrderCard = ({ _id, total, date, status }) => {
-    const location = useLocation();
     return (
         <div className="flex items-center bg-white py-4 mb-0 border border-gray-300 rounded-md h-32">
             <div className="w-1/6 pl-4">

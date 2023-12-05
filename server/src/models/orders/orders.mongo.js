@@ -14,6 +14,9 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  salesTax: {
+    type: Number
+  },
   status: {
     type: String,
     enum: ['pending', 'processing', 'shipped', 'delivered', 'ready', 'completed', 'canceled', 'rejected'], // Add more statuses if needed
@@ -37,9 +40,12 @@ const orderSchema = new mongoose.Schema({
       size: {
         type: String,
       },
-
       quantity: {
         type: Number,
+        required: true
+      },
+      image: {
+        type: String,
         required: true
       }
     }
@@ -90,6 +96,10 @@ const orderSchema = new mongoose.Schema({
     tracking_number: {
       type: String,
     },
+    cost: {
+      type: Number,
+      default: 0
+    }
   }
 });
 

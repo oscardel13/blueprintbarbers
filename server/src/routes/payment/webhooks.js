@@ -9,6 +9,7 @@ const paymentIntentCreated = async (order) =>{
             pricing: item.pricing,
             size: item.size,
             quantity: item.quantity,
+            image: item.images[0]
         }
     
     })
@@ -25,11 +26,16 @@ TODO:
 const paymentIntentSucceeded = async (event) =>{
     const { metadata, shipping } = event
     const { orderId } = metadata
-    const order = await getOrder(orderId)
-    order.status = "processing"
-    order.shipping = shipping
-    await updateOrder(order) 
-}
+    try{
+        const order = await getOrder(orderId)
+        order.status = "processing"
+        order.shipping = shipping
+        await updateOrder(order)
+    }
+    catch(err){
+        console.log(err)
+    }
+} 
 
 /*
 TODO: 
@@ -39,15 +45,26 @@ TODO:
 const paymentIntentFailed = async(event) =>{
     const { metadata } = event
     const { orderId } = metadata
-    const order = await getOrder(orderId)
-    order.status = "failed"
-    await updateOrder(order)
-}
+    try{
+        const order = await getOrder(orderId)
+        order.status = "failed"
+        await updateOrder(order)
+    }
+    catch(err){
+        console.log(err)
+    }   
+    }
+    
 
 const paymentIntentCanceled = async(event) =>{
     const { metadata } = event
     const { orderId } = metadata
-    await deleteOrder(orderId)
+    try{
+        await deleteOrder(orderId)
+    }
+    catch(err){
+        console.log(err)
+    }
 }
 
 module.exports = {

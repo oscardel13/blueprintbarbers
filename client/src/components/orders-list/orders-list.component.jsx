@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import OrdersCard from '../orders-card/orders-card.component';
+import OrderCard from '../order-card/order-card.component';
 
 import { getAPI } from '../../utils/api';
 

@@ -28,7 +28,7 @@ function DashboardRoutes() {
           <Route path='barbers' element={<Barbers/>}/>
           <Route path='barbers/:id' element={<Barber/>}/>
           <Route path='orders' element={<Orders/>}/>
-          <Route path='orders/:id' element={<Order/>}/>
+          <Route path='orders/:orderId' element={<Order/>}/>
           <Route path='account' element={<Account/>}/>
       </Route>
     </Routes>

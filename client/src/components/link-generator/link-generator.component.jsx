@@ -6,7 +6,7 @@ const LinkGenerator = () => {
   const pathSegments = location.pathname.split('/').filter(Boolean);
 
   return (
-    <div className='flex justify-between flex-row items-center'>
+    <div className='flex flex-row items-center flex-wrap'>
       {pathSegments.map((segment, index) => (
         <React.Fragment key={index}>
           <Link to={`/${pathSegments.slice(0, index + 1).join('/')}`} className="mr-2">
