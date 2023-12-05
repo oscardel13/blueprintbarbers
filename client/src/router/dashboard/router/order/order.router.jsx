@@ -29,7 +29,7 @@ const OrderPage = () => {
         return (total / 100.00).toFixed(2)
     }
     return (
-        <div className="min-h-screen w-screen bg-gray-300 p-5">
+        <div className="min-h-screen bg-gray-300 py-5 sm:px-5">
             <PageHeader title="Order" />
             <h5>Orderd on {new Date(order.date).toLocaleDateString('en-US', {
                             month: 'short',
