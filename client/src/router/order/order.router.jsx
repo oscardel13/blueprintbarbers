@@ -29,7 +29,7 @@ const OrderPage = () => {
         return (total / 100.00).toFixed(2)
     }
     return (
-        <div className="min-h-screen bg-gray-300 py-5 px-3 sm:px-5">
+        <div className="flex flex-col min-h-screen bg-gray-300 py-5 px-3 sm:px-5">
             <PageHeader title="Order" />
             <h5>Orderd on {new Date(order.date).toLocaleDateString('en-US', {
                             month: 'short',
@@ -39,7 +39,7 @@ const OrderPage = () => {
             </h5>
             <h5>Status: {order.status}</h5>
             <br/>
-            <div className="flex flex-row border-solid border-black border-1 rounded-md bg-gray-200 py-4 px-5">
+            <div className="flex flex-row border-solid border-black border-1 rounded-md bg-gray-200 py-4 px-4 sm:px-5 max-w-7xl">
                 <div className="flex-auto flex flex-col">   
                     {
                         order.shipping && order.shipping.address ? 
@@ -94,7 +94,7 @@ const OrderPage = () => {
                 
             </div>
             <br/>
-            <div className="border-solid border-black border-1 rounded-md bg-gray-200 p-4 space-y-5">
+            <div className="border-solid border-black border-1 rounded-md bg-gray-200 p-4 space-y-5 max-w-7xl">
                 <h3 className="text-xl font-semibold">Items</h3>
                 <br/>
                 {order.items.map((item) => 

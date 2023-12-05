@@ -39,7 +39,7 @@ const OrderPage = () => {
             </h5>
             <h5>Status: {order.status}</h5>
             <br/>
-            <div className="flex flex-row border-solid border-black border-1 rounded-md bg-gray-200 py-4 px-5 max-w-7xl">
+            <div className="flex flex-row border-solid border-black border-1 rounded-md bg-gray-200 py-4 px-4 sm:px-5 max-w-7xl">
                 <div className="flex-auto flex flex-col">   
                     {
                         order.shipping && order.shipping.address ? 
