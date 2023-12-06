@@ -18,14 +18,9 @@ const OrderPage = () => {
         }
         fetchOrder()
     },[])
+
     const totalCost = () => {
-        var total = order.total
-        if (order.salesTax) {
-            return total + order.salesTax
-        }
-        if (order.shipping) {
-            return total + order.shipping.cost
-        }
+        var total = order.total + order.shippingCost + order.salesTax
         return (total / 100.00).toFixed(2)
     }
     return (
@@ -70,13 +65,12 @@ const OrderPage = () => {
                         <span>Item Total: </span>
                         <span>${(order.total/ 100.00).toFixed(2)}</span>
                     </div>
-                    {
-                        order.salesTax && 
-                        <div className="flex flex-row justify-between">
-                            <span>Sales Tax: </span>
-                            <span>${(order.salesTax / 100).toFixed(2)}</span>
-                        </div>
-                    }
+
+                    <div className="flex flex-row justify-between">
+                        <span>Sales Tax: </span>
+                        <span>${(order.salesTax / 100).toFixed(2)}</span>
+                    </div>
+                    
                     <div className="flex flex-row justify-between">
                         <span>Shipping: </span>
                         {

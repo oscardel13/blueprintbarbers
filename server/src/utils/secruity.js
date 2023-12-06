@@ -2,8 +2,7 @@ var passport = require('passport')
 
 const { Strategy } = require('passport-google-oauth20');
 
-const { createUser } = require('../models/user/user.data')
-
+const { createUser, checkAccess } = require('../models/user/user.data')
 require('dotenv').config();
 
 const API_URL = process.env.API_URL || ""
@@ -68,8 +67,20 @@ function checkLoggedIn(req,res,next){
     next();
 }
 
+async function checkIfAdmin(req,res,next){
+    const user = req.isAuthenticated() && req.user;
+    const access = await checkAccess(user.gid)
+    if (access < 1) {
+        return res.status(401).json({
+            error: 'You must be admin!'
+        })
+    }
+    next();
+}
+
 module.exports = {
     userPassport,
     checkLoggedIn,
-    config
+    config,
+    checkIfAdmin
 }

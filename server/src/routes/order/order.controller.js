@@ -5,7 +5,9 @@ const httpGetOrders = async (req, res) => {
     const user = req.user
     try{
         const isAdmin = await checkIfAdmin(user.gid)
-        const orders = await getOrders()
+        let orders = await getOrders()
+        orders = orders.reverse()
+
         if (isAdmin)
             res.status(200).json(orders)
         else{

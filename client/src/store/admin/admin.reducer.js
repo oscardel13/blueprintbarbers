@@ -4,7 +4,7 @@ const ADMIN_MEM_INITIAL_STATE = {
   barber: null,
   user: null,
   product: null,
-  order: {items: []},
+  order: {items: [], status:'pending'},
 };
 
 export const adminMemSlice = createSlice({

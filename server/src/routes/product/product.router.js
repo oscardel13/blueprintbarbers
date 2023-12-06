@@ -21,7 +21,9 @@ const {
     httpPublishProduct,
     httpGetArchivedProducts,
     httpGetPublishedProducts
- } = require('./product.controller')
+ } = require('./product.controller');
+ 
+const { checkIfAdmin } = require('../../utils/secruity');
 
 const ProductAPI = express.Router();
 
@@ -30,16 +32,16 @@ ProductAPI.get('/archives', httpGetArchivedProducts)
 ProductAPI.get('/published', httpGetPublishedProducts)
 ProductAPI.get('/:name', httpGetProduct)
 //ADMIN/TRAINER ONLY
-ProductAPI.post('/', upload.fields([
+ProductAPI.post('/', checkIfAdmin , upload.fields([
     { name: 'form', maxCount: 1 },
     { name: 'images', maxCount: 10}
   ]),httpCreateProduct) 
-ProductAPI.put('/:id', upload.fields([
+ProductAPI.put('/:id', checkIfAdmin , upload.fields([
   { name: 'form', maxCount: 1 },
   { name: 'images', maxCount: 10}
 ]),httpUpdateProduct)
-ProductAPI.delete('/:id', httpDeleteProduct)
-ProductAPI.put('/archives/:id', httpArchiveProduct)
-ProductAPI.put('/publish/:id', httpPublishProduct)
+ProductAPI.delete('/:id', checkIfAdmin ,httpDeleteProduct)
+ProductAPI.put('/archives/:id', checkIfAdmin ,httpArchiveProduct)
+ProductAPI.put('/publish/:id', checkIfAdmin ,httpPublishProduct)
 
 module.exports = ProductAPI;

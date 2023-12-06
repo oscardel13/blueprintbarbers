@@ -107,23 +107,24 @@ const EditProduct = () => {
     }
 
     // TODO: 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const productFormData = new FormData();
         productFormData.append('form', JSON.stringify(productData))
         productData.images.forEach((image) => {
         productFormData.append('images', image);
         })
-        for (const pair of productFormData.entries()) {
-        console.log(`${pair[0]}, ${pair[1]}`);
-        }
+        // for (const pair of productFormData.entries()) {
+        // console.log(`${pair[0]}, ${pair[1]}`);
+        // }
         try{
-        const res = putAPIMultipart('/products',productFormData)
-        console.log(res)
-        window.alert("Product created successfully")
+            const res = await putAPIMultipart(`/products/${productName}`,productFormData)
+            if (res.status === 200){
+                window.alert("Product created successfully")
+            }
         }
         catch(err){
-        console.log(err)
+            console.log(err)
         }
     };
 

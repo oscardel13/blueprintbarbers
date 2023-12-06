@@ -13,20 +13,21 @@ import { setOrder as setOrderActon } from "../../../../store/admin/admin.reducer
 const OrderPage = () => {
     const dispatch = useDispatch();
     const order = useSelector(selectOrder)
-    const user = useSelector((state) => state.user.currentUser)
+    console.log(order)
     const { orderId } = useParams();
-    const [status, setStatus] = useState('pending');
+    const [status, setStatus] = useState(order.status);
 
     useEffect(() => {
         const fetchOrder = async () => {
-            if (orderId != ":id"){
+            if (orderId !== ":id"){
+                console.log("FETCHED ORDERS!!!!!!")
                 const res = await getAPI(`/orders/${orderId}`)
                 setStatus(res.data.status)
                 dispatch(setOrderActon(res.data))
             }
         }
         fetchOrder()
-    },[status])
+    },[])
 
     const totalCost = () => {
         var total = order.total + order.shippingCost + order.salesTax

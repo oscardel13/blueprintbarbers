@@ -7,14 +7,15 @@ const {
     httpGetOrders, 
     httpUpdateOrder
 } = require('./order.controller')
+const { checkLoggedIn, checkIfAdmin } = require('../../utils/secruity')
 
 const OrderAPI = express.Router()
 
 
-OrderAPI.get('/', httpGetOrders)
-OrderAPI.get('/:id', httpGetOrder)
-OrderAPI.post('/', httpCreateOrder)
-OrderAPI.put('/:id', httpUpdateOrder)
-OrderAPI.put('/:id/cancel', httpCancelOrder)
+OrderAPI.get('/', checkLoggedIn, httpGetOrders)
+OrderAPI.get('/:id', checkLoggedIn, httpGetOrder)
+OrderAPI.post('/', checkLoggedIn, httpCreateOrder)
+OrderAPI.put('/:id', checkIfAdmin, httpUpdateOrder)
+OrderAPI.put('/:id/cancel', checkLoggedIn, httpCancelOrder)
 
 module.exports = OrderAPI

@@ -1,5 +1,5 @@
 const express = require('express')
-// const { checkIfTrainer, checkLoggedIn } = require('../utils/secruity');
+const { checkLoggedIn, checkIfAdmin } = require('../../utils/secruity');
 
 const { 
     httpDeleteUser,
@@ -10,9 +10,9 @@ const {
 
 const UserAPI = express.Router();
 
-UserAPI.get('/', httpGetUsers)
-UserAPI.get('/:id', httpGetUser)
-UserAPI.put('/:id', httpUpdateUser)
+UserAPI.get('/', checkIfAdmin, httpGetUsers)
+UserAPI.get('/:id', checkLoggedIn, httpGetUser)
+UserAPI.put('/:id', checkLoggedIn, httpUpdateUser)
 // UserAPI.delete('/:id', httpDeleteUser)
 
 
