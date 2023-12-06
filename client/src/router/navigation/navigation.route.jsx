@@ -44,16 +44,14 @@ const Navigation = () => {
                 <Dropdown logout={logout} currentUser={currentUser}>
                     <NavLink to="/account" className="block p-2 hover:text-white">PROFILE</NavLink>
                     <NavLink to="/account/orders" className="block p-2 hover:text-white">ORDERS</NavLink>
-
                 </Dropdown>
             )
         }
         if (currentUser.accessLevel === 1){
             return ( 
-                <>
-                    <NavLink to="/dashboard" className="block text-gray-400 p-2 hover:text-white">DASHBOARD</NavLink>
-                    <a className="block text-gray-400 p-2 cursor-pointer hover:text-white" onClick={logout}>SIGN OUT</a>
-                </>
+                <Dropdown logout={logout} currentUser={currentUser}>
+                    <NavLink to="/dashboard" className="block p-2 hover:text-white">DASHBOARD</NavLink>
+                </Dropdown>
             )
         }
         else{

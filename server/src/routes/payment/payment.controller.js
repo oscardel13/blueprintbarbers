@@ -60,9 +60,8 @@ const httpWebhook = async (req, res) => {
         res.status(400).send(`Webhook Error: ${err.message}`);
         return;
     }
-
+    console.log(event)
     const eventObj = event.data.object;
- 
     switch (event.type) {
         case 'payment_intent.canceled':
             paymentIntentCanceled(eventObj)
