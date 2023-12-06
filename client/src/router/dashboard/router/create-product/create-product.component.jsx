@@ -58,8 +58,12 @@ const CreateProductPage = () => {
       console.log(res)
       if (res.status === 200)
         window.location.href = '/dashboard/products';
+      else{
+        window.alert("Product not created")
+      }
     }
     catch(err){
+      window.alert("Product not created")
       console.log(err)
     }
   };

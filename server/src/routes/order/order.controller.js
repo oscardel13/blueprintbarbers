@@ -1,14 +1,15 @@
-const { checkIfAdmin } = require('../../models/user/user.data')
+const { checkAdmin } = require('../../models/user/user.data')
 const { getOrders, getOrder, createOrder, updateOrder, cancelOrder } = require('../../models/orders/orders.data')
 
 const httpGetOrders = async (req, res) => {
     const user = req.user
     try{
-        const isAdmin = await checkIfAdmin(user.gid)
+        const isAdmin = await checkAdmin(user.gid)
+        console.log(isAdmin)
         let orders = await getOrders()
         orders = orders.reverse()
 
-        if (isAdmin)
+        if (isAdmin > 0)
             res.status(200).json(orders)
         else{
             const userOrders = orders.filter(order => order.user === user.gid)
@@ -23,7 +24,7 @@ const httpGetOrders = async (req, res) => {
 const httpGetOrder = async (req, res) => {
     const user = req.user
     try{
-        const isAdmin = await checkIfAdmin(user.gid)
+        const isAdmin = await checkAdmin(user.gid)
         const order = await getOrder(req.params.id)
         if (isAdmin || order.user === user.gid)
             res.status(200).json(order)

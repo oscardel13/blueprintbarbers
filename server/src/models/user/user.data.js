@@ -20,9 +20,9 @@ const deleteUser = async (id) => {
     return await userCollection.deleteOne({ _id: id })
 }
 
-const checkAccess = async (id) => {
+const checkAdmin = async (id) => {
     const user = await getUser(id)
-    return user.accessLevel
+    return user.accessLevel > 0
 }
 
 
@@ -32,5 +32,5 @@ module.exports = {
     updateUser,
     deleteUser,
     createUser,
-    checkAccess
+    checkAdmin
 }

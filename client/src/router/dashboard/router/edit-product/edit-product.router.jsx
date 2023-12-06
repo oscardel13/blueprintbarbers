@@ -120,11 +120,16 @@ const EditProduct = () => {
         try{
             const res = await putAPIMultipart(`/products/${productName}`,productFormData)
             if (res.status === 200){
-                window.alert("Product created successfully")
+                window.alert("Product updated successfully")
+            }
+            else{
+                window.alert("Product not updated")
+        
             }
         }
         catch(err){
             console.log(err)
+            window.alert("Product not updated")
         }
     };
 

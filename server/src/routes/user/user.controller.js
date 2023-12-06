@@ -11,9 +11,9 @@ async function httpGetUsers(req, res){
 }
 
 async function httpGetUser(req, res){
-    const Sessionuser = req.user
+    const SessionUser = req.user
     try{
-        const user = await getUser(Sessionuser.gid)
+        const user = await getUser(SessionUser.gid)
         res.status(200).json(user)
     }
     catch(err){
@@ -36,8 +36,9 @@ async function httpUpdateUser(req, res){
 }
 
 async function httpDeleteUser(req, res){
+    const sessionUser = req.user
     try{
-        const user = await deleteUser(req.params.id)
+        const user = await deleteUser(sessionUser.gid)
         res.status(200).json(user)
     }
     catch(err){
@@ -45,10 +46,15 @@ async function httpDeleteUser(req, res){
     }
 }
 
+async function httpCheckIfAdmin(req, res){
+    res.status(200).send(true)
+}
+
 module.exports = {
     httpGetUsers,
     httpGetUser,
     httpUpdateUser,
-    httpDeleteUser
+    httpDeleteUser,
+    httpCheckIfAdmin
 }
 

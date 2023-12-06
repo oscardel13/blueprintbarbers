@@ -2,7 +2,7 @@ var passport = require('passport')
 
 const { Strategy } = require('passport-google-oauth20');
 
-const { createUser, checkAccess } = require('../models/user/user.data')
+const { createUser, checkAdmin } = require('../models/user/user.data')
 require('dotenv').config();
 
 const API_URL = process.env.API_URL || ""
@@ -42,12 +42,10 @@ userPassport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 
 // Save the session to cookie
 userPassport.serializeUser((user, done)=>{
-    console.log(user)
     const userObj = {
         gid : user.id,
         email: user._json.email
     }
-    console.log("userObj:", userObj)
     done(null,userObj)
 })
 
@@ -69,8 +67,13 @@ function checkLoggedIn(req,res,next){
 
 async function checkIfAdmin(req,res,next){
     const user = req.isAuthenticated() && req.user;
-    const access = await checkAccess(user.gid)
-    if (access < 1) {
+    if (!user) {
+        return res.status(401).json({
+            error: 'You must log in!'
+        })
+    }
+    const isAdmin = await checkAdmin(user.gid)
+    if (!isAdmin) {
         return res.status(401).json({
             error: 'You must be admin!'
         })
