@@ -8,7 +8,7 @@ const api = require('./routes/api');
 const { getBarbersList, instagramPosts } = require('./models/barber/barbers.data');
 
 const cookieSession = require('cookie-session');
-const { config, clientPassport } = require("./utils/secruity");
+const { config, userPassport } = require("./utils/secruity");
 
 const app = express();
 
@@ -30,9 +30,9 @@ app.use(cookieSession({
   sameSite: false,
   // secure: true // Set to true if using HTTPS
 }));
-app.use(clientPassport.initialize());
+app.use(userPassport.initialize());
 
-app.use(clientPassport.session());
+app.use(userPassport.session());
 
 app.use(morgan("combined"));
 

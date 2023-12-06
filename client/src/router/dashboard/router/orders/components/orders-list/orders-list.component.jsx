@@ -29,14 +29,14 @@ const OrdersList = () => {
                 <div className='min-w-[1200px] w-[-webkit-fill-available]'>
                     <div className='flex bg-gray-200 p-4 mb-0'>
                         <div className="w-1/6">Date</div>
-                        <div className="w-1/6">Client</div>
+                        <div className="w-1/6">User</div>
                         <div className="w-2/6">Order Id</div>
                         <div className="w-1/6">Total</div>
                         <div className="w-1/6">Status</div>
                         <div className="w-1/6">Action</div>
                     </div>
-                    {orders.map((product) => (
-                    <OrdersCard key={OrdersCard._id} {...product} />
+                    {orders.map((order) => (
+                    <OrdersCard key={order._id} {...order} />
                     ))}
                 </div>        
             </div>

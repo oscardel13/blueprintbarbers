@@ -1,4 +1,4 @@
-const { checkIfAdmin } = require('../../models/client/client.data')
+const { checkIfAdmin } = require('../../models/user/user.data')
 const { getOrders, getOrder, createOrder, updateOrder, cancelOrder } = require('../../models/orders/orders.data')
 
 const httpGetOrders = async (req, res) => {
@@ -9,7 +9,7 @@ const httpGetOrders = async (req, res) => {
         if (isAdmin)
             res.status(200).json(orders)
         else{
-            const userOrders = orders.filter(order => order.client === user.gid)
+            const userOrders = orders.filter(order => order.user === user.gid)
             res.status(200).json(userOrders)
         }
     }
@@ -23,7 +23,7 @@ const httpGetOrder = async (req, res) => {
     try{
         const isAdmin = await checkIfAdmin(user.gid)
         const order = await getOrder(req.params.id)
-        if (isAdmin || order.client === user.gid)
+        if (isAdmin || order.user === user.gid)
             res.status(200).json(order)
         else
             res.status(401).json({message: "Unauthorized"})
@@ -46,8 +46,14 @@ const httpCreateOrder = async (req, res) => {
 
 // Only admin and owner can edit
 const httpUpdateOrder = async (req, res) => {
+    updatedLogs = req.body.logs
+    updatedLogs.push({
+        message: req.body.log,
+        by: req.user.gid,
+    })
+    const updatedOrder = {...req.body, logs: updatedLogs}
     try{
-        const order = await updateOrder(req.params.id, req.body)
+        const order = await updateOrder(req.params.id, updatedOrder)
         res.status(200).json(order)
     }
     catch(err){

@@ -1,7 +1,7 @@
 // ProductCard.js
 import { Link } from 'react-router-dom';
 
-const OrderCard = ({ _id, total, date, status, client }) => {
+const OrderCard = ({ _id, total, date, status, user }) => {
     // TODO GET PULL CLIENT DATA
     return (
         <div className="flex items-center bg-white py-4 mb-0 border border-gray-300 rounded-md h-32">
@@ -12,7 +12,7 @@ const OrderCard = ({ _id, total, date, status, client }) => {
                     year: 'numeric'
                 })}
             </div>
-            <div className="w-1/6">{client}</div>
+            <div className="w-1/6">{user}</div>
             <div className="w-2/6">{_id}</div>
             <div className="w-1/6">${total/100.00}</div>
             {/* {published ? 

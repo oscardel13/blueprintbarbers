@@ -1,11 +1,11 @@
 import PageHeader from "../../compoenents/page-header/page-header.component";
 
-const Clients = () => {
+const Users = () => {
     return (
         <div className="container">
-            <PageHeader title="Clients" />
+            <PageHeader title="Users" />
         </div>
     )
 }
 
-export default Clients;
+export default Users;

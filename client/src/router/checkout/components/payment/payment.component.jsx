@@ -49,7 +49,7 @@ function Payment({method, deliveryAddress}) {
             </Elements>
         ) || 
             <div className='flex flex-col'>
-                <p>Must be signed in!</p>
+                <p>Must be signed in and cart cannot be empty!</p>
                 <Link to="/sign-in" className='underline font-semibold text-xl mt-2'>Sign In</Link> {/* BUILD MODAL SIGN IN LATER OR JUST REDIRECT TO SIGN IN LIKE THE API.BLUE...*/}
             </div>
         }

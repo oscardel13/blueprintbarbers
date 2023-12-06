@@ -43,7 +43,7 @@ const validateDeliveryAddress = (address) => {
 
 
 export default function CheckoutForm({method, deliveryAddress, orderId}) {
-  const client_email = useSelector((state) => state.user.currentUser.email)
+  const user_email = useSelector((state) => state.user.currentUser.email)
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -85,7 +85,7 @@ export default function CheckoutForm({method, deliveryAddress, orderId}) {
         // Make sure to change this to your payment completion page
         return_url: `${window.location.origin}/payment-confirmation?orderId=${orderId}`,
         shipping: shippingAddress,
-        receipt_email: client_email
+        receipt_email: user_email
       }
     });
 

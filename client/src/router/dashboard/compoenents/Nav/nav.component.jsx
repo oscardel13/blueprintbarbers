@@ -33,9 +33,9 @@ const DashboardNav = ({style, toggleSidebar}) => {
                     <Link to="/dashboard/barbers" onClick={onClickLink}>List</Link>
                     <Link to="/dashboard/barbers/:id" onClick={onClickLink}>Details</Link>
                 </NavLinkDropdown>
-                <NavLinkDropdown Icon={PeopleIcon} to="/dashboard/clients" title="Clients">
-                    <Link to="/dashboard/clients" onClick={onClickLink}>List</Link>
-                    <Link to="/dashboard/clients/:id" onClick={onClickLink}>Details</Link>
+                <NavLinkDropdown Icon={PeopleIcon} to="/dashboard/clients" title="Users">
+                    <Link to="/dashboard/users" onClick={onClickLink}>List</Link>
+                    <Link to="/dashboard/users/:id" onClick={onClickLink}>Details</Link>
                 </NavLinkDropdown>
                 <NavLinkDropdown Icon={InventoryIcon} to="/dashboard/clients" title="Products">
                     <Link to="/dashboard/products" onClick={onClickLink}>List</Link>

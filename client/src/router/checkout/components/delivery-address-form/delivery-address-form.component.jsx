@@ -11,6 +11,7 @@ const DeliverAddressForm = ({deliveryAddress, handleChange}) => {
                     type="text"
                     id="country"
                     name="country"
+                    placeholder="Country/Region"
                     value={deliveryAddress.country}
                     className="mt-1 p-2 border rounded-md w-full"
                     onChange={handleChange}

@@ -32,7 +32,7 @@ function App() {
   useEffect(()=>{
     const setUser = async () => {
       try{
-        const user = await getAPI('/clients/me');
+        const user = await getAPI('/users/me');
         dispatch(setCurrentUser(user.data));
       }
       catch(err){

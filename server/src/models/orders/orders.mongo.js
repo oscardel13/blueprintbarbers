@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  client: {
+  user: {
     type: String,
-    ref: 'Client', // Assuming 'Client' is the name of the client model
+    ref: 'User', // Assuming 'User' is the name of the user model
     required: true
   },
   date: {
@@ -15,7 +15,12 @@ const orderSchema = new mongoose.Schema({
     required: true
   },
   salesTax: {
-    type: Number
+    type: Number,
+    default: 0,
+  },
+  shippingCost: {
+    type: Number,
+    default: 0,
   },
   status: {
     type: String,
@@ -58,6 +63,10 @@ const orderSchema = new mongoose.Schema({
       },
       message: {
         type: String,
+        required: true,
+      },
+      by: {
+        type: String,
         required: true
       }
       // You can add more fields related to the logs if needed
@@ -95,10 +104,6 @@ const orderSchema = new mongoose.Schema({
     },
     tracking_number: {
       type: String,
-    },
-    cost: {
-      type: Number,
-      default: 0
     }
   }
 });

@@ -13,8 +13,8 @@ const createOrder = async (order) => {
     return await orderSchema.create(order);
 }
 
-const updateOrder = async (order) => {
-    return await orderSchema.findOneAndUpdate({ _id: order._id }, order, {returnDocument: 'after'})
+const updateOrder = async (id, order) => {
+    return await orderSchema.findOneAndUpdate({ _id: id }, order, {returnDocument: 'after'})
 }
 
 const cancelOrder = async (id) => {

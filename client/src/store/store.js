@@ -12,7 +12,7 @@ const middleWares = [process.env.NODE_ENV === 'development' && logger].filter(
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['cart'],
+  whitelist: ['cart', 'admin'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

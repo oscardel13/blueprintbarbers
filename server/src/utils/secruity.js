@@ -2,7 +2,7 @@ var passport = require('passport')
 
 const { Strategy } = require('passport-google-oauth20');
 
-const { createClient } = require('../models/client/client.data')
+const { createUser } = require('../models/user/user.data')
 
 require('dotenv').config();
 
@@ -26,23 +26,23 @@ const AUTH_OPTIONS = {
 
 function verifyCallback(accessToken, refreshToken, profile, done) {
   // This is where you can save the client to the database
-  const clientObj = {
+  const userObj = {
     name: profile._json.name,
     email: profile._json.email,
     gid: profile._json.sub,
     picture: profile._json.picture
   }
   if (profile._json.email_verified) {
-    createClient(clientObj);
+    createUser(userObj);
   }
   done(null, profile);
 }
-const clientPassport = passport
+const userPassport = passport
 
-clientPassport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
+userPassport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 
 // Save the session to cookie
-clientPassport.serializeUser((user, done)=>{
+userPassport.serializeUser((user, done)=>{
     console.log(user)
     const userObj = {
         gid : user.id,
@@ -53,7 +53,7 @@ clientPassport.serializeUser((user, done)=>{
 })
 
 //read the session from cookie
-clientPassport.deserializeUser((obj,done)=>{
+userPassport.deserializeUser((obj,done)=>{
     done(null, obj)
 })
 
@@ -69,7 +69,7 @@ function checkLoggedIn(req,res,next){
 }
 
 module.exports = {
-    clientPassport,
+    userPassport,
     checkLoggedIn,
     config
 }

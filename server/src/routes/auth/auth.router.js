@@ -1,4 +1,4 @@
-const { clientPassport, trainerPassport } = require('../../utils/secruity');
+const { userPassport, trainerPassport } = require('../../utils/secruity');
 
 const authRouter = require('express').Router();
 
@@ -7,12 +7,12 @@ require('dotenv').config();
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 
 authRouter.get('/google', 
-    clientPassport.authenticate('google', {
+    userPassport.authenticate('google', {
         scope: ['email', "profile"]
     }))
 
 authRouter.get('/google/callback' , 
-    clientPassport.authenticate('google', {
+    userPassport.authenticate('google', {
         failureRedirect: '/auth/failure',
         successRedirect: `${CLIENT_URL}/`
     }),

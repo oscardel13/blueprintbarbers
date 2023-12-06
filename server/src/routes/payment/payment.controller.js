@@ -19,28 +19,35 @@ const calculateOrderAmount = (items) => {
   
 const httpPaymentIntent = async (req, res) => {
     const user = req.user;
-    if (!user) return res.status(401).send('Unauthorized');
     const { items } = req.body;
-    const order = await paymentIntentCreated({
-        client: user.gid,
-        total: calculateOrderAmount(items),
-        items: items,
-    })
-    const orderId = order._id.toString()
-    const paymentIntent = await stripe.paymentIntents.create({
-        amount: order.total,
-        currency: "usd",
-        automatic_payment_methods: {
-        enabled: true,
-        },
-        metadata: {
-            orderId: orderId
-        }
-    });
-    res.send({
-        clientSecret: paymentIntent.client_secret,
-        orderId: orderId,
-    });
+    if (!user || items.length === 0) return res.status(401).send('Unauthorized');
+    try{
+        const order = await paymentIntentCreated({
+            user: user.gid,
+            total: calculateOrderAmount(items),
+            items: items,
+        })
+        const orderId = order._id.toString()
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: order.total,
+            currency: "usd",
+            automatic_payment_methods: {
+            enabled: true,
+            },
+            metadata: {
+                orderId: orderId
+            }
+        }); 
+        res.send({
+            clientSecret: paymentIntent.client_secret,
+            orderId: orderId,
+        });
+    }
+    catch(err){
+        console.log(err)
+        paymentIntentCanceled({metadata: {orderId: orderId}})
+        res.status(500).send(err)
+    }
 };
  
 const httpWebhook = async (req, res) => {
