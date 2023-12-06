@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 function sendMail(to, subject, text){
     const mail = {
-        from: `Empower Canine <empowercanine@gmail.com>`,
+        from: `Blueprint Barbers <${process.env.GMAIL_EMAIL}>`,
         to,
         subject,
         text
