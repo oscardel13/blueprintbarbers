@@ -65,12 +65,16 @@ const httpWebhook = async (req, res) => {
     switch (event.type) {
         case 'payment_intent.canceled':
             paymentIntentCanceled(eventObj)
+            break;
         case 'payment_intent.succeeded':
             paymentIntentSucceeded(eventObj)
+            break;
         case 'payment_intent.failed':
             paymentIntentFailed(eventObj)
+            break;
         default:
             console.log(`Unhandled event type ${event.type}`);
+            break;
     }
 
     // Return a 200 response to acknowledge receipt of the event
