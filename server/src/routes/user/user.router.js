@@ -14,7 +14,7 @@ const UserAPI = express.Router();
 UserAPI.get('/', checkIfAdmin, httpGetUsers)
 UserAPI.get('/checkAdmin', checkIfAdmin, httpCheckIfAdmin)
 UserAPI.get('/:id', checkLoggedIn, httpGetUser)
-UserAPI.put('/:id', checkLoggedIn, httpUpdateUser)
+UserAPI.put('/:id', httpUpdateUser) //ADD SECURITY BACK 
 // UserAPI.delete('/:id', httpDeleteUser) 
 
 

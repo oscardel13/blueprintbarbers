@@ -26,8 +26,9 @@ TODO:
 1. make sure params.id = session.user.id
 */
 async function httpUpdateUser(req, res){
+    console.log("HERE")
     try{
-        const user = await updateUser(req.params.id, req.body)
+        const user = await updateUser(req.body)
         res.status(200).json(user)
     }
     catch(err){
