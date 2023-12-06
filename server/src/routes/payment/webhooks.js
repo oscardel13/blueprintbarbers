@@ -55,6 +55,8 @@ const paymentIntentSucceeded = async (event) =>{
         await updateOrder(orderId, order)
         // UPDATE LATER
         sendMail(user.email, "Order Confirmation", "Your order has been confirmed. We are processing it soon and will send tracking number.")
+        console.log("Payment Intent Succeeded -------------------------------------------")
+
     }
     catch(err){
         console.log(err)
@@ -75,7 +77,8 @@ const paymentIntentFailed = async(event) =>{
         order.status = "failed"
         await updateOrder(orderId, order)
         // UPDATE LATER
-        await sendMail(user.email, "Order Failed", "Your payment was unsuccessful. Please try again.") 
+        sendMail(user.email, "Order Failed", "Your payment was unsuccessful. Please try again.") 
+        console.log("Payment Intent Failed -------------------------------------------")
     }
     catch(err){
         console.log(err)
@@ -92,6 +95,8 @@ const paymentIntentCanceled = async(event) =>{
     catch(err){
         console.log(err)
     }
+    console.log("Payment Intent Canceled -------------------------------------------")
+
 }
 
 module.exports = {

@@ -23,7 +23,6 @@ function sendMail(to, subject, text){
         if (error){
             console.log(error)
         }
-        console.log('Email Send')
     })
 }
 
