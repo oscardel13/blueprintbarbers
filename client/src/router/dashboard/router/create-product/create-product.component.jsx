@@ -141,8 +141,6 @@ const CreateProductPage = () => {
               <option value="Hats">Hats</option>
               <option value="Shirts">Shirts</option>
               <option value="Hoodies">Hoodies</option>
-              <option value="clothing">Pants</option>
-              <option value="clothing">Shoes</option>
               {/* Add more options as needed */}
             </select>
           </div>

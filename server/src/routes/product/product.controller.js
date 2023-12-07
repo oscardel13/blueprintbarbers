@@ -1,4 +1,5 @@
 const { getProducts, getProduct, createProduct, updateProduct, deleteProduct, archiveProduct, publishProduct } = require("../../models/product/product.data");
+const { getUser } = require("../../models/user/user.data");
 const { uploadObjectsToStatic } = require("../../utils/aws");
 const { createProductItemList, processImages, createReducedSizeList } = require("./product.helper");
 
@@ -120,6 +121,31 @@ async function httpPublishProduct(req,res){
     }
 }
 
+async function httpGetItem(req,res){
+    try{
+        const product = await getProduct(req.params.name);
+        const item = product.items.find(item => {
+            return String(item._id) === req.params.id
+        });
+        if (!item){
+            return res.status(400).json({message:"Invalid item id"});
+        }
+        const user = await getUser(item.owner);
+        delete product.items
+        resData = {
+            product: product,
+            item: {
+                size: item.size,
+                owner: user? user.name : null, //CHANGE LATER: ADD SETTING WHERE USER CAN CHOOSE HOW TO DISPLAY NAME 
+            }
+        }
+        return res.status(200).json(resData);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message});
+    }
+}
+
 module.exports = {
     httpGetProducts,
     httpGetProduct,
@@ -129,5 +155,6 @@ module.exports = {
     httpArchiveProduct,
     httpPublishProduct,
     httpGetArchivedProducts,
-    httpGetPublishedProducts
+    httpGetPublishedProducts,
+    httpGetItem
 }

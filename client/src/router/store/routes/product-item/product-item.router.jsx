@@ -28,14 +28,10 @@ const ProductItemPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
         try{
-            const response = await getAPI(`/products/${productName}`)
-            for (const obj of response.data.items){
-                if (obj._id === itemId){
-                    setItem(obj)
-                    console.log(obj)
-                }
-            }
-            setProduct(response.data)
+            const response = await getAPI(`/products/${productName}/${itemId}`)
+            console.log(response.data)
+            setProduct(response.data.product)
+            setItem(response.data.item)
         }
         catch(err){
             console.log(err)
@@ -47,7 +43,6 @@ const ProductItemPage = () => {
     const handleImageChange = (index) => {
         setCurrentImageIndex(index);
     };
-    console.log(item == null)
     if (item == null){
         return <div className='flex h-screen justify-center items-center'>
             <h1 className='font-bold text-5xl'>No item found</h1>
@@ -74,7 +69,7 @@ const ProductItemPage = () => {
             <br />
             <h3>Owned by: &nbsp; 
                 {
-                    item.owner ? item.owner: "N/A"
+                    item.owner ? item.owner : "N/A"
                 } 
             </h3>
             

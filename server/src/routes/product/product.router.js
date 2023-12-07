@@ -20,7 +20,8 @@ const {
     httpUpdateProduct,
     httpPublishProduct,
     httpGetArchivedProducts,
-    httpGetPublishedProducts
+    httpGetPublishedProducts,
+    httpGetItem
  } = require('./product.controller');
  
 const { checkIfAdmin } = require('../../utils/secruity');
@@ -31,6 +32,8 @@ ProductAPI.get('/', httpGetProducts)
 ProductAPI.get('/archives', httpGetArchivedProducts)
 ProductAPI.get('/published', httpGetPublishedProducts)
 ProductAPI.get('/:name', httpGetProduct)
+ProductAPI.get('/:name/:id', httpGetItem)
+
 //ADMIN/TRAINER ONLY
 ProductAPI.post('/', checkIfAdmin , upload.fields([
     { name: 'form', maxCount: 1 },
