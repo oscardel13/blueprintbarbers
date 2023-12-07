@@ -1,8 +1,11 @@
 const { getUser,getUsers, updateUser, deleteUser } = require('../../models/user/user.data')
+const { getPagination } = require("../../utils/query");
 
 async function httpGetUsers(req, res){
+    const { skip, limit } = getPagination(req.query);
+    console.log(skip, limit)
     try{
-        const users = await getUsers()
+        const users = await getUsers(limit, offset)
         res.status(200).json(users)
     }
     catch(err){

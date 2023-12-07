@@ -2,10 +2,12 @@ const { getProducts, getProduct, createProduct, updateProduct, deleteProduct, ar
 const { getUser } = require("../../models/user/user.data");
 const { uploadObjectsToStatic } = require("../../utils/aws");
 const { createProductItemList, processImages, createReducedSizeList } = require("./product.helper");
+const { getPagination } = require("../../utils/query");
 
 async function httpGetProducts(req,res){
+    const { skip, limit } = getPagination(req.query);
     try{
-        const products = await getProducts();
+        const products = await getProducts(skip, limit);
         return res.status(200).json(products);
     }
     catch(e){

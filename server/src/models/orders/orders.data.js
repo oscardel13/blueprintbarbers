@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 const orderSchema = require('./orders.mongo');
 
-const getOrders = async () => {
-    return await orderSchema.find();
+const getOrders = async (skip, limit, gid = null) => {
+    if (gid) {
+        return await orderSchema.find({ user: gid }).skip(skip).limit(limit).sort('-date');
+    }
+    console.log("here =========================================================")
+    return await orderSchema.find().skip(skip).limit(limit).sort('-date');
 }
 
 const getOrder = async (id) => {

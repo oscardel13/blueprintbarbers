@@ -1,8 +1,8 @@
 const productCollection = require('./product.mongo')
 
 // TODO: make 3 different ones! one for all products, one for published, one for archived
-const getProducts = async () => {
-    return await productCollection.find()
+const getProducts = async (skip, limit) => {
+    return await productCollection.find().skip(skip).limit(limit);
 }
 
 /*

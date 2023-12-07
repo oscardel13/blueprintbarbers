@@ -1,19 +1,20 @@
 const { checkAdmin } = require('../../models/user/user.data')
 const { getOrders, getOrder, createOrder, updateOrder, cancelOrder } = require('../../models/orders/orders.data')
+const { getPagination } = require("../../utils/query");
 
 const httpGetOrders = async (req, res) => {
+    const { skip, limit } = getPagination(req.query);
     const user = req.user
     try{
         const isAdmin = await checkAdmin(user.gid)
-        let orders = await getOrders()
-        orders = orders.reverse()
-
-        if (isAdmin > 0)
-            res.status(200).json(orders)
-        else{
-            const userOrders = orders.filter(order => order.user === user.gid)
-            res.status(200).json(userOrders)
+        let orders = null
+        if (isAdmin > 0){
+            orders = await getOrders(skip, limit)
         }
+        else{
+            orders = await getOrders(skip, limit, user.gid)
+        }
+        res.status(200).json(orders)
     }
     catch(err){
         res.status(400).json(err)
