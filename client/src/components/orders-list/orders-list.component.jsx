@@ -35,8 +35,8 @@ const OrdersList = () => {
                         <div className="w-1/6">Status</div>
                         <div className="w-1/6">Action</div>
                     </div>
-                    {orders.map((product) => (
-                    <OrdersCard key={OrdersCard._id} {...product} />
+                    {orders.map((order) => (
+                    <OrdersCard key={order._id} {...order} />
                     ))}
                 </div>        
             </div>
