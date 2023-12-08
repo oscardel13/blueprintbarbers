@@ -14,10 +14,11 @@ const EditProduct = () => {
         pricing: '',
         category: '',
         sizes: {
-        small: 0,
-        medium: 0,
-        large: 0,
-        "extra-large": 0,
+            Small: 0,
+            Medium: 0,
+            Large: 0,
+            "Extra-Large": 0,
+            "One Size Fits All": 0
         },
     });
   

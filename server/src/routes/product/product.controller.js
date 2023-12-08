@@ -58,8 +58,8 @@ async function httpGetProductStore(req,res){
         const product = await getProduct(req.params.name);
         const stock = {};
         for (let i = 0; i < product.items.length; i++) {
-        const item = product.items[i];
-        const { size } = item;
+            const item = product.items[i];
+            const { size } = item;
             if(!stock[size]) {
                 stock[size] = 0;
             }
