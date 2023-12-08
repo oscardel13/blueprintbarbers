@@ -25,7 +25,7 @@ const ProductItemsTable = ({itemsLoad, product}) => {
                         <div className="w-1/6">{item.status}</div>
                         {/* TODO: make component that has dropdown one to change status and one to copy link */}
                         <div className="w-1/6">
-                            <ProductItemDropdown item={item} product={product} setItems={setItems}/>
+                            <ProductItemDropdown key={item._id} item={item} product={product} setItems={setItems}/>
                         </div>
                     </div>
                 ))}

@@ -165,12 +165,20 @@ async function httpGetItem(req,res){
             return res.status(400).json({message:"Invalid item id"});
         }
         const user = await getUser(item.owner);
-        delete product.items
+        console.log(product)
+        const modifiedProduct = {
+            name: product.name,
+            description: product.description,
+            images: product.images,
+            pricing: product.pricing,
+            published: product.published,
+        }
         resData = {
-            product: product,
+            product: modifiedProduct,
             item: {
+                _id: item._id,
                 size: item.size,
-                owner: user? user.name : null, //CHANGE LATER: ADD SETTING WHERE USER CAN CHOOSE HOW TO DISPLAY NAME 
+                owner: user? user.name : null
             }
         }
         return res.status(200).json(resData);
@@ -179,7 +187,6 @@ async function httpGetItem(req,res){
         return res.status(500).json({message:e.message});
     }
 }
-
 module.exports = {
     httpGetProducts,
     httpGetProductAdmin,

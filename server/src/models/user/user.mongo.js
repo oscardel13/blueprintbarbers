@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const itemSchema = new Schema({
+  product: {
+    type: String,
+    required: true
+  },
+  item: {
+    type: String,
+    required: true
+  }
+})
+
 // Define the User schema
 const userSchema = new Schema({
   name: {
@@ -22,7 +33,7 @@ const userSchema = new Schema({
     required: true,
   },
   items: {
-    type: [String], // Array of items bought by the user
+    type: [itemSchema], // Array of items bought by the user
     default: []
   },
   phone: {

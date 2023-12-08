@@ -32,7 +32,7 @@ async function assignItems(user, itemsBought){
             if ( item.size === size && item.owner===null){
                 quantity -= 1
                 product.items[i].owner = updatedUser.gid
-                updatedUser.items.push(item._id)
+                updatedUser.items.push({product: product.name, item: item._id})
             }
             if ( quantity === 0 ){
                 break

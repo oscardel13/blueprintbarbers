@@ -62,10 +62,9 @@ const ProductItemPage = () => {
             <h2 className="text-lg font-medium">{product.name}</h2>
             <p>{product.description}</p>
             <h3>${product.pricing} USD</h3>
-            { product.sizes.length > 0 && 
             <select className="bg-gray-200 p-2 rounded-md max-w-lg" disabled>
                 <option value={item.size}>{item.size}</option>
-            </select>}
+            </select>
             <br />
             <h3>Owned by: &nbsp; 
                 {

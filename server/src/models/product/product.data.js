@@ -38,7 +38,7 @@ const publishProduct = async (name) => {
         }
     }
     return await productCollection.findOneAndUpdate({ name: name }, { published: !product.published }, {returnDocument: 'after'})
-}
+}  
 
 module.exports = {
     getProducts,
