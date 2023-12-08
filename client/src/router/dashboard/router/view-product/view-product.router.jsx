@@ -13,8 +13,7 @@ const productHolder = {
     description: '',
     pricing: 0,
     images: ['https://blue-print-static.s3.amazonaws.com/product_defult.jpg'],
-    category: '',
-    sizes: [],
+    stock: [],
     size: '',
     items: []
   }

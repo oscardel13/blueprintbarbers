@@ -2,7 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 
 import { putAPIMultipart } from '../../../../utils/api';
 
+const CLIENT_URL = process.env.REACT_APP_CLIENT_URL || 'https://beta.blueprintbarbers.co'
+
 const ProductItemDropdown = (props) => {
+    console.log(CLIENT_URL)
     const { item, product, setItems } = props;
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -37,7 +40,7 @@ const ProductItemDropdown = (props) => {
 
     const handleSetPrinting = async () =>{
         const updatedProduct = product
-        navigator.clipboard.writeText(`https://beta.blueprintbarbers.co/store/${product.name}/${item._id}`);
+        navigator.clipboard.writeText(`${CLIENT_URL}/store/${product.name}/${item._id}`);
         updatedProduct.items = updatedProduct.items.map(itemObj => {
             if(item._id === itemObj._id){
                 itemObj.status = 'printing'
@@ -85,7 +88,7 @@ const ProductItemDropdown = (props) => {
                 <div ref={dropdownRef} className='p-3 grid grid-cols-1 gap-2 z-3 absolute flex flex-col justify-center w-max top-[100%] right-5 bg-gray-300 text-black border-solid border-black border-[1px]'>
                     <a className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" onClick={handleSetPrinting}>Status set: Printing</a>
                     <a className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" onClick={handleStatusReady}>Status set: Ready</a>
-                    <a className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" href={`https://beta.blueprintbarbers.co/store/${product.name}/${item._id}`} target="_blank">View</a>
+                    <a className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" href={`${CLIENT_URL}/store/${product.name}/${item._id}`} target="_blank">View</a>
                 </div>
             )}
         </div>

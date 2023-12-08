@@ -49,15 +49,20 @@ const ProductView = ({ product, setProduct }) => {
           <h2 className="text-lg font-medium">{product.name}</h2>
           <p>{product.description}</p>
           <h3>${product.pricing} USD</h3>
-          { product.sizes.length > 0 && 
-          <select className="bg-gray-200 p-2 rounded-md lg:max-w-lg" onChange={handleSizeChange}>
-            <option value="">Select Size</option>
-            {
-              product.sizes.map((size) => (
-                <option key={size} value={size}>{size}</option>
-              ))
-            }
-          </select>}
+          { product.stock && 
+            <select className="bg-gray-200 p-2 rounded-md lg:max-w-lg" onChange={handleSizeChange}>
+              <option value="">Select Size</option>
+              {Object.keys(product.stock).map(size => (
+                <option 
+                  key={size}
+                  value={size}
+                  disabled={product.stock[size] === 0}
+                >
+                  {size} - {product.stock[size]} available
+                </option>
+            ))}
+            </select>
+          }
           <br />
           <button
             className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md lg:max-w-lg"

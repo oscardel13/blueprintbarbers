@@ -16,7 +16,8 @@ const {
     httpCreateProduct, 
     httpDeleteProduct, 
     httpGetProducts,
-    httpGetProduct,
+    httpGetProductAdmin,
+    httpGetProductStore,
     httpUpdateProduct,
     httpPublishProduct,
     httpGetArchivedProducts,
@@ -31,7 +32,8 @@ const ProductAPI = express.Router();
 ProductAPI.get('/', httpGetProducts)
 ProductAPI.get('/archives', httpGetArchivedProducts)
 ProductAPI.get('/published', httpGetPublishedProducts)
-ProductAPI.get('/:name', httpGetProduct)
+ProductAPI.get('/:name', httpGetProductAdmin)
+ProductAPI.get('/store/:name', httpGetProductStore)
 ProductAPI.get('/:name/:id', httpGetItem)
 
 //ADMIN/TRAINER ONLY

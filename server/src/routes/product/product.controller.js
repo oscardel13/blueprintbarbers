@@ -42,10 +42,41 @@ async function httpGetPublishedProducts(req, res){
 
 }
 
-async function httpGetProduct(req,res){
+async function httpGetProductAdmin(req,res){
     try{
         const product = await getProduct(req.params.name);
         return res.status(200).json(product);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message});
+    }
+}
+
+async function httpGetProductStore(req,res){
+    console.log("here")
+    try{
+        const product = await getProduct(req.params.name);
+        const stock = {};
+        for (let i = 0; i < product.items.length; i++) {
+        const item = product.items[i];
+        const { size } = item;
+            if(!stock[size]) {
+                stock[size] = 0;
+            }
+            if(!item.owner) {
+                stock[size]++; 
+            }
+        }
+        const modifiedProduct = {
+            name: product.name,
+            description: product.description,
+            images: product.images,
+            pricing: product.pricing,
+            stock: stock,
+            published: product.published,
+            
+        }
+        return res.status(200).json(modifiedProduct);
     }
     catch(e){
         return res.status(500).json({message:e.message});
@@ -150,7 +181,8 @@ async function httpGetItem(req,res){
 
 module.exports = {
     httpGetProducts,
-    httpGetProduct,
+    httpGetProductAdmin,
+    httpGetProductStore,
     httpCreateProduct,
     httpUpdateProduct,
     httpDeleteProduct,

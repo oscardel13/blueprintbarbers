@@ -12,10 +12,9 @@ const productHolder = {
   description: '',
   pricing: 0,
   images: ['https://blue-print-static.s3.amazonaws.com/product_defult.jpg'],
-  category: '',
-  sizes: [],
+  stock: {},
   size: '',
-  items: []
+  sizes: []
 }
 
 const ProductPage = () => {
@@ -25,7 +24,7 @@ const ProductPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
         try{
-            const response = await getAPI(`/products/${productName}`)
+            const response = await getAPI(`/products/store/${productName}`)
             console.log(response.data)
             setProduct(response.data)
         }
