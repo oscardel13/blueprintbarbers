@@ -68,6 +68,7 @@ async function httpGetProductStore(req,res){
             }
         }
         const modifiedProduct = {
+            _id: product._id,
             name: product.name,
             description: product.description,
             images: product.images,

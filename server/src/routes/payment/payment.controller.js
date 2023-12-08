@@ -27,6 +27,7 @@ const httpPaymentIntent = async (req, res) => {
             total: calculateOrderAmount(items),
             items: items,
         })
+        console.log(order)
         const orderId = order._id.toString()
         const paymentIntent = await stripe.paymentIntents.create({
             amount: order.total,
