@@ -53,7 +53,6 @@ async function httpGetProductAdmin(req,res){
 }
 
 async function httpGetProductStore(req,res){
-    console.log("here")
     try{
         const product = await getProduct(req.params.name);
         const stock = {};
@@ -165,7 +164,6 @@ async function httpGetItem(req,res){
             return res.status(400).json({message:"Invalid item id"});
         }
         const user = await getUser(item.owner);
-        console.log(product)
         const modifiedProduct = {
             name: product.name,
             description: product.description,

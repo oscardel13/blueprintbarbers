@@ -18,13 +18,12 @@ const InventoryList = ({ items }) => {
         fetchItems()
     }, [items]);
 
-    console.log(products);
     return (
-        <div className="flex overflow-auto bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 ">
+        <div className="flex overflow-auto bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
             <div className='min-w-[1200px] w-[-webkit-fill-available]'>
                 <div className='flex bg-gray-200 p-4 mb-0'>
                     <div className="w-2/6">Product</div>
-                    <div className="w-2/6">Id</div>
+                    <div className="w-2/6">Item Id</div>
                     <div className="w-1/6">Size</div>
                     <div className="w-1/6">Actions</div>
                 </div>
@@ -37,7 +36,7 @@ const InventoryList = ({ items }) => {
                         <div className="w-2/6">{item._id}</div>
                         <div className="w-1/6">{item.size}</div>
                         <div className="w-1/6">
-                            <Link to={`/store/${product.name}/${item._id}`}>View</Link>
+                            <Link to={`/store/${product.name}/${item._id}`} className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md">View</Link>
                         </div>
                     </div>
                 ))}

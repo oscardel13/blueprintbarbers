@@ -29,7 +29,6 @@ const ProductItemPage = () => {
         const fetchProduct = async () => {
         try{
             const response = await getAPI(`/products/${productName}/${itemId}`)
-            console.log(response.data)
             setProduct(response.data.product)
             setItem(response.data.item)
         }
