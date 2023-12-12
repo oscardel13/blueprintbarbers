@@ -85,15 +85,14 @@ async function httpGetProductStore(req,res){
 async function httpCreateProduct(req,res){
     const { body, files } = req;
     product = JSON.parse(body.form);
-    product.sizes = createReducedSizeList(product.sizes)
     product.items = createProductItemList(product.sizes)
+    product.sizes = createReducedSizeList(product.sizes)
+    console.log(product)
     product.name = product.name.replace(/\s+$/, ''); // deletes trailing whitespace
-    console.log(product.images)
     try{
         product.images = await processImages(product, files.images)
         const productRes = await createProduct(product);
         return res.status(200).json(productRes);
-        // return res.status(401).json({success:true});
     }
     catch(e){
         return res.status(500).json({message:e.message});
