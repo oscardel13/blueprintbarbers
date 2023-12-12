@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import DragAndDrop from '../../compoenents/drag-and-drop/drag-and-drop.component';
 import PageHeader from '../../compoenents/page-header/page-header.component';
 
-import { deleteAPI, getAPI, postAPIMultipart, putAPI, putAPIMultipart } from '../../../../utils/api';
+import { deleteAPI, getAPI, putAPI, putAPIMultipart } from '../../../../utils/api';
 
 const EditProduct = () => {
     const { productName } = useParams();
@@ -43,7 +43,11 @@ const EditProduct = () => {
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
-        setProductData((prevData) => ({ ...prevData, images: files }));
+        const updatedImages = [...productData.images, ...files]
+        console.log(files)
+        console.log(updatedImages)
+        // updatedImages.push(files)
+        setProductData((prevData) => ({ ...prevData, images: updatedImages }));
     };
 
     const handleCategoryChange = (e) => {
@@ -107,17 +111,29 @@ const EditProduct = () => {
         }
     }
 
+    const onDragEnd = (result) => {
+        if (!result.destination) {
+            return;
+        }
+
+        const items = Array.from(productData.images);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+        console.log(items)
+        setProductData({...productData, images: items});
+    };
+
     // TODO: 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const productFormData = new FormData();
+        
         productFormData.append('form', JSON.stringify(productData))
+
         productData.images.forEach((image) => {
-        productFormData.append('images', image);
+            productFormData.append('images', image);
         })
-        // for (const pair of productFormData.entries()) {
-        // console.log(`${pair[0]}, ${pair[1]}`);
-        // }
+
         try{
             const res = await putAPIMultipart(`/products/${productName}`,productFormData)
             if (res.status === 200){
@@ -160,20 +176,7 @@ const EditProduct = () => {
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                 />
             </div>
-            <div className='flex flex-row overflow-auto gap-2'>
-                { 
-                // SO THIS IS REVERSED FOR WINDOWS BUT IPHONE HAS ORDERING WITH UPLOADING MULTIPLE FILES
-                productData.images.slice().reverse().map((image, index) => {
-                    try{
-                        return <img className="h-40" src={URL.createObjectURL(image)} key={index}/>
-                    }
-                    catch(err){
-                        return <img className="h-40" src={image} key={index}/>
-                    }
-                    
-                })
-                }
-            </div>
+            <DragAndDrop onDragEnd={onDragEnd} images={productData.images}/>
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600">Images:</label>
                 <input

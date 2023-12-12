@@ -1,3 +1,4 @@
+const { uploadObjectsToStatic, uploadToS3Static } = require("../../utils/aws");
 
 function createProductItemList(sizes) {
     const productItemList = [];
@@ -26,18 +27,23 @@ function createReducedSizeList(sizes){
 
 */
 async function processImages(product, files){
-    const imagesBuffer = []
-    for (let j = 0; j < files.length; j++){
-        i = files.length - j - 1;
-        s3Path = `products/${product.name}/images/${j.toString()}.jpg` //edit so checked mimetype
-        imagesBuffer.push({Key: s3Path,Body: files[i].buffer})
+    // if (files && (Array.isArray(files) ? files.length > 0 : Object.keys(files).length > 0)) //checks files exist
+    let fileIndex = 0
+    const updatedImages = product.images
+    for (let i=0;i<product.images.length;i++){
+        const image = product.images[i]
+        if (typeof image === 'string'){
+            updatedImages[i] = product.images[i]
+        }
+        else{
+            console.log(files[fileIndex])
+            let s3Path = `products/${product.name}/images/${files[fileIndex].originalname}` //edit so checked mimetype
+            const res = await uploadToS3Static(s3Path, files[fileIndex].buffer)
+            updatedImages[i] = res.Location
+            fileIndex += 1
+        }
     }
-    const imageRes = await uploadObjectsToStatic(imagesBuffer)
-    const images = []
-    for (const res of imageRes){
-        images.push(res.Location)
-    }
-    return images
+    return updatedImages
 }
 
 module.exports = {

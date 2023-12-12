@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PageHeader from '../../compoenents/page-header/page-header.component';
 
 import { postAPIMultipart } from '../../../../utils/api';
+import DragAndDrop from '../../compoenents/drag-and-drop/drag-and-drop.component';
 
 const CreateProductPage = () => {
   const [productData, setProductData] = useState({
@@ -44,6 +45,18 @@ const CreateProductPage = () => {
     }));
   };
 
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+        return;
+    }
+
+    const items = Array.from(productData.images);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    console.log(items)
+    setProductData({...productData, images: items});
+};
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const productFormData = new FormData();
@@ -51,9 +64,7 @@ const CreateProductPage = () => {
     productData.images.forEach((image) => {
       productFormData.append('images', image);
     })
-    for (const pair of productFormData.entries()) {
-      console.log(`${pair[0]}, ${pair[1]}`);
-    }
+    
     try{
       const res = await postAPIMultipart('/products',productFormData)
       console.log(res)
@@ -98,14 +109,8 @@ const CreateProductPage = () => {
               required
             />
           </div>
-          <div className='grid grid-cols-4'>
-            { 
-              // SO THIS IS REVERSED FOR WINDOWS BUT IPHONE HAS ORDERING WITH UPLOADING MULTIPLE FILES
-              productData.images.slice().reverse().map((image, index) => (
-                <img className="h-40" src={URL.createObjectURL(image)} key={index}/>
-              ))
-            }
-          </div>
+          <DragAndDrop onDragEnd={onDragEnd} images={productData.images}/>
+
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-600">Images:</label>
             <input
