@@ -9,9 +9,15 @@ const InventoryList = ({ items }) => {
         const fetchItems = async () => {
             const productData = []
             for (let i = 0; i < items.length; i++) {
-                const { product, item } = items[i];   
-                const response = await getAPI(`/products/${product}/${item}`)
-                productData.push(response.data)
+                const { product, item } = items[i];
+                try{
+                    const response = await getAPI(`/products/${product}/${item}`)
+                    productData.push(response.data)
+                }
+                catch(err){
+                    console.log(err)
+                }   
+                
             }
             setProducts(productData);
         }
