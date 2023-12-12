@@ -27,7 +27,6 @@ function createReducedSizeList(sizes){
 
 */
 async function processImages(product, files){
-    // if (files && (Array.isArray(files) ? files.length > 0 : Object.keys(files).length > 0)) //checks files exist
     let fileIndex = 0
     const updatedImages = product.images
     for (let i=0;i<product.images.length;i++){

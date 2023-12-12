@@ -40,6 +40,7 @@ async function assignItems(user, itemsBought){
         }
         await updateProduct(name, product)        
     }
+    console.log(updatedUser)
     await updateUser(updatedUser)
 }
 

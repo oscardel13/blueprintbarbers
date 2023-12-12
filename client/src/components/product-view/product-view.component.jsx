@@ -45,7 +45,7 @@ const ProductView = ({ product, setProduct }) => {
             handleImageChange={handleImageChange}
           />
         </div>
-        <div className="flex justify-center grid grid-cols-1">
+        <div className="flex justify-center grid grid-cols-1 max-h-[40rem]">
           <h2 className="text-lg font-medium">{product.name}</h2>
           <p>{product.description}</p>
           <h3>${product.pricing} USD</h3>

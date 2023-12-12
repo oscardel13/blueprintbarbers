@@ -7,7 +7,7 @@ const ImageGallery = ({ images, currentImageIndex, handleImageChange, handleNext
       <img
         src={images[currentImageIndex]}
         alt=""
-        className="scale-110 max-h-88 mb-2 border border-gray-300"
+        className="scale-100 max-h-[40rem] object-cover rounded-lg shadow-md mb-2 border border-gray-300"
       />
       <br/>
       <div className="flex overflow-auto">
