@@ -26,6 +26,8 @@ import DashboardRoutes from './router/dashboard/dashboard.routes';
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from './store/user/user.reducer';
 import { getAPI } from './utils/api';
+import PrivacyPolicyPage from './router/privacy-policy/privacy-policy.router';
+import TermAndConditionsPage from './router/terms-and-conditions/terms-and-conditions.router';
 
 function App() {
   const dispatch = useDispatch();
@@ -65,7 +67,9 @@ function App() {
               <Route index element={<Cart/>}/>
             </Route>
             <Route path='checkout' element={<Checkout/>}/>
-            <Route path='payment-confirmation' element={<PaymentConfirmationPage/>}/>'
+            <Route path='payment-confirmation' element={<PaymentConfirmationPage/>}/>
+            <Route path='legal/privacy' element={<PrivacyPolicyPage/>}/>
+            <Route path='legal/terms' element={<TermAndConditionsPage/>}/>
           </Route>
           {/* <Route path='dashboard' element={<Dashboard/>}>
             <Route index element={<Home/>}/>
