@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import { putAPIMultipart } from '../../../../utils/api';
 
-const CLIENT_URL = process.env.REACT_APP_CLIENT_URL || 'https://beta.blueprintbarbers.co'
+const CLIENT_URL = process.env.REACT_APP_CLIENT_URL || 'https://blueprintbarbers.co'
 
 const ProductItemDropdown = (props) => {
     console.log(CLIENT_URL)

@@ -26,7 +26,7 @@ const OrdersList = () => {
 
     return (
         <>
-            <div className="flex overflow-auto bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 ">
+            <div className="flex overflow-auto bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
                 <div className='min-w-[1200px] w-[-webkit-fill-available]'>
                     <div className='flex bg-gray-200 p-4 mb-0'>
                         <div className="w-1/6">Date</div>
