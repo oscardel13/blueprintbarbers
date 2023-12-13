@@ -19,7 +19,7 @@ const Footer = () => {
           
           <br/>
           <div className='flex items-center'>
-            <a href="https://www.facebook.com/davconstrucllc/" target="_blank">
+            <a href="https://www.facebook.com/profile.php?id=61554102161708" target="_blank">
               <FacebookIcon style={{ color: "#e6dadb", fontSize: "2.5rem" }} />
             </a>
             <a style={{ cursor: "default" }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>

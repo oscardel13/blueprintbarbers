@@ -56,6 +56,7 @@ const paymentIntentSucceeded = async (event) =>{
         await updateOrder(orderId, order)
         // UPDATE LATER
         sendMail(user.email, "Order Confirmation", "Your order has been confirmed. We are processing it soon and will send tracking number.")
+        sendMail("blueprint.creationsco@gmail.com", "New Order Recieved!")
         console.log("Payment Intent Succeeded -------------------------------------------")
 
     }
