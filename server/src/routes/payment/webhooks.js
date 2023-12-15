@@ -1,59 +1,49 @@
 const { sendMail } = require("../../utils/mailer");
-const { createOrder, updateOrder, deleteOrder, getOrder } = require("../../models/orders/orders.data"); 
-const { getUser, updateUser } = require("../../models/user/user.data");
-const { getProduct, updateProduct } = require("../../models/product/product.data");
+const { updateOrder, deleteOrder, getOrder, createOrder } = require("../../models/orders/orders.data"); 
+const { getUser } = require("../../models/user/user.data");
+const { lockItems,assignItems, unlockItems  } = require("./webhooks.helper");
 
-//ADD CHECK HERE TO MAKE SURE ITEMS ARE STILL AVAILABLE IF NOT DO NOT CREATE ORDER
-const paymentIntentCreated = async (order) =>{
-    order.items = order.items.map(item => {
-        return {
-            product: item._id,
-            name: item.name,
-            pricing: item.pricing,
-            size: item.size,
-            quantity: item.quantity,
-            image: item.images[0]
-        }
-    
-    })
-    const createdOrder = await createOrder(order)
-    return createdOrder
-}
-
-async function assignItems(user, itemsBought){
-    const updatedUser = user
-    for(let itemBought of itemsBought){
-        const { name, size } = itemBought
-        let quantity = itemBought.quantity
-        const product = await getProduct(name)
-        const { items } = product
-        for (let i=0;i<items.length;i++){
-            const item = items[i]
-            if ( item.size === size && item.owner===null){
-                quantity -= 1
-                product.items[i].owner = updatedUser.gid
-                updatedUser.items.push({product: product.name, item: item._id})
+const paymentIntentCreated = async (order, orderId) =>{
+    try{
+        const fetchedOrder = await getOrder(orderId)
+        const timeDifference = Date.now() - fetchedOrder.date;
+        if (
+            fetchedOrder.status !== "pending" ||
+            timeDifference > 5 * 60 * 1000 ||
+            fetchedOrder.products !== order.products
+        ) {
+            if (fetchedOrder.status === "pending"){
+                unlockItems(fetchedOrder._id)
+                deleteOrder(fetchedOrder._id)
             }
-            if ( quantity === 0 ){
-                break
-            }
+            throw new Error("Order conditions not met.");
         }
-        await updateProduct(name, product)        
+        return fetchedOrder
+        
     }
-    console.log(updatedUser)
-    await updateUser(updatedUser)
+    catch(err){
+        console.log(err)
+    }
+    try{
+        const products = await lockItems(order.products)
+        order.products = products
+        const createdOrder = await createOrder(order)
+        return createdOrder
+    }
+    catch(err){
+        console.log(err)
+    }
+    
 }
 
 const paymentIntentSucceeded = async (event) =>{
     const { metadata, shipping } = event
     const { orderId } = metadata
     try{
-        const order = await getOrder(orderId)
-        const user = await getUser(order.user)
-        assignItems(user, order.items)
-        order.status = "processing"
-        order.shipping = shipping
-        await updateOrder(orderId, order)
+        const updaedOrder = await assignItems(orderId)
+        updaedOrder.status = "processing"
+        updaedOrder.shipping = shipping
+        await updateOrder(orderId, updaedOrder)
         // UPDATE LATER
         sendMail(user.email, "Order Confirmation", "Your order has been confirmed. We are processing it soon and will send tracking number.")
         sendMail("blueprint.creationsco@gmail.com", "New Order Recieved!")
@@ -65,11 +55,6 @@ const paymentIntentSucceeded = async (event) =>{
     }
 } 
 
-/*
-TODO: 
-    1. Update Order to faliled
-    4. send email to user
-*/
 const paymentIntentFailed = async(event) =>{
     const { metadata } = event
     const { orderId } = metadata
@@ -92,6 +77,7 @@ const paymentIntentCanceled = async(event) =>{
     const { metadata } = event
     const { orderId } = metadata
     try{
+        await unlockItems(orderId)
         await deleteOrder(orderId)
     }
     catch(err){

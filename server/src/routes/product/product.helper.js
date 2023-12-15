@@ -21,9 +21,7 @@ function createReducedSizeList(sizes){
 }
 
 /* TODO:
-    1. check if it's a new image
-        a. if new image check current index image path and upate it with new image (s3 upload) if its appended use {index}.jpg
-        b. if not new image (its a url type string) just update with new url
+    1. Build Way to delete Images
 
 */
 async function processImages(product, files){

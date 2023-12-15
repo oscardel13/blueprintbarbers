@@ -5,6 +5,7 @@ import { addCartItem, removeCartItem, clearCartItem } from './cart.helper';
 const CART_INITIAL_STATE = {
   isCartOpen: false,
   cartItems: [],
+  orderId: ""
 };
 
 export const cartSlice = createSlice({
@@ -22,10 +23,13 @@ export const cartSlice = createSlice({
     },
     clearItemFromCart(state, action) {
       state.cartItems = clearCartItem(state.cartItems, action.payload)
+    },
+    setOrderId(state, action) {
+      state.orderId = action.payload;
     }
   }
 })
 
-export const { setIsCartOpen, addItemToCart, removeItemFromCart, clearItemFromCart } = cartSlice.actions;
+export const { setIsCartOpen, addItemToCart, removeItemFromCart, clearItemFromCart, setOrderId } = cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;

@@ -8,6 +8,10 @@ const getOrders = async (skip, limit, gid = null) => {
     return await orderSchema.find().skip(skip).limit(limit).sort('-date');
 }
 
+const getPendingOrders = async () => {
+    return await orderSchema.find({status: 'pending'});
+}
+
 const getOrder = async (id) => {
     return await orderSchema.findOne({_id: id});
 }
@@ -34,5 +38,6 @@ module.exports = {
     createOrder,
     updateOrder,
     cancelOrder,
-    deleteOrder
+    deleteOrder,
+    getPendingOrders
 }

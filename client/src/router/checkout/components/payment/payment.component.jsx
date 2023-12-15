@@ -1,24 +1,27 @@
 import {useEffect, useState} from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { loadStripe } from "@stripe/stripe-js";
 import {Elements} from '@stripe/react-stripe-js';
 import CheckoutForm from '../checkout-form/checkout-form.component'
-import { selectCartItems } from '../../../../store/cart/cart.selector';
+import { selectCartItems, selectOrderId } from '../../../../store/cart/cart.selector';
 import { postAPI } from '../../../../utils/api';
 import { Link } from 'react-router-dom';
+import { setOrderId } from '../../../../store/cart/cart.reducer';
+
+const STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISH_KEY || "pk_live_51OHepjEaoH01PH0iHmMXHnnSJDimlOSYLP0YgRC7PpkA5tvdPBLv8KoTPGp9rXO33fuIb9R32kqcPh7qWrAERCD200EsyzetVN"
 
 function Payment({method, deliveryAddress}) {
-    const cartItems = useSelector(selectCartItems);
-    const user = useSelector(state => state.user.currentUser);
-    const paymentIntent = {
-        user,
-        items: cartItems,
-    }
-
-    const stripePromise = loadStripe("pk_test_51OHepjEaoH01PH0iCraMmXrYUt5t1PXWn3cDtQmCiBZBw5bB1VEuS6SqhfJ35JjnfOEz9JU9hEUtjn00YIeWrOqh006HbEkOFJ");
+    const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
     const [ clientSecret, setClientSecret ] = useState('');
-    const [ orderId, setOrderId ] = useState('') 
+    const dispatch = useDispatch();
+    const cartItems = useSelector(selectCartItems);
+    const orderId = useSelector(selectOrderId);
+    console.log(orderId)
+    const paymentIntent = {
+        products: cartItems,
+        orderId
+    }
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
@@ -26,7 +29,7 @@ function Payment({method, deliveryAddress}) {
             try{
                 const res = await postAPI(`/payment/create-payment-intent`, paymentIntent)
                 setClientSecret(res.data.clientSecret)
-                setOrderId(res.data.orderId)
+                dispatch(setOrderId(res.data.orderId))
             }
             catch(err){
                 console.log(err)

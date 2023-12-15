@@ -27,7 +27,11 @@ const orderSchema = new mongoose.Schema({
     enum: ['pending', 'processing', 'shipped', 'delivered', 'ready', 'completed', 'canceled', 'rejected'], // Add more statuses if needed
     default: 'pending'
   },
-  items: [
+  stripeClientSecret:{
+    type: String,
+    default: ""
+  },
+  products: [
     {
       product: {
         type: String,
@@ -45,8 +49,8 @@ const orderSchema = new mongoose.Schema({
       size: {
         type: String,
       },
-      quantity: {
-        type: Number,
+      items: {
+        type: [String],
         required: true
       },
       image: {

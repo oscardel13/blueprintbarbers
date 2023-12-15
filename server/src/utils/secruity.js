@@ -74,7 +74,7 @@ async function checkIfAdmin(req,res,next){
     }
     const isAdmin = await checkAdmin(user.gid)
     if (!isAdmin) {
-        return res.status(401).json({
+        return res.status(403).json({
             error: 'You must be admin!'
         })
     }

@@ -81,6 +81,10 @@ async function httpGetProductStore(req,res){
         return res.status(500).json({message:e.message});
     }
 }
+/* TODO:
+    1. Build Way to delete Images
+
+*/
 
 async function httpCreateProduct(req,res){
     const { body, files } = req;
