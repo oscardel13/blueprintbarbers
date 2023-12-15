@@ -15,6 +15,11 @@ const itemSchema = new Schema({
   owner: {
     type: String,
     default: null // Default value for owner field
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+    required: true
   }
 }); 
 
