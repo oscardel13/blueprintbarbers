@@ -139,8 +139,8 @@ const OrderPage = () => {
             <div className="border-solid border-black border-1 rounded-md bg-gray-200 p-4 space-y-5 max-w-7xl">
                 <h3 className="text-xl font-semibold">Items</h3>
                 <br/>
-                {order.items.map((item) => 
-                    <ItemCard item={item} key={item._id}/>
+                {order.products.map((product) => 
+                    <ItemCard product={product} key={product._id}/>
                 )}
             </div>
         </div>

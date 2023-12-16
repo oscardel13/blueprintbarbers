@@ -1,17 +1,17 @@
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ product }) => {
     return (
         <div className="flex flex-row space-x-5">
-            <img src={item.image} className="h-32 w-24 rounded-lg object-cover" alt="item image" style={{objectFit: 'cover'}} />
+            <img src={product.image} className="h-32 w-24 rounded-lg object-cover" alt="product image" style={{objectFit: 'cover'}} />
             <div className="flex flex-col justify-center">
-                <a href={`/store/${item.name}`} className="font-black text-lg underline">{item.name}</a>
-                <p className="">x{item.quantity}</p>
+                <a href={`/store/${product.name}`} className="font-black text-lg underline">{product.name}</a>
+                <p className="">x{product.quantity}</p>
 
                 <h3 className="hidden font-semibold text-md sm:block">Product Id:</h3>
-                <p className="hidden sm:block">{item.product}</p>
+                <p className="hidden sm:block">{product.product}</p>
             </div>
             <div className="flex flex-col justify-center">
-                <h2>${item.pricing}</h2>
+                <h2>${product.pricing}</h2>
             </div>
         </div>
     )
