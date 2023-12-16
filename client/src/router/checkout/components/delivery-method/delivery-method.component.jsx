@@ -15,8 +15,9 @@ const DeliveryMethod = ({method, setMethod, deliveryAddress, handleChange}) => {
                             value="delivery"
                             checked={method === 'delivery'}
                             onChange={(e) => setMethod(e.target.value)}
+                            disabled //Remove Later when delivery is availeble
                         />
-                        <label htmlFor="delivery" >Delivery</label>
+                        <label htmlFor="delivery" >Delivery <span className="text-gray-500">(Coming Soon)</span></label> {/* //Remove Later when delivery is availeble */}
                     </div>
                     <div className="delivery-method-item">
                         <input

@@ -8,7 +8,7 @@ import Payment from './components/payment/payment.component';
 
 const Checkout = () => {
     const cartItems = useSelector(selectCartItems);
-    const [method, setMethod] = useState('delivery')
+    const [method, setMethod] = useState('pickup') //Update Later when delivery is availeble
     const [deliveryAddress, setDeliveryAddress] = useState({
         country: '',
         name: '',
