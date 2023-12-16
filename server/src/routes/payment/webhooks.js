@@ -26,12 +26,15 @@ const paymentIntentCreated = async (order, orderId) =>{
     }
     try{
         const products = await lockItems(order.products)
+        if (products.length === 0){
+            throw new Error("Out of Stock")
+        }
         order.products = products
         const createdOrder = await createOrder(order)
         return createdOrder
     }
     catch(err){
-        console.log(err)
+        return {error: "Out of Stock"}
     }
     
 }

@@ -3,7 +3,7 @@ import { selectCartItems } from '../../../../store/cart/cart.selector';
 
 const OrderSummary = ({items}) => {
     const subtotal = items.reduce( (total, item) => total + item.pricing * item.quantity, 0)
-    const shipping = 5
+    const shipping = 0
     const total = subtotal + shipping
     return (
         <div className="pl-12 pr-12 lg:pr-72 py-5">

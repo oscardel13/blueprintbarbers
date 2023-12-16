@@ -49,8 +49,6 @@ export default function CheckoutForm({method, deliveryAddress, orderId}) {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(elements)
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 

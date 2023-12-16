@@ -10,7 +10,8 @@ async function unlockItems(orderId){
         const { name, items } = productBought
         for (let i=0; i<product.items.length; i++){
             const item = product.items[i]
-            if (items.includes(String(item._id))){
+            const itemId = String(item._id)
+            if (items.includes(itemId)){
                 product.items[i].owner = null
             }
         }
@@ -59,17 +60,17 @@ async function lockItems(products){
 }
 
 async function assignItems(orderId){
-    const order = await getOrder(orderId)
+    const order = await getOrder(orderId) 
     const updatedUser = await getUser(order.user)
-    const productsBought = order.products
-    for(let productBought of productsBought){
+    for(let productBought of order.products){
         const product = await getProduct(productBought.name)
         const { name, items } = productBought
         for (let i=0; i<product.items.length; i++){
-            const item = items[i]
-            if (items.includes(String(item._id))){
+            const item = product.items[i]
+            const itemId = String(item._id)
+            if (items.includes(itemId)){
                 product.items[i].owner = updatedUser.gid
-                updatedUser.items.push({product:name, item: String(item._id)})
+                updatedUser.items.push({product:name, item: itemId})
             }
         }
         await updateProduct(name, product)        

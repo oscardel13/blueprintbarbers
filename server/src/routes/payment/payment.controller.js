@@ -17,6 +17,7 @@ const calculateOrderAmount = (items) => {
 const httpPaymentIntent = async (req, res) => {
     const user = req.user;
     const { products, orderId } = req.body;
+    console.log("ORDER ID: ", orderId)
     if (!user) return res.status(401).send('Unauthorized');
     if (products.length === 0) return res.status(400).send('No products');
     try{
@@ -25,6 +26,9 @@ const httpPaymentIntent = async (req, res) => {
             total: calculateOrderAmount(products),
             products: products,
         }, orderId)
+        if (order?.error){
+            return res.status(400).send(order.error)
+        }
         const newOrderId = order._id.toString()
         if (newOrderId === orderId ){
             return res.status(200).send({
@@ -42,10 +46,10 @@ const httpPaymentIntent = async (req, res) => {
                 orderId: newOrderId
             }
         });
-        await updateOrder(orderId, {stripeClientSecret: paymentIntent.client_secret}) 
-        return res.send({
+        await updateOrder(order._id, {stripeClientSecret: paymentIntent.client_secret}) 
+        return res.json({
             clientSecret: paymentIntent.client_secret,
-            orderId: orderId,
+            orderId: newOrderId,
         });
     }
     catch(err){
