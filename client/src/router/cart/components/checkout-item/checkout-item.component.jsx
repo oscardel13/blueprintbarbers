@@ -25,7 +25,7 @@ const CheckoutItem = ({item}) => {
             <div className='p-1 flex'>
                 <img src={item.images[0]} alt={item.name} className="w-28 sm:w-32 object-cover rounded-md" />
                 <div className="p-5 text-center flex flex-col gap-2">
-                    <a className="text-md font-semibold cursor-pointer underline" onClick={handleNameClick}>{item.name}</a>
+                    <span className="text-md font-semibold cursor-pointer underline" onClick={handleNameClick}>{item.name}</span>
                     <p className="text-sm ">Size: {item.size}</p>
                     <button className="text-sm text-red-500" onClick={handleClearItem}>Remove</button>
                 </div>
@@ -33,18 +33,18 @@ const CheckoutItem = ({item}) => {
             </div>
             <div className="text-center items-center justify-center hidden md:flex">${item.pricing.toFixed(2)}</div>
             <div className="text-center items-center justify-center hidden md:flex"> 
-                <a className='cursor-pointer text-xl font-semibold' onClick={handleRemoveItem}> {"-"}  &nbsp; </a>
+                <span className='cursor-pointer text-xl font-semibold' onClick={handleRemoveItem}> {"-"}  &nbsp; </span>
                 {item.quantity}
-                <a className='cursor-pointer text-xl font-medium' onClick={handleAddItem}> &nbsp; {"+"} </a>
+                <span className='cursor-pointer text-xl font-medium' onClick={handleAddItem}> &nbsp; {"+"} </span>
             </div>
             <div className="text-center items-center justify-center hidden md:flex">${(item.pricing * item.quantity).toFixed(2)}</div>
 
             <div className="flex flex-col items-center justify-center md:hidden">
                 <div className="flex text-center items-center justify-center">${item.pricing.toFixed(2)}</div>
                 <div className="flex text-center items-center justify-center"> 
-                    <a className='cursor-pointer text-xl font-semibold' onClick={handleRemoveItem}> {"-"}  &nbsp; </a>
+                    <span className='cursor-pointer text-xl font-semibold' onClick={handleRemoveItem}> {"-"}  &nbsp; </span>
                     {item.quantity}
-                    <a className='cursor-pointer text-xl font-medium' onClick={handleAddItem}> &nbsp; {" +"} </a>
+                    <span className='cursor-pointer text-xl font-medium' onClick={handleAddItem}> &nbsp; {" +"} </span>
                 </div>
             </div>            
         </div>

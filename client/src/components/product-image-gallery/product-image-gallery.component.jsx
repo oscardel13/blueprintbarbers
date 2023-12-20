@@ -6,7 +6,7 @@ const ImageGallery = ({ images, currentImageIndex, handleImageChange, handleNext
     <div className="flex flex-col items-center">
       <img
         src={images[currentImageIndex]}
-        alt=""
+        alt="product image"
         className="scale-100 max-h-[40rem] object-cover rounded-lg shadow-md mb-2 border border-gray-300"
       />
       <br/>
@@ -15,7 +15,7 @@ const ImageGallery = ({ images, currentImageIndex, handleImageChange, handleNext
           <img
             key={index}
             src={image}
-            alt=""
+            alt="product image"
             className={`cursor-pointer mx-2 border border-gray-300 max-h-16 ${
               currentImageIndex === index && 'border-blue-500'
             }`}

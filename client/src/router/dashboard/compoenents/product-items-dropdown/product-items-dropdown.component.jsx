@@ -86,8 +86,8 @@ const ProductItemDropdown = (props) => {
             <span className="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-md" onClick={toggleDropdown}>Action</span>
             {isDropdownOpen && (
                 <div ref={dropdownRef} className='p-3 grid grid-cols-1 gap-2 z-3 absolute flex flex-col justify-center w-max top-[100%] right-5 bg-gray-300 text-black border-solid border-black border-[1px]'>
-                    <a className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" onClick={handleSetPrinting}>Status set: Printing</a>
-                    <a className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" onClick={handleStatusReady}>Status set: Ready</a>
+                    <span className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" onClick={handleSetPrinting}>Status set: Printing</span>
+                    <span className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" onClick={handleStatusReady}>Status set: Ready</span>
                     <a className="block p-2 cursor-pointer hover:text-white hover:bg-gray-500" href={`${CLIENT_URL}/store/${product.name}/${item._id}`} target="_blank">View</a>
                 </div>
             )}
