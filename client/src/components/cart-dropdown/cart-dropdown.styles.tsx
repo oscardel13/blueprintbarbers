@@ -13,7 +13,7 @@ export const CartDropdownContainer = styled.div`
   top: 60px;
   right: 15px;
   z-index: 5;
-  
+
   .empty-message {
     font-size: 18px;
     margin: 50px auto;

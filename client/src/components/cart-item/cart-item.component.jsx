@@ -48,9 +48,9 @@ const CartItem = memo(({ item }) => {
     >
       <img src={product.images[0]} alt={`${product.name}`} className="w-16 object-cover rounded-md"/>
       <div className="w-70 flex flex-col items-start justify-center p-3">
-        <span className="text-base">{product.name}</span>
-        <span className="text-base">Size: {product.size[0]}</span>
-        <span className="text-base">{product.quantity} x ${product.pricing}</span>
+        <span className="text-base leading-none">{product.name}</span>
+        <span className="text-base leading-none">Size: {product.size[0]}</span>
+        <span className="text-base leading-none">{product.quantity} x ${product.pricing}</span>
       </div>
       <button
         onClick={() => onRemove()}

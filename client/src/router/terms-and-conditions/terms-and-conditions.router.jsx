@@ -16,7 +16,7 @@ const TermAndConditionsPage = () => {
                 <p>We strive to be as accurate as possible with product descriptions. However, we do not warrant that product descriptions or other content is accurate, complete, reliable, current, or error-free.</p>
 
                 <h3 className="text-xl font-semibold pt-3">Returns and Refunds</h3>
-                <p>Products can be returned under certain conditions as specified in our Return Policy. Eligible products may be subject to refund or exchange.</p>
+                <p>All sales are final.</p>
 
                 <h3 className="text-xl font-semibold pt-3">Intellectual Property</h3>
                 <p>The content on our website, including text, graphics, logos, images, and software, is the property of Blueprint Barbers and is protected by intellectual property laws.</p>
