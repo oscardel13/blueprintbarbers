@@ -1,12 +1,35 @@
 import { useState, useEffect } from "react";
 
 import ProductItemDropdown from "../product-items-dropdown/product-items-dropdown.component";
+import { putAPI, putAPIMultipart } from "../../../../utils/api";
 
 const ProductItemsTable = ({itemsLoad, product}) => {
     const [ items, setItems ] = useState(itemsLoad);
+
     useEffect(() => {
         setItems(itemsLoad); 
-    },[itemsLoad]) 
+    },[itemsLoad])
+
+    const handleOwnerChange = async (e) => {
+        e.preventDefault();
+        const index = parseInt(e.target.name);
+        let value = e.target.value;
+        const updatedproduct = product
+        updatedproduct.items[index].owner = value;
+        console.log(updatedproduct)
+        try{
+            const res = await putAPIMultipart(`/products/${product.name}`, updatedproduct)
+            console.log(res)
+            setItems(updatedproduct.items);
+        }
+        catch(e){
+            console.log(e)
+            window.alert("Could Not Complete")
+        }
+        console.log(updatedproduct.items)
+        
+    }
+    console.log(items)
     return (
         <div className="flex overflow-auto bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 ">
             <div className='min-w-[1200px] w-[-webkit-fill-available]'>
@@ -20,7 +43,16 @@ const ProductItemsTable = ({itemsLoad, product}) => {
                 {items.map((item, index) => (
                     <div className='flex items-center bg-white py-4 mb-0 border border-gray-300 rounded-md h-32' key={index}>
                         <div className="w-2/6 pl-5">{item._id}</div>
-                        <div className="w-2/6">{item.owner ? item.owner : "N/A"}</div>
+                        <div className="w-2/6">
+                        {item.owner == null || item.owner == "" || item.owner == "owned" ? 
+                            <select name={index} id="owner" onChange={handleOwnerChange} value={item.owner}>
+                                <option value="">N/A</option>
+                                <option value="owned">Owned</option>
+                            </select>
+                        :
+                            item.owner
+                        }
+                        </div> 
                         <div className="w-1/6">{item.size}</div>
                         <div className="w-1/6">{item.status}</div>
                         {/* TODO: make component that has dropdown one to change status and one to copy link */}

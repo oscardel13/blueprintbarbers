@@ -41,7 +41,7 @@ ProductAPI.post('/', checkIfAdmin , upload.fields([
     { name: 'form', maxCount: 1 },
     { name: 'images', maxCount: 10}
   ]),httpCreateProduct) 
-ProductAPI.put('/:id', checkIfAdmin , upload.fields([
+ProductAPI.put('/:name', checkIfAdmin , upload.fields([
   { name: 'form', maxCount: 1 },
   { name: 'images', maxCount: 10}
 ]),httpUpdateProduct)

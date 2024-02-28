@@ -25,7 +25,7 @@ async function httpGetArchivedProducts(req, res){
     catch(e){
         return res.status(500).json({message:e.message});
     }  
-  
+
 }
 
 // MAYBE ADD LOGIC TO DATA INSTEAD OF HERE
@@ -105,14 +105,23 @@ async function httpCreateProduct(req,res){
 
 async function httpUpdateProduct(req,res){
     const { session, body, files } = req;
-    product = JSON.parse(body.form);
-    if (product.name != req.params.id){
+    let product;
+    if (body.form === undefined){
+        product = body
+    }
+    else{
+        product = JSON.parse(body.form);
+    }
+    if (product.name != req.params.name){
+
         return res.status(400).json({message:"Invalid product id"});
     }
+
     product.updatedAt = Date.now();
     try{
         product.images = await processImages(product, files.images)
-        const updatedProduct = await updateProduct(req.params.id,product);
+        const updatedProduct = await updateProduct(req.params.name,product);
+        console.log(updatedProduct)
         return res.status(200).json(updatedProduct);
     }
     catch(e){
