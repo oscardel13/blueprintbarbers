@@ -16,20 +16,15 @@ const ProductItemsTable = ({itemsLoad, product}) => {
         let value = e.target.value;
         const updatedproduct = product
         updatedproduct.items[index].owner = value;
-        console.log(updatedproduct)
         try{
             const res = await putAPIMultipart(`/products/${product.name}`, updatedproduct)
-            console.log(res)
             setItems(updatedproduct.items);
         }
         catch(e){
-            console.log(e)
             window.alert("Could Not Complete")
         }
-        console.log(updatedproduct.items)
         
     }
-    console.log(items)
     return (
         <div className="flex overflow-auto bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 ">
             <div className='min-w-[1200px] w-[-webkit-fill-available]'>

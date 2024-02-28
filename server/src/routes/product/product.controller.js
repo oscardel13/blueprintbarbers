@@ -91,7 +91,6 @@ async function httpCreateProduct(req,res){
     product = JSON.parse(body.form);
     product.items = createProductItemList(product.sizes)
     product.sizes = createReducedSizeList(product.sizes)
-    console.log(product)
     product.name = product.name.replace(/\s+$/, ''); // deletes trailing whitespace
     try{
         product.images = await processImages(product, files.images)
@@ -121,7 +120,6 @@ async function httpUpdateProduct(req,res){
     try{
         product.images = await processImages(product, files.images)
         const updatedProduct = await updateProduct(req.params.name,product);
-        console.log(updatedProduct)
         return res.status(200).json(updatedProduct);
     }
     catch(e){
