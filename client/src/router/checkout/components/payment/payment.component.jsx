@@ -17,7 +17,6 @@ function Payment({method, deliveryAddress}) {
     const dispatch = useDispatch();
     const cartItems = useSelector(selectCartItems);
     const orderId = useSelector(selectOrderId);
-    // console.log(orderId)
     const paymentIntent = {
         products: cartItems,
         orderId
@@ -28,7 +27,6 @@ function Payment({method, deliveryAddress}) {
         const createPaymentIntent = async () => {
             try{
                 const res = await postAPI(`/payment/create-payment-intent`, paymentIntent)
-                console.log("RESPONSE DATS",res.data)
                 setClientSecret(res.data.clientSecret)
                 dispatch(setOrderId(res.data.orderId))
             }

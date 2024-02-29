@@ -53,7 +53,6 @@ const CreateProductPage = () => {
     const items = Array.from(productData.images);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    console.log(items)
     setProductData({...productData, images: items});
 };
 
@@ -67,7 +66,6 @@ const CreateProductPage = () => {
     
     try{
       const res = await postAPIMultipart('/products',productFormData)
-      console.log(res)
       if (res.status === 200)
         window.location.href = '/dashboard/products';
       else{

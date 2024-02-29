@@ -26,7 +26,6 @@ const Navigation = () => {
     const currentUser = useSelector(selectCurrentUser)
     const logout = async () => {
         try{
-            console.log("Here")
             dispatch(setCurrentUser(null))
             await getAPI("/auth/logout"); 
         }

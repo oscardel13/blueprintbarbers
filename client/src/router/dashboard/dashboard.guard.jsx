@@ -9,7 +9,6 @@ const DashboardGuard = ({children}) => {
     const checkAdmin = async () => {
       try{
         const res = await getAPI(`/users/checkAdmin`)
-        console.log(res)
       }
       catch(err){
           window.alert("You are not authorized to access this page")

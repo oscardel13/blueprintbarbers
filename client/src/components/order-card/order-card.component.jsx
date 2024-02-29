@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 
 const OrderCard = ({ _id, total, date, status, items }) => {
-    console.log(items)
-
     return (
         <div className="flex flex-col">
             <div className="flex flex-row bg-gray-300 text-black">

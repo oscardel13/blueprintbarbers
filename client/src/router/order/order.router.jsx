@@ -10,12 +10,10 @@ import { getAPI } from "../../utils/api";
 const OrderPage = () => {
     const { orderId } = useParams();
     const [order, setOrder] = useState({products:[]})
-    console.log(order)
     useEffect(() => {
         const fetchOrder = async () => {
             try{
                 const res = await getAPI(`/orders/${orderId}`)
-                console.log(res.data)
                 setOrder(res.data)
             }
             catch(err){

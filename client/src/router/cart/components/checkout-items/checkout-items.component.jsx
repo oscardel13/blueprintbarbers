@@ -7,8 +7,6 @@ const CheckOutItems = () => {
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.pricing * item.quantity, 0);
     };
-    console.log(cartItems);
-
     return (
         <>
             <div className={`grid grid-cols-2 md:grid-cols-4 border-b border-gray-300 pb-2`}>

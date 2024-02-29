@@ -25,7 +25,6 @@ const ProductPage = () => {
         const fetchProduct = async () => {
         try{
             const response = await getAPI(`/products/store/${productName}`)
-            console.log(response.data)
             setProduct(response.data)
         }
         catch(err){

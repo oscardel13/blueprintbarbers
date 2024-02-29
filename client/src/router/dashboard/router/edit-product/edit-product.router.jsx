@@ -26,7 +26,6 @@ const EditProduct = () => {
         const fetchProduct = async () => {
         try{
             const response = await getAPI(`/products/${productName}`)
-            console.log(response.data)
             if (response.data)
                 setProductData(response.data)
         }
@@ -44,8 +43,6 @@ const EditProduct = () => {
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         const updatedImages = [...productData.images, ...files]
-        console.log(files)
-        console.log(updatedImages)
         // updatedImages.push(files)
         setProductData((prevData) => ({ ...prevData, images: updatedImages }));
     };
@@ -119,7 +116,6 @@ const EditProduct = () => {
         const items = Array.from(productData.images);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
-        console.log(items)
         setProductData({...productData, images: items});
     };
 
