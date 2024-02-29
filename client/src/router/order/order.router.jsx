@@ -13,9 +13,14 @@ const OrderPage = () => {
     console.log(order)
     useEffect(() => {
         const fetchOrder = async () => {
-            const res = await getAPI(`/orders/${orderId}`)
-            console.log(res.data)
-            setOrder(res.data)
+            try{
+                const res = await getAPI(`/orders/${orderId}`)
+                console.log(res.data)
+                setOrder(res.data)
+            }
+            catch(err){
+                console.log(err)
+            }
         }
         fetchOrder()
     },[])

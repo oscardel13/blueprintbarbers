@@ -13,17 +13,20 @@ import { setOrder as setOrderActon } from "../../../../store/admin/admin.reducer
 const OrderPage = () => {
     const dispatch = useDispatch();
     const order = useSelector(selectOrder)
-    console.log(order)
     const { orderId } = useParams();
     const [status, setStatus] = useState(order.status);
 
     useEffect(() => {
         const fetchOrder = async () => {
-            if (orderId !== ":id"){
-                console.log("FETCHED ORDERS!!!!!!")
-                const res = await getAPI(`/orders/${orderId}`)
-                setStatus(res.data.status)
-                dispatch(setOrderActon(res.data))
+            try{
+                if (orderId !== ":id"){
+                    const res = await getAPI(`/orders/${orderId}`)
+                    setStatus(res.data.status)
+                    dispatch(setOrderActon(res.data))
+                }
+            }
+            catch(err){
+                console.log(err)
             }
         }
         fetchOrder()
