@@ -5,7 +5,7 @@ async function httpGetUsers(req, res){
     const { skip, limit } = getPagination(req.query);
     console.log(skip, limit)
     try{
-        const users = await getUsers(limit, offset)
+        const users = await getUsers(skip, limit)
         res.status(200).json(users)
     }
     catch(err){

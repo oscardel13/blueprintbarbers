@@ -38,11 +38,11 @@ const userSchema = new Schema({
   },
   phone: {
     type: String,
-    required: false // Make it optional
+    default: "",
   },
   address: {
     type: String,
-    required: false // Make it optional
+    default: "",
   },
   accessLevel: {
     type: Number,
