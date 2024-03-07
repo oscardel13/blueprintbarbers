@@ -6,7 +6,7 @@ const Searchbar = ({searchQuery, handleSearchChange}) => {
             <label htmlFor="search" className="text-lg font-semibold">Search: </label>
             <input
                 type="text"
-                placeholder="Search by ID, Name, Email, Address, or Phone"
+                placeholder=" Search by ID, Name, Email, Address, or Phone"
                 className="w-96"
                 value={searchQuery}
                 onChange={handleSearchChange}
