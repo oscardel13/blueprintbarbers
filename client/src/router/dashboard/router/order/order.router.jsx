@@ -57,7 +57,6 @@ const OrderPage = () => {
       ? ['processing', 'shipped', 'delivered']
       : ['processing', 'ready', 'delivered'];
 
-    console.log(order)
     return (
         <div className="min-h-screen bg-gray-300 py-5 sm:px-5">
             <PageHeader title="Order" />
