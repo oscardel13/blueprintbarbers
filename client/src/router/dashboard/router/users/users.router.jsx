@@ -12,7 +12,6 @@ const Users = () => {
         const fetchUsers = async () => {
             const res = await getAPI('/users');
             setUsers(res.data);
-            console.log(res.data);
         }
         fetchUsers();
     },[])
@@ -22,15 +21,17 @@ const Users = () => {
     };
 
     const filteredUsers = users.filter(user => {
+        console.log(searchQuery)
+        const lowerSearchQuery = searchQuery.toLowerCase();
         if (!searchQuery) {
             return true;
         }
         return (
-            user.gid.toString().includes(searchQuery) ||
-            user.name.toLowerCase().includes(searchQuery) ||
-            user.email.toLowerCase().includes(searchQuery) ||
-            user.address?.toLowerCase().includes(searchQuery) ||
-            user.phone?.toLowerCase().includes(searchQuery)
+            user.gid.toString().includes(lowerSearchQuery) ||
+            user.name.toLowerCase().includes(lowerSearchQuery) ||
+            user.email.toLowerCase().includes(lowerSearchQuery) ||
+            user.address?.toLowerCase().includes(lowerSearchQuery) ||
+            user.phone?.toLowerCase().includes(lowerSearchQuery)
         );
     });
 
