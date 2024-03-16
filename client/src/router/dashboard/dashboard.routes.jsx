@@ -13,6 +13,7 @@ import Orders from './router/orders/orders.router';
 import Account from './router/account/account.router';
 import EditProduct from './router/edit-product/edit-product.router';
 import ViewProduct from './router/view-product/view-product.router';
+import EditBarber from './router/barbers/router/edit/edit.router';
 
 
 function DashboardRoutes() {
@@ -26,8 +27,12 @@ function DashboardRoutes() {
           <Route path='products/:productName/edit' element={<EditProduct/>}/>
           <Route path='users' element={<Users/>}/>
           <Route path='users/:id' element={<User/>}/>
-          <Route path='barbers' element={<Barbers/>}/>
-          <Route path='barbers/:id' element={<Barber/>}/>
+          <Route path='barbers'>
+              <Route index element={<Barbers/>}/>
+              <Route path=':id' element={<Barber/>}/>
+              <Route path=':id/edit' element={<EditBarber/>}/>
+          </Route>
+          
           <Route path='orders' element={<Orders/>}/>
           <Route path='orders/:orderId' element={<Order/>}/>
           <Route path='account' element={<Account/>}/>
