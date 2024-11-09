@@ -1,6 +1,5 @@
-import IosShareIcon from "@mui/icons-material/IosShare";
-import barberImage from "../../assets/barbers/enrique/5.jpg";
 import InfoCard from "./components/info-card/info-card.component";
+import BookingHero from "./components/hero-section/hero-section.component";
 
 const DATA = {
   name: "Enrique The Barbers",
@@ -39,27 +38,10 @@ const Booking = () => {
     <div className="flex justify-center">
       <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
         <div className="relative flex flex-col w-full lg:w-2/3">
-          <img
-            className="d-block w-full h-[500px] object-cover rounded"
-            src={barberImage}
-            alt="barber image"
-          />
-          <div className="flex flex-col gap-1 py-3">
-            <div className="flex flex-row justify-between">
-              <h3 className="text-3xl font-bold">{DATA.name}</h3>
-              <span className="cursor-pointer">
-                <IosShareIcon />
-              </span>
-            </div>
-            <span className="text-gray-500 text-xs">{DATA.address}</span>
-          </div>
-          {/* Rating and # revies box */}
-          <div className="absolute top-0 right-0 z-50 bg-[rgb(0,0,0,0.75)] flex flex-col w-32 rounded justify-center items-center p-2">
-            <h6 className="text-white font-semibold text-lg">5.0</h6>
-            <span className="flex justify-center text-white text-sm">
-              136 reviews
-            </span>
-          </div>
+          <BookingHero name={DATA.name} address={DATA.address} />
+          {/* Services */}
+          {/* See Our Work */}
+          {/* Revies */}
         </div>
 
         <div className="fle flex-col w-full lg:w-1/3">
