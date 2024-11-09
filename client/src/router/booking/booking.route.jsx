@@ -29,7 +29,23 @@ const DATA = {
       ["13:00", "17:00"],
     ],
   },
-  services: {},
+  services: [
+    {
+      name: "Haircut",
+      price: 50,
+      duration: 40,
+    },
+    {
+      name: "Haircut & Beard",
+      price: 60,
+      duration: 60,
+    },
+    {
+      name: "Haircut & Design",
+      price: 55,
+      duration: 60,
+    },
+  ],
   reviews: [],
 };
 
