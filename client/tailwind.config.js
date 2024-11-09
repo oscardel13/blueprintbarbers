@@ -5,5 +5,5 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-}
-
+  important: true, // Remove this once bootstrap is uninstalled
+};

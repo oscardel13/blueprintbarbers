@@ -37,8 +37,8 @@ const DATA = {
 const Booking = () => {
   return (
     <div className="flex justify-center">
-      <div className="lg:py-3 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
-        <div className="pt-2 lgflex flex-col w-full lg:w-2/3">
+      <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
+        <div className="relative flex flex-col w-full lg:w-2/3">
           <img
             className="d-block w-full h-[500px] object-cover rounded"
             src={barberImage}
@@ -53,9 +53,16 @@ const Booking = () => {
             </div>
             <span className="text-gray-500 text-xs">{DATA.address}</span>
           </div>
+          {/* Rating and # revies box */}
+          <div className="absolute top-0 right-0 z-50 bg-[rgb(0,0,0,0.75)] flex flex-col w-32 rounded justify-center items-center p-2">
+            <h6 className="text-white font-semibold text-lg">5.0</h6>
+            <span className="flex justify-center text-white text-sm">
+              136 reviews
+            </span>
+          </div>
         </div>
 
-        <div className="fle flex-col w-full lg:w-1/3 pt-2">
+        <div className="fle flex-col w-full lg:w-1/3">
           <InfoCard
             name={DATA.name}
             phone={DATA.phone}
