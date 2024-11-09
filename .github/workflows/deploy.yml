@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Log environment variables
+        run: |
+          echo "REACT_APP_MAPBOX_ACCESS_TOKEN=$REACT_APP_MAPBOX_ACCESS_TOKEN"
       - uses: actions/checkout@v3
       # Docker Login
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # UPDATE SECRETS FOR PROD
@@ -82,8 +85,7 @@ jobs:
       - name: Deploy to S3
         run: |
           aws s3 cp client/build/ s3://${{ secrets.S3_CLIENT_ID }}/ --recursive
-          echo STRIPE: ${{ secrets.REACT_APP_STRIPE_PUBLISH_KEY }}
-          echo MAPBOX: ${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}
+
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
