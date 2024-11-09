@@ -12,12 +12,8 @@ import { postAPI } from "../../../../utils/api";
 import { Link } from "react-router-dom";
 import { setOrderId } from "../../../../store/cart/cart.reducer";
 
-const STRIPE_PUBLISHABLE_KEY =
-  process.env.REACT_APP_STRIPE_PUBLISH_KEY ||
-  "pk_live_51OHepjEaoH01PH0iHmMXHnnSJDimlOSYLP0YgRC7PpkA5tvdPBLv8KoTPGp9rXO33fuIb9R32kqcPh7qWrAERCD200EsyzetVN";
-
 function Payment({ method, deliveryAddress }) {
-  const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY);
   const [clientSecret, setClientSecret] = useState("");
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
