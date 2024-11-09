@@ -10,11 +10,14 @@ const MapPreview = ({ address }) => {
     setIsExpanded((prev) => !prev);
   };
 
+  const MAPBOX_ACCESS_TOKEN =
+    process.env.REACT_APP_STRIPE_PUBLISH_KEY ||
+    "pk.eyJ1Ijoib3NjYXJkZWwxMyIsImEiOiJjbTNhOTFkc20weHp3Mm1vcmtnaTZsYjE4In0.fWdoxF2ryANX3qKVGYUbvA";
+
   // Function to fetch latitude and longitude from address
   const fetchCoordinates = async (address) => {
     const encodedAddress = encodeURIComponent(address); // Encode the address for URL
-    const geocodeUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddress}.json?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`;
-    console.log(process.env.REACT_APP_MAPBOX_ACCESS_TOKEN);
+    const geocodeUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddress}.json?access_token=${MAPBOX_ACCESS_TOKEN}`;
 
     try {
       const response = await fetch(geocodeUrl);
@@ -53,7 +56,7 @@ const MapPreview = ({ address }) => {
           height: "150px",
         }}
         mapStyle="mapbox://styles/mapbox/streets-v11"
-        mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         interactive={isExpanded}
       >
         <Marker
