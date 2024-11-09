@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: SSH into EC2 instance
         uses: appleboy/ssh-action@master
         with:
@@ -73,7 +73,7 @@ jobs:
         run: |
           cd client
           npm install --legacy-peer-deps
-      
+
       - name: Build React app (inside the client directory)
         run: |
           cd client
@@ -87,6 +87,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
           REACT_APP_STRIPE_PUBLISH_KEY: ${{ secrets.REACT_APP_STRIPE_PUBLISH_KEY }}
+          REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.REACT_APP_MAPBOX_ACCESS_TOKEN }}
 
       - name: Invalidate CloudFront Cache
         run: |
