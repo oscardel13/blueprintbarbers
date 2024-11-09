@@ -37,8 +37,8 @@ const DATA = {
 const Booking = () => {
   return (
     <div className="flex justify-center">
-      <div className="py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
-        <div className="flex flex-col w-full lg:w-2/3">
+      <div className="lg:py-3 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
+        <div className="pt-2 lgflex flex-col w-full lg:w-2/3">
           <img
             className="d-block w-full h-[500px] object-cover rounded"
             src={barberImage}
@@ -55,7 +55,7 @@ const Booking = () => {
           </div>
         </div>
 
-        <div className="fle flex-col w-full lg:w-1/3">
+        <div className="fle flex-col w-full lg:w-1/3 pt-2">
           <InfoCard
             name={DATA.name}
             phone={DATA.phone}
