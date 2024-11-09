@@ -5,7 +5,7 @@ const Barbers = () => {
     return (
         <div className="container">
             <PageHeader title="Barbers" />
-            <BarberList barbers={[{gid: "12345",name:"test test", email:"test@gmail.com", phone:"123-456-7890"}]}  />
+            <BarberList barbers={[{gid: "12345",name:"test", email:"test@gmail.com", phone:"123-456-7890"}]}  />
         </div>
     )
 }

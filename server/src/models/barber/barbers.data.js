@@ -2,8 +2,20 @@ const axios = require('axios');
 
 const barbersCollection = require('./barbers.mongo');
 
-const getBarbersList = async () => {
+const getBarbers = async () => {
     return await barbersCollection.find({})
+}
+
+const getBarber = async (id) => {
+    return await barbersCollection.findOne({ gid: id })
+}
+
+const addBarber = async (barber) => {
+    return await barbersCollection.insertOne(barber)
+}
+
+const updateBarber = async (barber) => {
+    return await barbersCollection.findOneAndUpdate({ gid: barber.gid }, barber, {returnDocument: 'after'})
 }
 
 const instagramPosts = async (key) =>{ 
@@ -24,6 +36,9 @@ const instagramPosts = async (key) =>{
 }
 
 module.exports = {
-    getBarbersList,
+    getBarbers,
+    getBarber,
+    addBarber,
+    updateBarber,
     instagramPosts
 }

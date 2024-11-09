@@ -49,28 +49,10 @@ app.use((req, res, next) => {
 
   app.use('/', api)
 
-  app.get('/api/barbers', async (req,res) => {
-    const barbersList = await getBarbersList()
-    
-    const barbers = await  Promise.all(barbersList.map(async el => {
-      try{
-        posts = await instagramPosts(el.instagram)
-      }
-      catch{
-        posts = []
-      }
-        const updatedEl = {...el.toObject(), instagram: posts}
-        console.log(el.name)
-        return updatedEl
-    }))
+  // app.use(express.static(path.join(__dirname, ".." , 'public')));
 
-    res.status(200).json({barbers : barbers});
-  });
-
-  app.use(express.static(path.join(__dirname, ".." , 'public')));
-
-  app.get('/*', (req,res) => {
-    res.sendFile(path.join(__dirname,'..','public','index.html'));
-  });  
+  // app.get('/*', (req,res) => {
+  //   res.sendFile(path.join(__dirname,'..','public','index.html'));
+  // });  
 
 module.exports = app;
