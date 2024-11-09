@@ -1,5 +1,5 @@
 import IosShareIcon from "@mui/icons-material/IosShare";
-import barberImage from "../../../../assets/barbers/enrique/5.jpg";
+import barberImage from "../../../../assets/enrique-profile-picture.jpg";
 
 const BookingHero = ({ name, address }) => {
   return (
@@ -13,7 +13,7 @@ const BookingHero = ({ name, address }) => {
         </div>
       </div>
       <img
-        className="d-block w-full h-[500px] object-cover rounded"
+        className="d-block w-full h-[500px] md:h-[700px] lg:h-[750px] object-cover rounded"
         src={barberImage}
         alt="barber image"
       />

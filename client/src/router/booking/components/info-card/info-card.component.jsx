@@ -2,7 +2,9 @@ import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import MapPreview from "../map-preview/map-preview.component";
 import profilePic from "../../../../assets/enrique-profile-picture.jpg";
-
+import InstagramIcon from "@mui/icons-material/Instagram";
+import { ReactComponent as BooksyIcon } from "../../../../assets/Booksy.svg";
+// these sections can be modulize as well (do it when it grows to new user and only show if they have info filled in)
 const InfoCard = ({ name, hours, phone, address }) => {
   function formatTime(hourString) {
     const [hour, minute] = hourString.split(":").map(Number);
@@ -24,6 +26,7 @@ const InfoCard = ({ name, hours, phone, address }) => {
   ];
   return (
     <div className="bg-gray-100 ">
+      {/* MAP with mini profile and address card */}
       <div className="relative w-full">
         <MapPreview address={address} />
         <div className="absolute px-2 bottom-1 z-10">
@@ -49,10 +52,13 @@ const InfoCard = ({ name, hours, phone, address }) => {
           </div>
         </div>
       </div>
+
+      {/* title (this could all be one (title, contact, businesness hoursl)) */}
       <div className="py-3 px-5 mt-5">
         <h5>CONTACT & BUSINESS HOURS</h5>
       </div>
       <hr />
+      {/* Contact */}
       <div className="py-3 flex flex-row justify-between px-5">
         <h5 className="flex flex-row items-center">
           <PhoneAndroidIcon />
@@ -63,7 +69,8 @@ const InfoCard = ({ name, hours, phone, address }) => {
         </button>
       </div>
       <hr />
-      <div className="py-3 flex-col px-5">
+      {/* Business Hours */}
+      <div className="py-3 flex flex-col px-5">
         {daysOfTheWeek.map((day) => {
           return (
             <div className="flex flex-row justify-between py-2" key={day}>
@@ -82,6 +89,25 @@ const InfoCard = ({ name, hours, phone, address }) => {
             </div>
           );
         })}
+      </div>
+      <hr />
+
+      {/* Socials */}
+      <div className="py-3 flex flex-col px-5">
+        <h6 className="font-semibold pb-5">SOCIAL MEDIA</h6>
+        <div className="flex flex-row justify-center items-center gap-5">
+          <a href={"https://www.instagram.com/enriquethebarber__/"}>
+            <InstagramIcon fontSize="large" />
+          </a>
+          <a
+            href={
+              "https://booksy.com/en-us/382802_enrique-the-barber_barber-shop_134761_denver?do=invite#ba_s=dl_1"
+            }
+            className="w-28"
+          >
+            <BooksyIcon />
+          </a>
+        </div>
       </div>
     </div>
   );

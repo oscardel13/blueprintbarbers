@@ -53,7 +53,7 @@ const MapPreview = ({ address }) => {
         }}
         mapStyle="mapbox://styles/mapbox/streets-v11"
         mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-        interactive={isExpanded}
+        // interactive={isExpanded}
       >
         <Marker
           longitude={coordinates.longitude}
