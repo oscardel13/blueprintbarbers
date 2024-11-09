@@ -12,6 +12,8 @@ jobs:
       - name: Log environment variables
         run: |
           echo "REACT_APP_MAPBOX_ACCESS_TOKEN=$REACT_APP_MAPBOX_ACCESS_TOKEN"
+          echo "REACT_APP_STRIPE_PUBLISH_KEY=$REACT_APP_STRIPE_PUBLISH_KEY"
+
       - uses: actions/checkout@v3
       # Docker Login
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # UPDATE SECRETS FOR PROD
