@@ -11,8 +11,8 @@ const MapPreview = ({ address }) => {
   };
 
   const MAPBOX_ACCESS_TOKEN =
-    process.env.REACT_APP_STRIPE_PUBLISH_KEY ||
-    "pk.eyJ1Ijoib3NjYXJkZWwxMyIsImEiOiJjbTNhOTFkc20weHp3Mm1vcmtnaTZsYjE4In0.fWdoxF2ryANX3qKVGYUbvA";
+    "pk.eyJ1Ijoib3NjYXJkZWwxMyIsImEiOiJjbTM5dW96dTgxNzRhMnJwb3BndHc2czl1In0.3kOgwwvOVl1zgJAgk3XVOg" ||
+    process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
   // Function to fetch latitude and longitude from address
   const fetchCoordinates = async (address) => {
