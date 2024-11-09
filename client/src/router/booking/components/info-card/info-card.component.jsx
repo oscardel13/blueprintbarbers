@@ -26,7 +26,7 @@ const InfoCard = ({ name, hours, phone, address }) => {
     <div className="bg-gray-100 ">
       <div className="relative w-full">
         <MapPreview address={address} />
-        <div className="absolute px-2 bottom-1 z-50">
+        <div className="absolute px-2 bottom-1 z-10">
           <div className="flex flex-row justify-between bg-white border-gray-200 rounded shadow max-h-14 w-full">
             <div className="flex flex-row py-1">
               <div className="px-2 w-1/6">

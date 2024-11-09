@@ -14,6 +14,7 @@ const MapPreview = ({ address }) => {
   const fetchCoordinates = async (address) => {
     const encodedAddress = encodeURIComponent(address); // Encode the address for URL
     const geocodeUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddress}.json?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`;
+    console.log(process.env.REACT_APP_MAPBOX_ACCESS_TOKEN);
 
     try {
       const response = await fetch(geocodeUrl);

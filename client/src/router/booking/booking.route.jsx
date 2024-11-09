@@ -50,8 +50,6 @@ const DATA = {
 };
 
 const Booking = () => {
-  console.log("HERE BITCH");
-  console.log(process.env.REACT_APP_MAPBOX_ACCESS_TOKEN);
   return (
     <div className="flex justify-center">
       <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">

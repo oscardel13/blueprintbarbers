@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
+import styled from "styled-components";
 
 export const CartDropdownContainer = styled.div`
   position: absolute;
@@ -12,7 +11,7 @@ export const CartDropdownContainer = styled.div`
   background-color: rgb(209 213 219);
   top: 60px;
   right: 15px;
-  z-index: 5;
+  z-index: 50;
 
   .empty-message {
     font-size: 18px;
@@ -22,7 +21,7 @@ export const CartDropdownContainer = styled.div`
   button {
     margin-top: auto;
   }
-`
+`;
 export const EmptyMessage = styled.span`
   font-size: 18px;
   margin: 50px auto;
@@ -34,4 +33,4 @@ export const CartItemStyle = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   overflow-x: hidden;
-`
+`;

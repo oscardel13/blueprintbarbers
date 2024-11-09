@@ -5,7 +5,7 @@ const BookingHero = ({ name, address }) => {
   return (
     <div>
       <div className="relative">
-        <div className="absolute top-0 right-0 z-50 bg-[rgb(0,0,0,0.75)] flex flex-col w-32 rounded justify-center items-center p-2">
+        <div className="absolute top-0 right-0 z-10 bg-[rgb(0,0,0,0.75)] flex flex-col w-32 rounded justify-center items-center p-2">
           <h6 className="text-white font-semibold text-lg">5.0</h6>
           <span className="flex justify-center text-white text-sm">
             136 reviews
