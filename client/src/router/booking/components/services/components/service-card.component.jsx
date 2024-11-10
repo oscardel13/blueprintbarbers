@@ -18,7 +18,7 @@ const ServiceCard = ({ service }) => {
   }
   return (
     <div className="flex flex-row justify-between py-5">
-      <div className="card-body">
+      <div className="card-body text-left">
         <h2 className="card-title">{name}</h2>
       </div>
       <div className="flex flex-row gap-5 justify-right text-right">
