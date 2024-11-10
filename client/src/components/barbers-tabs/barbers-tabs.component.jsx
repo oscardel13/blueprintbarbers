@@ -78,7 +78,7 @@ function BarbersTabs() {
           return (
             <Tab eventKey={barber.name} title={barber.name}>
               <div className="bg-white">
-                <Booking />;
+                <Booking />
               </div>
             </Tab>
           );
