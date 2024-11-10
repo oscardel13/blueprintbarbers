@@ -24,7 +24,7 @@ const BookingHero = ({ name, address }) => {
             <IosShareIcon />
           </span>
         </div>
-        <span className="text-gray-500 text-xs">{address}</span>
+        <span className="text-gray-500 text-xs text-left">{address}</span>
       </div>
     </div>
   );

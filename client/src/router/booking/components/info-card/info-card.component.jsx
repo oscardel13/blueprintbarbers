@@ -54,7 +54,7 @@ const InfoCard = ({ name, hours, phone, address }) => {
       </div>
 
       {/* title (this could all be one (title, contact, businesness hoursl)) */}
-      <div className="py-3 px-5 mt-5">
+      <div className="py-3 px-5 mt-5 text-left">
         <h5>CONTACT & BUSINESS HOURS</h5>
       </div>
       <hr />
@@ -94,7 +94,7 @@ const InfoCard = ({ name, hours, phone, address }) => {
 
       {/* Socials */}
       <div className="py-3 flex flex-col px-5">
-        <h6 className="font-semibold pb-5">SOCIAL MEDIA</h6>
+        <h6 className="font-semibold pb-5 text-left">SOCIAL MEDIA</h6>
         <div className="flex flex-row justify-center items-center gap-5">
           <a href={"https://www.instagram.com/enriquethebarber__/"}>
             <InstagramIcon fontSize="large" />
