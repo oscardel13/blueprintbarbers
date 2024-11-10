@@ -25,7 +25,6 @@ const ProductList = ({ curProduct }) => {
             return <ProductCard product={product} key={product._id} />;
           }
         })}
-        <ProductCard product={null} />
       </div>
     </div>
   );
