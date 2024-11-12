@@ -2,7 +2,7 @@ import InfoCard from "./components/info-card/info-card.component";
 import BookingHero from "./components/hero-section/hero-section.component";
 import Services from "./components/services/services.component";
 
-const Booking = ({ barber }) => {
+const Booking = ({ barber, index }) => {
   const {
     name,
     nickname,
@@ -24,6 +24,7 @@ const Booking = ({ barber }) => {
             name={nickname}
             address={address}
             profilePicture={profilePicture}
+            index={index}
           />
           <Services services={services} booksyUrl={booksyUrl} />
           {/* See Our Work */}

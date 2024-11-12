@@ -15,16 +15,15 @@ import SignInPage from "./router/sign-in/sign-in.router";
 import ProfilePage from "./router/profile/profile.router";
 import OrdersPage from "./router/orders/orders.router";
 import OrderPage from "./router/order/order.router";
-import ProductItemPage from "./router/store/routes/product-item/product-item.router";
+import ProductItemPage from "./router/store/routes/[product]/[item]/product-item.router";
 import Checkout from "./router/checkout/checkout.route";
-import PaymentConfirmationPage from "./router/payment-confirmation/payment-confirmation.route";
+import PaymentConfirmationPage from "./router/Misc/payment-confirmation/payment-confirmation.route";
 import DashboardRoutes from "./router/dashboard/dashboard.routes";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./store/user/user.reducer";
 import { getAPI } from "./utils/api";
-import PrivacyPolicyPage from "./router/privacy-policy/privacy-policy.router";
-import TermAndConditionsPage from "./router/terms-and-conditions/terms-and-conditions.router";
-import Booking from "./router/booking/booking.route";
+import PrivacyPolicyPage from "./router/Misc/privacy-policy/privacy-policy.router";
+import TermAndConditionsPage from "./router/Misc/terms-and-conditions/terms-and-conditions.router";
 
 function App() {
   const dispatch = useDispatch();

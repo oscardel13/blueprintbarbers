@@ -1,13 +1,13 @@
 import IosShareIcon from "@mui/icons-material/IosShare";
 import barberImage from "../../../../assets/enrique-profile-picture.jpg";
 
-const BookingHero = ({ name, address, profilePicture }) => {
+const BookingHero = ({ name, address, profilePicture, index }) => {
   const Pic = require(`../../../../assets/${profilePicture}`);
 
   const handleShareClick = () => {
     // Create URL with query parameter
     const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set("name", name);
+    currentUrl.searchParams.set("index", index);
 
     // Use the updated URL with query parameter
     const urlToCopy = currentUrl.toString();
