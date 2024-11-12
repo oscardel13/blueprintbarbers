@@ -8,7 +8,14 @@ import Booking from "../../router/booking/booking.route";
 import BARBERLIST from "./barbers-tabs.data";
 
 function BarbersTabs() {
-  const [key, setKey] = useState(0);
+  // get query param
+  const params = new URLSearchParams(window.location.search);
+  let barberIndex = params.get("index");
+  if (!barberIndex) {
+    barberIndex = 0;
+  }
+  console.log(barberIndex);
+  const [key, setKey] = useState(barberIndex);
 
   return (
     <BarbersTab
@@ -21,7 +28,7 @@ function BarbersTabs() {
       {BARBERLIST.map((barber, index) => (
         <Tab eventKey={index} title={barber.name} key={index}>
           <div className="bg-white">
-            <Booking barber={barber} />
+            <Booking barber={barber} index={index} />
           </div>
         </Tab>
       ))}
