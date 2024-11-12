@@ -14,12 +14,12 @@ import {
 } from "./barber-card.styles";
 
 const BarberCard = ({ barber }) => {
-  const { name, bio, instagramUrl, booksyUrl, profilePicUrl, ImageGrid } =
+  const { name, bio, instagramUrl, booksyUrl, profilePicture, ImageGrid } =
     barber;
   const [picUrl, setPicUrl] = useState("enrique-profile-picture.jpg");
-  const profilePicture = require("../../assets/" + picUrl);
+  const profilePictureUrl = require("../../assets/" + picUrl);
   useEffect(() => {
-    if (profilePicUrl) setPicUrl(profilePicUrl);
+    if (profilePicture) setPicUrl(profilePicture);
   }, []);
 
   return (
@@ -30,7 +30,7 @@ const BarberCard = ({ barber }) => {
             <Figure>
               <img
                 className="d-block w-100 max-h-[800px]"
-                src={profilePicture}
+                src={profilePictureUrl}
                 alt="barber image"
               />
             </Figure>

@@ -1,7 +1,34 @@
 import IosShareIcon from "@mui/icons-material/IosShare";
 import barberImage from "../../../../assets/enrique-profile-picture.jpg";
 
-const BookingHero = ({ name, address }) => {
+const BookingHero = ({ name, address, profilePicture }) => {
+  const Pic = require(`../../../../assets/${profilePicture}`);
+
+  const handleShareClick = () => {
+    // Create URL with query parameter
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set("name", name);
+
+    // Use the updated URL with query parameter
+    const urlToCopy = currentUrl.toString();
+
+    // Create a temporary input to copy the modified URL
+    const tempInput = document.createElement("input");
+    tempInput.value = urlToCopy;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+    try {
+      document.execCommand("copy");
+      alert("URL copied to clipboard!"); // BUILD COSTUME ALERT SYSTEM LATER
+    } catch (error) {
+      console.error("Failed to copy URL:", error);
+    }
+
+    document.body.removeChild(tempInput);
+  };
+
   return (
     <div>
       <div className="relative">
@@ -13,14 +40,14 @@ const BookingHero = ({ name, address }) => {
         </div>
       </div>
       <img
-        className="d-block w-full h-[500px] md:h-[700px] lg:h-[750px] object-cover rounded"
-        src={barberImage}
+        className="d-block w-full h-[500px] md:h-[650px] object-cover rounded"
+        src={Pic}
         alt="barber image"
       />
       <div className="flex flex-col gap-1 py-3">
         <div className="flex flex-row justify-between">
           <h3 className="text-3xl font-bold">{name}</h3>
-          <span className="cursor-pointer">
+          <span className="cursor-pointer" onClick={handleShareClick}>
             <IosShareIcon />
           </span>
         </div>

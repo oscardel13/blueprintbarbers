@@ -1,5 +1,5 @@
 import ServiceCard from "./components/service-card.component";
-const Services = ({ services }) => {
+const Services = ({ services, booksyUrl }) => {
   return (
     <div>
       <h1 className="text-2xl font-bold text-left tracking-wider py-3">
@@ -8,8 +8,8 @@ const Services = ({ services }) => {
       <hr />
       {services.map((service, index) => {
         return (
-          <div>
-            <ServiceCard key={index} service={service} />
+          <div key={index}>
+            <ServiceCard service={service} booksyUrl={booksyUrl} />
             <hr />
           </div>
         );
