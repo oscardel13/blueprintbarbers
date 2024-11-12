@@ -40,7 +40,7 @@ const BookingHero = ({ name, address, profilePicture }) => {
         </div>
       </div>
       <img
-        className="d-block w-full h-[500px] md:h-[650px] object-cover rounded"
+        className="d-block w-full h-[420px] md:h-[650px] object-cover rounded"
         src={Pic}
         alt="barber image"
       />
