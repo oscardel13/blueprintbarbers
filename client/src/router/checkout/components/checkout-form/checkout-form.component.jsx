@@ -1,49 +1,50 @@
 import {
-    PaymentElement,
-    LinkAuthenticationElement
-} from '@stripe/react-stripe-js'
-import {useState} from 'react'
-import {useStripe, useElements} from '@stripe/react-stripe-js';
-import { useSelector } from 'react-redux';
+  PaymentElement,
+  LinkAuthenticationElement,
+} from "@stripe/react-stripe-js";
+import { useState } from "react";
+import { useStripe, useElements } from "@stripe/react-stripe-js";
+import { useSelector } from "react-redux";
 
 const validateDeliveryAddress = (address) => {
   const missingFields = [];
 
   if (!address.country) {
-    missingFields.push('Country');
+    missingFields.push("Country");
   }
 
   if (!address.name) {
-    missingFields.push('Name');
+    missingFields.push("Name");
   }
 
   if (!address.line1) {
-    missingFields.push('Address Line 1');
+    missingFields.push("Address Line 1");
   }
 
   if (!address.city) {
-    missingFields.push('City');
+    missingFields.push("City");
   }
 
   if (!address.state) {
-    missingFields.push('State');
+    missingFields.push("State");
   }
 
   if (!address.postal_code) {
-    missingFields.push('Postal Code');
+    missingFields.push("Postal Code");
   }
 
   if (missingFields.length === 0) {
     return null; // No missing fields
   }
 
-  const missingFieldsMessage = `Missing information: ${missingFields.join(', ')}`;
+  const missingFieldsMessage = `Missing information: ${missingFields.join(
+    ", "
+  )}`;
   return missingFieldsMessage;
 };
 
-
-export default function CheckoutForm({method, deliveryAddress, orderId}) {
-  const user_email = useSelector((state) => state.user.currentUser.email)
+export default function CheckoutForm({ method, deliveryAddress, orderId }) {
+  const user_email = useSelector((state) => state.user.currentUser.email);
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -59,9 +60,9 @@ export default function CheckoutForm({method, deliveryAddress, orderId}) {
     }
 
     setIsLoading(true);
-    
-    let shippingAddress = null
-    if (method === 'delivery') {
+
+    let shippingAddress = null;
+    if (method === "delivery") {
       const validationError = validateDeliveryAddress(deliveryAddress);
 
       if (validationError) {
@@ -69,12 +70,12 @@ export default function CheckoutForm({method, deliveryAddress, orderId}) {
         setIsLoading(false);
         return;
       }
-      
+
       const { name, ...address } = deliveryAddress;
       shippingAddress = {
-        name : name,
-        address : address
-      }
+        name: name,
+        address: address,
+      };
     }
 
     const { error } = await stripe.confirmPayment({
@@ -83,8 +84,8 @@ export default function CheckoutForm({method, deliveryAddress, orderId}) {
         // Make sure to change this to your payment completion page
         return_url: `${window.location.origin}/payment-confirmation?orderId=${orderId}`,
         shipping: shippingAddress,
-        receipt_email: user_email
-      }
+        receipt_email: user_email,
+      },
     });
 
     // This point will only be reached if there is an immediate error when
@@ -93,13 +94,14 @@ export default function CheckoutForm({method, deliveryAddress, orderId}) {
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
     if (error.type === "card_error" || error.type === "validation_error") {
+      console.log("error");
       setMessage(error.message);
     } else {
       setMessage("An unexpected error occured.");
     }
 
     setIsLoading(false);
-  }
+  };
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
@@ -113,9 +115,13 @@ export default function CheckoutForm({method, deliveryAddress, orderId}) {
         // options={{defaultValues: {email: 'foo@bar.com'}}}
         /> */}
       <PaymentElement id="payment-element" />
-      <br/>
-      <br/>
-      <button disabled={isLoading || !stripe || !elements} id="submit" className='bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 h-12'>
+      <br />
+      <br />
+      <button
+        disabled={isLoading || !stripe || !elements}
+        id="submit"
+        className="bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 h-12"
+      >
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>
@@ -123,5 +129,5 @@ export default function CheckoutForm({method, deliveryAddress, orderId}) {
       {/* Show any error or success messages */}
       {message && <div id="payment-message">{message}</div>}
     </form>
-  )
+  );
 }
