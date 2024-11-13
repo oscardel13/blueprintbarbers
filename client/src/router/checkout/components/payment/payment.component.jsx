@@ -34,6 +34,7 @@ function Payment({ method, deliveryAddress }) {
         setClientSecret(res.data.clientSecret);
         dispatch(setOrderId(res.data.orderId));
       } catch (err) {
+        console.log("ERROR IS THIS:", err);
         window.alert(err.response.data);
       }
     };

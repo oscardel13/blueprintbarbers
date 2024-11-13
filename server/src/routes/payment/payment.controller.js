@@ -25,7 +25,7 @@ const calculateOrderAmount = (items) => {
 const httpPaymentIntent = async (req, res) => {
   const user = req.user;
   const { products, orderId } = req.body;
-  if (!user) return res.status(401).send("Unauthorized");
+  if (!user) return res.status(401).send("Must be logged in!");
   if (products.length === 0) return res.status(400).send("No products");
   try {
     // check if order already exists (this could be its own function)
