@@ -1,4 +1,4 @@
-name: Oscars Work CI
+name: Blueprint Prod CI/CD
 on:
   push:
     branches: [main]
