@@ -1,29 +1,20 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { loadStripe } from "@stripe/stripe-js";
-
-import Landing from "./router/landing/landing.route";
-import Navigation from "./router/navigation/navigation.route";
-
 import { GLobalStyle } from "./global.styles";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Barbers from "./router/barbers/barbers.route";
-import Store from "./router/store/store.route";
-import ProductPage from "./router/store/routes/[product]/product.route";
-import Cart from "./router/cart/cart.route";
-import SignInPage from "./router/sign-in/sign-in.router";
-import ProfilePage from "./router/profile/profile.router";
-import OrdersPage from "./router/orders/orders.router";
-import OrderPage from "./router/order/order.router";
-import ProductItemPage from "./router/store/routes/[product]/[item]/product-item.router";
-import Checkout from "./router/checkout/checkout.route";
-import PaymentConfirmationPage from "./router/Misc/payment-confirmation/payment-confirmation.route";
+
+import Layout from "./layout/layout";
+import Landing from "./router/landing/landing.route";
 import DashboardRoutes from "./router/dashboard/dashboard.routes";
+import AccountRoutes from "./router/profile/profile.routes";
+import MiscRoutes from "./router/Misc/misc.routes";
+import StoreRoutes from "./router/store/store.routes";
+import BarbershopRoutes from "./router/Barbershop/Barbershop.routes";
+
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./store/user/user.reducer";
 import { getAPI } from "./utils/api";
-import PrivacyPolicyPage from "./router/Misc/privacy-policy/privacy-policy.router";
-import TermAndConditionsPage from "./router/Misc/terms-and-conditions/terms-and-conditions.router";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,41 +33,13 @@ function App() {
     <>
       <GLobalStyle />
       <Routes>
-        <Route path="/" element={<Navigation />}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Landing />} />
-          <Route path="barbers" element={<Barbers />} />
-          {/* <Route path="booking" element={<Booking />} /> */}
-          <Route path="sign-in" element={<SignInPage />} />
-          <Route path="account">
-            <Route index element={<ProfilePage />} />
-            <Route path="orders">
-              <Route index element={<OrdersPage />} />
-              <Route path=":orderId" element={<OrderPage />} />
-            </Route>
-          </Route>
-          <Route path="store">
-            <Route index element={<Store />} />
-            <Route path=":productName" element={<ProductPage />} />
-            <Route path=":productName/:itemId" element={<ProductItemPage />} />
-          </Route>
-          <Route path="cart">
-            <Route index element={<Cart />} />
-          </Route>
-          <Route path="checkout" element={<Checkout />} />
-          <Route
-            path="payment-confirmation"
-            element={<PaymentConfirmationPage />}
-          />
-          <Route path="legal/privacy" element={<PrivacyPolicyPage />} />
-          <Route path="legal/terms" element={<TermAndConditionsPage />} />
+          {MiscRoutes()}
+          {BarbershopRoutes()}
+          {AccountRoutes()}
+          {StoreRoutes()}
         </Route>
-        {/* <Route path='dashboard' element={<Dashboard/>}>
-            <Route index element={<Home/>}/>
-            <Route path='products'>
-              <Route index element={<ProductsPage/>}/>
-              <Route path='create' element={<CreateProduct/>}/>
-            </Route>
-          </Route> */}
       </Routes>
       <DashboardRoutes />
     </>
