@@ -48,7 +48,6 @@ jobs:
             docker-compose up --pull=always -d
 
   deploy_client:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
