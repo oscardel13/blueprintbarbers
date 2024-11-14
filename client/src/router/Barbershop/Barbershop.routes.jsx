@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import Barbers from "./router/[barbershop]/router/barbers/barbers.route";
+import Barbers from "./[barbershop]/barbers/barbers.route";
 
 function BarbershopRoutes() {
   return (

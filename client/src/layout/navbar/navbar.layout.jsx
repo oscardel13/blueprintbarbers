@@ -54,11 +54,7 @@ const Navigation = () => {
           >
             SIGN IN
           </button>
-          {isSignInOpen && (
-            <Popover>
-              <SignIn />
-            </Popover>
-          )}
+          {isSignInOpen && <SignIn />}
         </div>
       );
     }

@@ -8,7 +8,7 @@ import DashboardRoutes from "./router/dashboard/dashboard.routes";
 import AccountRoutes from "./router/profile/profile.routes";
 import MiscRoutes from "./router/Misc/misc.routes";
 import StoreRoutes from "./router/store/store.routes";
-import BarbershopRoutes from "./router/Barbershop/Barbershop.routes";
+import BarbershopRoutes from "./router/barbershop/barbershop.routes";
 
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./store/user/user.reducer";
