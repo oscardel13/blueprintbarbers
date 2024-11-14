@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
-import ProfilePage from "./profile.router";
-import OrdersPage from "./router/orders/orders.router";
-import OrderPage from "./router/orders/router/order/order.router";
+import ProfilePage from "./profile.route";
+import OrdersPage from "./orders/orders.route";
+import OrderPage from "./orders/order/order.route";
 
 function AccountRoutes() {
   return (

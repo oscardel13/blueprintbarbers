@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
 import Store from "./store.route";
-import ProductPage from "./routes/[product]/product.route";
-import ProductItemPage from "./routes/[product]/[item]/product-item.router";
+import ProductPage from "./[product]/product.route";
+import ProductItemPage from "./[product]/[item]/product-item.route";
 
 function StoreRoutes() {
   return (
