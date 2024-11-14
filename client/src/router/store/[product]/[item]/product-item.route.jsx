@@ -40,7 +40,7 @@ const ProductItemPage = () => {
   const handleImageChange = (index) => {
     setCurrentImageIndex(index);
   };
-  if (item == null) {
+  if (item === null) {
     return (
       <div className="flex h-screen justify-center items-center">
         <h1 className="font-bold text-5xl">No item found</h1>
