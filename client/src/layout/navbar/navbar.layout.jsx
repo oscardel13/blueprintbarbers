@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -24,14 +26,17 @@ import SignIn from "../../components/sign-in/sign-in.component";
 }
 const Navigation = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isCartOpen = useSelector(selectIsCartOpen);
   const currentUser = useSelector(selectCurrentUser);
   const isSignInOpen = useSelector(selectIsSignInOpen);
 
   const logout = async () => {
     try {
-      dispatch(setCurrentUser(null));
       await getAPI("/auth/logout");
+      window.location.href = "/";
+
+      //redirect home
     } catch (err) {
       console.log(err);
     }
@@ -52,7 +57,6 @@ const Navigation = () => {
           >
             SIGN IN
           </button>
-          {isSignInOpen && <SignIn />}
         </div>
       );
     }
@@ -104,6 +108,7 @@ const Navigation = () => {
           <CartIcon />
         </div>
         {isCartOpen && <CartDropdown />}
+        {isSignInOpen && <SignIn />}
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavLink to="/" className="block text-gray-400 p-2">

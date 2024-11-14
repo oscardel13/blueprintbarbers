@@ -38,7 +38,7 @@ authRouter.get("/failure", (req, res) => res.send("Failed to log in"));
 authRouter.get("/logout", (req, res) => {
   console.log("logging out");
   req.logout();
-  res.redirect(`${CLIENT_URL}`); //dev
+  res.status(200).send("logged out");
 });
 
 module.exports = authRouter;
