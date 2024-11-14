@@ -6,46 +6,46 @@ on:
   #   branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      # Docker Login
-      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # UPDATE SECRETS FOR PROD
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     # Docker Login
+  #     - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # UPDATE SECRETS FOR PROD
 
-      # Build Client and run test
-      # - run: docker build -t blueprintbarbers/client-test -f ./client/dockerfile.dev ./client
-      # - run: docker run -e CI=true blueprintbarbers/client-test npm test
+  #     # Build Client and run test
+  #     # - run: docker build -t blueprintbarbers/client-test -f ./client/dockerfile.dev ./client
+  #     # - run: docker run -e CI=true blueprintbarbers/client-test npm test
 
-      # # Build Server and run test
-      # - run: docker build -t blueprintbarbers/server-test -f ./server/dockerfile.dev ./server
-      # - run: docker run -e CI=true blueprintbarbers/react-test npm test
+  #     # # Build Server and run test
+  #     # - run: docker build -t blueprintbarbers/server-test -f ./server/dockerfile.dev ./server
+  #     # - run: docker run -e CI=true blueprintbarbers/react-test npm test
 
-      # Build Production Images
-      - run: docker build -t blueprintbarbers/server ./server
+  #     # Build Production Images
+  #     - run: docker build -t blueprintbarbers/server ./server
 
-      # Push Images to docker hub
-      - run: docker push blueprintbarbers/server
+  #     # Push Images to docker hub
+  #     - run: docker push blueprintbarbers/server
 
-  deploy_server:
-    needs: build
-    name: Deploy to EC2 instance
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  # deploy_server:
+  #   needs: build
+  #   name: Deploy to EC2 instance
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: SSH into EC2 instance
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOSTNAME }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #     - name: SSH into EC2 instance
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.EC2_HOSTNAME }}
+  #         username: ${{ secrets.EC2_USERNAME }}
+  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-          script: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker-compose down
-            docker-compose up --pull=always -d
+  #         script: |
+  #           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+  #           docker-compose down
+  #           docker-compose up --pull=always -d
 
   deploy_client:
     runs-on: ubuntu-latest
