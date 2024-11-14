@@ -15,8 +15,6 @@ import {
 } from "../../store/user/user.selector";
 import { getAPI } from "../../utils/api";
 import { setCurrentUser, toggleSignIn } from "../../store/user/user.reducer";
-import Popover from "../../components/popover/popover.component";
-import { useState } from "react";
 import SignIn from "../../components/sign-in/sign-in.component";
 {
   /*
