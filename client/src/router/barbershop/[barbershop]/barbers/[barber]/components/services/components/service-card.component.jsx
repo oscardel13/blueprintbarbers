@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { durationToMinutes } from "../../info-card/info-card.helper-functions";
 import Booking from "../../booking/booking.component";
 // Service card (service name, cost, duration) tailwind
 const ServiceCard = ({ service, booksyUrl }) => {
@@ -9,17 +10,6 @@ const ServiceCard = ({ service, booksyUrl }) => {
   };
 
   const { name, description, price, duration } = service;
-  //   function that turn duration to minutes but if more than an hour says 1h XXmin also if its just 1 hour don't add the minutes but 60 should come as 1h
-  function durationToMinutes(duration) {
-    if (duration < 60) {
-      return `${duration}min`;
-    } else if (duration % 60 === 0) {
-      return `${duration / 60}h`;
-    } else {
-      return `${Math.floor(duration / 60)}h ${duration % 60}min`;
-    }
-  }
-
   //   function that turn price already in dollars to dollars and cents
   function priceToDollars(price) {
     return `$${(price / 1).toFixed(2)}`;

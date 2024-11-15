@@ -7,12 +7,16 @@ import TotalSection from "./components/total-section/total-section.component";
 const Booking = ({ closeBooking }) => {
   return (
     <Popover closeTrigger={closeBooking}>
-      <div className="relative flex flex-col p-3 bg-white w-full max-w-[770px]">
-        <h3>Booking</h3>
+      <div className="relative flex flex-col px-3 py-5 bg-white w-screen md:w-[768px] rounded-lg shadow-lg border">
+        <h3 className="w-full text-center">Booking</h3>
         <DaysSection />
         <TimeSection />
         <SummarySection />
+        <hr className="my-5" />
         <TotalSection />
+        <button className="absolute top-1 right-2 m-4 text-black text-4xl">
+          &times;
+        </button>
       </div>
     </Popover>
   );

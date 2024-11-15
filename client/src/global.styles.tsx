@@ -25,8 +25,26 @@ export const GLobalStyle = createGlobalStyle`
         monospace;
     }
 
+    .invisible-scrollbar{
+        &::-webkit-scrollbar-thumb {
+            background-color: darkgray; /* Thumb color */
+            border-radius: 50px; /* Rounded edges */
+            cursor: pointer;
+        }
+
+        &::-webkit-scrollbar {
+            height: 6px; /* Width of the scrollbar */
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: lightgray; /* Track color */
+            border-radius: 50px; /* Rounded edges */
+            cursor: pointer;
+        }
+    }
+
     // ::-webkit-scrollbar {
     //     width: 0px;
     //     background: transparent; /* make scrollbar transparent */
     //   }
-`
+`;

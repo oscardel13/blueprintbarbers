@@ -42,6 +42,16 @@ export function convertStringToHTML(string) {
   return htmlLines;
 }
 
+export function durationToMinutes(duration) {
+  if (duration < 60) {
+    return `${duration}min`;
+  } else if (duration % 60 === 0) {
+    return `${duration / 60}h`;
+  } else {
+    return `${Math.floor(duration / 60)}h ${duration % 60}min`;
+  }
+}
+
 export const daysOfTheWeek = [
   "sunday",
   "monday",
