@@ -11,7 +11,7 @@ const DayCard = ({ day, openSlots }) => {
       openSlots = [];
     }
   }
-  const selectedDay = 14;
+  const selectedDay = 16;
   const selected = day.date === selectedDay.toString();
   const isToday = day.date === new Date().getDate().toString();
   return (

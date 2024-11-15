@@ -8,7 +8,6 @@ const Booking = ({ closeBooking }) => {
   return (
     <Popover closeTrigger={closeBooking}>
       <div className="relative flex flex-col px-3 py-5 bg-white w-screen md:w-[768px] rounded-lg shadow-lg border">
-        <h3 className="w-full text-center">Booking</h3>
         <DaysSection />
         <TimeSection />
         <SummarySection />
