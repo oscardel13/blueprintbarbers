@@ -1,4 +1,4 @@
-import { convertStringToHTML } from "../../info-card.helper-functions";
+import { convertStringToHTML } from "../../../../utils/helper-functions";
 
 const AboutSection = ({ about }) => {
   return (

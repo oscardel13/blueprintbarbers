@@ -1,5 +1,5 @@
 import profilePicture from "../../../../../../../../../assets/enrique-profile-picture.jpg";
-import { formatTime } from "../../../info-card/info-card.helper-functions";
+import { formatTime } from "../../../../utils/helper-functions";
 
 const SummarySection = ({ service, startTime, barber }) => {
   service = {

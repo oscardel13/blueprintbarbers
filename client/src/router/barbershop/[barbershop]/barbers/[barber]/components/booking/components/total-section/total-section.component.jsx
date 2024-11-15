@@ -1,4 +1,4 @@
-import { durationToMinutes } from "../../../info-card/info-card.helper-functions";
+import { durationToMinutes } from "../../../../utils/helper-functions";
 
 const TotalSection = ({ total, duration }) => {
   total = 50;

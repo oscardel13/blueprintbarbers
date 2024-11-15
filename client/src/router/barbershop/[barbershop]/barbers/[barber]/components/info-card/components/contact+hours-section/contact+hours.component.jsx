@@ -2,7 +2,7 @@ import {
   daysOfTheWeek,
   formatPhoneNumber,
   formatTime,
-} from "../../info-card.helper-functions";
+} from "../../../../utils/helper-functions";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 
 const ContactAndHoursSection = ({ phone, hours }) => {

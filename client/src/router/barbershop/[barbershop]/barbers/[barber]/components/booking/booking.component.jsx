@@ -14,7 +14,10 @@ const Booking = ({ closeBooking }) => {
         <SummarySection />
         <hr className="my-5" />
         <TotalSection />
-        <button className="absolute top-1 right-2 m-4 text-black text-4xl">
+        <button
+          onClick={closeBooking}
+          className="absolute top-1 right-2 m-4 text-black text-4xl"
+        >
           &times;
         </button>
       </div>

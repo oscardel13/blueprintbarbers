@@ -3,7 +3,7 @@ import NearMeIcon from "@mui/icons-material/NearMe";
 import {
   generateAppleMapsLink,
   generateGoogleMapsLink,
-} from "../info-card/info-card.helper-functions";
+} from "../../utils/helper-functions";
 
 const NavigationPopover = ({ closeTrigger, address }) => {
   return (

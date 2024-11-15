@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { durationToMinutes } from "../../info-card/info-card.helper-functions";
+import { durationToMinutes } from "../../../utils/helper-functions";
 import Booking from "../../booking/booking.component";
 // Service card (service name, cost, duration) tailwind
 const ServiceCard = ({ service, booksyUrl }) => {
@@ -28,8 +28,8 @@ const ServiceCard = ({ service, booksyUrl }) => {
         </div>
         <div className="flex items-center p-1">
           <a
-            href={booksyUrl}
-            // onClick={triggerBooking}
+            // href={booksyUrl}
+            onClick={triggerBooking}
             className="flex justify-center items-center border border-[[#00a3ad]] bg-[#00a3ad] text-white rounded-lg text-sm px-2 py-1 hover:bg-[#53d3db]"
           >
             Book
