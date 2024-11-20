@@ -4,16 +4,32 @@ import Tab from "react-bootstrap/Tab";
 
 import { BarbersTab } from "./barbers-tabs.styles";
 
-import BARBERLIST from "./barbers-tabs.data";
 import Barber from "../../[barber]/barber.route";
+import { getAPI } from "../../../../../../utils/api";
+
+import BARBERLIST from "./barbers-tabs.data";
 
 function BarbersTabs() {
+  const [barbers, setBarbers] = useState(BARBERLIST);
+
+  useEffect(() => {
+    const fetchBarbers = async () => {
+      const response = await getAPI("/barbers");
+      const data = await response.data;
+      setBarbers(data);
+    };
+    try {
+      fetchBarbers();
+    } catch (err) {
+      // console.log(err);
+    }
+  }, []);
+
   const params = new URLSearchParams(window.location.search);
   let barberIndex = params.get("index");
   if (!barberIndex) {
     barberIndex = 0;
   }
-  console.log(barberIndex);
   const [key, setKey] = useState(barberIndex);
 
   return (
@@ -24,7 +40,7 @@ function BarbersTabs() {
       onSelect={(k) => setKey(k)}
       className="xs-auto"
     >
-      {BARBERLIST.map((barber, index) => (
+      {barbers.map((barber, index) => (
         <Tab eventKey={index} title={barber.name} key={index}>
           <div className="bg-white">
             <Barber barber={barber} index={index} />

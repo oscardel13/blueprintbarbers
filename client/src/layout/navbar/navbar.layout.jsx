@@ -31,6 +31,7 @@ const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
   const isSignInOpen = useSelector(selectIsSignInOpen);
 
+  // might need a different way to log out for them all
   const logout = async () => {
     try {
       await getAPI("/auth/logout");

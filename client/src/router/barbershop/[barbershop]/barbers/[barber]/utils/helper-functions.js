@@ -1,7 +1,18 @@
 export function formatTime(hourString) {
-  const [hour, minute] = hourString.split(":").map(Number);
+  let [hour, minute] = hourString.split(":").map(Number);
+
+  // Normalize minutes if greater than or equal to 60
+  if (minute >= 60) {
+    const extraHours = Math.floor(minute / 60);
+    minute = minute % 60; // Remainder becomes the new minutes
+    hour += extraHours;
+  }
+
+  // Adjust for 24-hour to 12-hour format
   const period = hour >= 12 ? "PM" : "AM";
   const hour12 = hour % 12 || 12; // Converts 0 or 12 to 12, 13-23 to 1-11
+
+  // Format the hours and minutes to always have two digits
   return `${hour12.toString().padStart(2, "0")}:${minute
     .toString()
     .padStart(2, "0")} ${period}`;

@@ -2,7 +2,6 @@
   "name": "blueprintbarbers",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "install-server": "npm install --prefix server",
     "install-client": "npm install --prefix client",
@@ -16,5 +15,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "moment": "^2.30.1"
+  }
 }

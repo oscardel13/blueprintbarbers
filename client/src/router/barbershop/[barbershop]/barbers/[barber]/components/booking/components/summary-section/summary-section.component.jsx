@@ -1,14 +1,11 @@
-import profilePicture from "../../../../../../../../../assets/enrique-profile-picture.jpg";
 import { formatTime } from "../../../../utils/helper-functions";
 
+// First get this to work for one then read the one below
+// Update this to get it from this from the store so they can add multiple services and book them all at the same time. also add X in the right to be able to remove them
+
 const SummarySection = ({ service, startTime, barber }) => {
-  service = {
-    name: "Haircut",
-    description:
-      "Any type of haircut of your choice (skin fades, regulat, etc)!! Eyebrows optional! Any type of haircut of your choice (skin fades, regulat, etc)!! Eyebrows optional!",
-    price: 50,
-    duration: 30,
-  };
+  const profilePicture = require("../../../../../../../../../assets/" +
+    barber.picture);
   // function that take startTime and servce.duration and return string startTime - endTime (02:00 PM - 02:45 AM) startTime : "15:00" called get Time Slot ("02:00 PM - 02:45 AM") should return "02:00 PM - 02:45 AM"
   const getTimeSlot = (startTime, duration) => {
     const startTimeHour = startTime.split(":")[0];
@@ -18,7 +15,6 @@ const SummarySection = ({ service, startTime, barber }) => {
     const endTime = `${endTimeHour}:${endTimeMinute}`;
     return `${formatTime(startTime)} - ${formatTime(endTime)}`;
   };
-  console.log(getTimeSlot("15:00", 45));
 
   return (
     <div className="md:px-8">
@@ -30,9 +26,11 @@ const SummarySection = ({ service, startTime, barber }) => {
           </div>
           <div className="flex flex-col font-semibold text-right w-72">
             <h6 className="text-lg">${service.price}.00</h6>
-            <span className="text-sm text-gray-600">
-              {getTimeSlot("15:00", 45)}
-            </span>
+            {startTime && (
+              <span className="text-sm text-gray-600">
+                {getTimeSlot(startTime, service.duration)}
+              </span>
+            )}
           </div>
         </div>
         <hr />
@@ -43,7 +41,7 @@ const SummarySection = ({ service, startTime, barber }) => {
 
           <div className="ml-2 flex flex-row items-center gap-2">
             <img className="h-8 rounded-full" src={profilePicture} alt="" />
-            <span className="text-gray-800">Oscar</span>
+            <span className="text-gray-800">{barber.name}</span>
           </div>
         </div>
       </div>

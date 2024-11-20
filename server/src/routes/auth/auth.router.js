@@ -1,4 +1,5 @@
-const { userPassport, trainerPassport } = require("../../utils/secruity");
+const { userPassport } = require("./auth.user");
+const { barberPassport } = require("./auth.barber");
 
 const authRouter = require("express").Router();
 
@@ -7,7 +8,7 @@ require("dotenv").config();
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 
 authRouter.get(
-  "/google",
+  "/user/google",
   (req, res, next) => {
     // Store the current URL in the session
     req.session.redirectUrl = req.query.path || "/";
@@ -20,8 +21,34 @@ authRouter.get(
 );
 
 authRouter.get(
-  "/google/callback",
+  "/barber/google",
+  (req, res, next) => {
+    // Store the current URL in the session
+    req.session.redirectUrl = req.query.path || "/";
+
+    next();
+  },
+  barberPassport.authenticate("google", {
+    scope: ["email", "profile"],
+  })
+);
+
+authRouter.get(
+  "/user/google/callback",
   userPassport.authenticate("google", {
+    failureRedirect: "/auth/failure",
+  }),
+  (req, res) => {
+    // Redirect to the previous URL stored in session, or default to the home page
+    const redirectUrl = `${CLIENT_URL}${req.session.redirectUrl}`;
+    delete req.session.redirectUrl; // Clear it from session if you want
+    res.redirect(redirectUrl);
+  }
+);
+
+authRouter.get(
+  "/barber/google/callback",
+  barberPassport.authenticate("google", {
     failureRedirect: "/auth/failure",
   }),
   (req, res) => {

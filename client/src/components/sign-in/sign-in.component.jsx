@@ -9,7 +9,7 @@ const SignIn = () => {
   const handleSignUp = () => {
     const apiUrl =
       process.env.REACT_APP_API_URL || "https://api.blueprintbarbers.co";
-    window.location.href = `${apiUrl}/auth/google?path=${currentUrl.pathname}`;
+    window.location.href = `${apiUrl}/auth/user/google?path=${currentUrl.pathname}`;
   };
 
   const dispatch = useDispatch();

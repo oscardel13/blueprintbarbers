@@ -1,17 +1,18 @@
-const express = require('express')
-const { checkLoggedIn, checkIfAdmin } = require('../../utils/secruity');
+const express = require("express");
+const { checkIfBarber } = require("../auth/auth.barber");
 
-// const { 
+const {
+  httpGetBarbers,
+  httpGetBarber,
+  httpUpdateBarber,
+  httpDeleteBarber,
+} = require("./barber.controller");
 
-// } = require('./barber.controller')
+const BarberRouter = express.Router();
 
-const BarberAPI = express.Router();
+BarberRouter.get("/", httpGetBarbers);
+BarberRouter.get("/:id", httpGetBarber);
+BarberRouter.put("/:id", checkIfBarber, httpUpdateBarber);
+BarberRouter.delete("/:id", checkIfBarber, httpDeleteBarber);
 
-// BarberAPI.get('/', checkIfAdmin, httpGetUsers)
-// BarberAPI.get('/checkAdmin', checkIfAdmin, httpCheckIfAdmin)
-// BarberAPI.get('/:id', checkLoggedIn, httpGetUser)
-// BarberAPI.put('/:id', checkLoggedIn, httpUpdateUser)
-// UserAPI.delete('/:id', httpDeleteUser) 
-
-
-module.exports = BarberAPI;
+module.exports = BarberRouter;

@@ -1,8 +1,6 @@
 import { durationToMinutes } from "../../../../utils/helper-functions";
 
 const TotalSection = ({ total, duration }) => {
-  total = 50;
-  duration = 40;
   return (
     <div className="flex flex-col md:px-7">
       <div className="flex flex-col py-3">
@@ -15,7 +13,7 @@ const TotalSection = ({ total, duration }) => {
         </span>
       </div>
       <button className="flex w-full py-3 justify-center items-center bg-blue-600 hover:bg-blue-600 text-white rounded-lg shadow">
-        Continue
+        Book
       </button>
     </div>
   );

@@ -2,13 +2,12 @@ import { useState } from "react";
 import { durationToMinutes } from "../../../utils/helper-functions";
 import Booking from "../../booking/booking.component";
 // Service card (service name, cost, duration) tailwind
-const ServiceCard = ({ service, booksyUrl }) => {
+const ServiceCard = ({ barber, service, booksyUrl }) => {
   const [showBooking, setShowBooking] = useState(false);
 
   const triggerBooking = () => {
     setShowBooking((prev) => !prev);
   };
-
   const { name, description, price, duration } = service;
   //   function that turn price already in dollars to dollars and cents
   function priceToDollars(price) {
@@ -36,7 +35,13 @@ const ServiceCard = ({ service, booksyUrl }) => {
           </a>
         </div>
       </div>
-      {showBooking && <Booking closeBooking={triggerBooking} />}
+      {showBooking && (
+        <Booking
+          barber={barber}
+          service={service}
+          closeBooking={triggerBooking}
+        />
+      )}
     </div>
   );
 };

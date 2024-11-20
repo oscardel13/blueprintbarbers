@@ -6,7 +6,7 @@ const Barber = ({ barber, index }) => {
   const {
     name,
     nickname,
-    profilePicture,
+    picture,
     address,
     phone,
     about,
@@ -23,10 +23,10 @@ const Barber = ({ barber, index }) => {
           <BookingHero
             name={nickname}
             address={address}
-            profilePicture={profilePicture}
+            profilePicture={picture}
             index={index}
           />
-          <Services services={services} booksyUrl={booksyUrl} />
+          <Services barber={barber} services={services} booksyUrl={booksyUrl} />
           {/* See Our Work */}
           {/* Reviews */}
         </div>
@@ -40,7 +40,7 @@ const Barber = ({ barber, index }) => {
             about={about}
             instagramUrl={instagramUrl}
             booksyUrl={booksyUrl}
-            profilePicture={profilePicture}
+            profilePicture={picture}
           />
         </div>
       </div>
