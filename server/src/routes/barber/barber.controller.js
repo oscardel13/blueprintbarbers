@@ -4,6 +4,7 @@ const {
   updateBarber,
   deleteBarber,
 } = require("../../models/barber/barber.data");
+const { updateAvailability } = require("../../services/barber/barber.service");
 const { getPagination } = require("../../utils/query");
 
 async function httpGetBarbers(req, res) {
@@ -18,9 +19,15 @@ async function httpGetBarbers(req, res) {
 
 async function httpGetBarber(req, res) {
   const barberID = req.params.id;
-  console.log(barberID);
   try {
-    const barber = await getBarber(barberID);
+    let barber = await getBarber(barberID);
+    if (
+      !barber.availability ||
+      barber.availability.length === 0 ||
+      barber.availability[0].date.day !== new Date().getDate()
+    ) {
+      barber = await updateAvailability(barber);
+    }
     res.status(200).json(barber);
   } catch (err) {
     res.status(500).json({ message: "Server error" });

@@ -11,15 +11,25 @@ const TimeSection = ({ slots, selectedTime, updateSelectedTime }) => {
 
   // Group slots into morning, afternoon, and evening
   const groupedSlots = {
-    Morning: slots.filter((slot) => parseInt(slot.split(":")[0]) < 12).sort(),
-    Afternoon: slots
-      .filter(
-        (slot) =>
-          parseInt(slot.split(":")[0]) >= 12 &&
-          parseInt(slot.split(":")[0]) < 17
-      )
+    Morning: slots
+      .filter((slot) => {
+        const time = slot.split(" ")[1]; // Extract the time portion (e.g., "08:00")
+        return parseInt(time.split(":")[0]) < 12;
+      })
       .sort(),
-    Evening: slots.filter((slot) => parseInt(slot.split(":")[0]) >= 17).sort(),
+    Afternoon: slots
+      .filter((slot) => {
+        const time = slot.split(" ")[1]; // Extract the time portion (e.g., "13:00")
+        const hour = parseInt(time.split(":")[0]);
+        return hour >= 12 && hour < 17;
+      })
+      .sort(),
+    Evening: slots
+      .filter((slot) => {
+        const time = slot.split(" ")[1]; // Extract the time portion (e.g., "18:00")
+        return parseInt(time.split(":")[0]) >= 17;
+      })
+      .sort(),
   };
 
   useEffect(() => {

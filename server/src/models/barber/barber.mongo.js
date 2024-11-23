@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bookingSchema = require("../booking/booking.mongo");
+const { bookingSchema } = require("../booking/booking.mongo");
 
 const ReviewSchema = new mongoose.Schema({
   user: { type: String, required: true }, // Reference to user
@@ -13,8 +13,8 @@ const BarberSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "barbershop",
   },
-  name: { type: String, required: true },
-  email: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
   gid: { type: String, required: true },
   nickname: { type: String, default: "" },
   picture: { type: String, default: "" },
@@ -51,8 +51,24 @@ const BarberSchema = new mongoose.Schema({
     averageRating: { type: Number, default: 0 }, // Store pre-calculated average
     totalReviews: { type: Number, default: 0 }, // Store total number of reviews
   },
-  twoWeeksBooking: { type: [], default: [] }, // Array of strings
-  availability: { type: [], default: [] }, // Array of strings
+  twoWeeksBooking: { type: [bookingSchema], default: [] }, // Update this to hold booking Schema
+  availability: {
+    type: [
+      {
+        date: {
+          type: {
+            year: { type: Number, required: true },
+            month: { type: String, required: true },
+            day: { type: Number, required: true },
+            dayOfWeek: { type: String, required: true },
+          },
+          required: true,
+        },
+        slots: { type: [String], required: true },
+      },
+    ],
+    default: [],
+  }, // Array of strings
 });
 
 module.exports = mongoose.model("barber", BarberSchema);

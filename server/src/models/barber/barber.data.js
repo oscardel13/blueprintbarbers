@@ -7,6 +7,7 @@ const getBarbers = async (skip, limit) => {
 const createBarber = async (barber) => {
   return await barbersCollection.findOneAndUpdate({ gid: barber.gid }, barber, {
     upsert: true,
+    returnDocument: "after",
   });
 };
 

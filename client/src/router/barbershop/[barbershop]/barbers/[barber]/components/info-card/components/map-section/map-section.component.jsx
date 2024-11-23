@@ -14,14 +14,14 @@ const MapSection = ({ address, name, profilePicture }) => {
   return (
     <div className="relative w-full">
       <MapPreview address={address} />
-      <div className="absolute px-2 bottom-1 z-10">
+      <div className="absolute px-2 bottom-1 z-10 w-full">
         <div className="flex flex-row justify-between bg-white border-gray-200 rounded shadow max-h-14 w-full">
           <div className="flex flex-row py-1">
             <div className="px-2 w-1/6">
               <img
                 src={Pic}
                 alt="Enrique"
-                className="w-full h-full rounded-full object-fill"
+                className="w-10 h-10 rounded-full object-fill"
               />
             </div>
             <div className="pl-1 flex flex-col w-5/6">

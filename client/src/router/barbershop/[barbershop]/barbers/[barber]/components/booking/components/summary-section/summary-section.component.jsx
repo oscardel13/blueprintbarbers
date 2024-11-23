@@ -8,8 +8,8 @@ const SummarySection = ({ service, startTime, barber }) => {
     barber.picture);
   // function that take startTime and servce.duration and return string startTime - endTime (02:00 PM - 02:45 AM) startTime : "15:00" called get Time Slot ("02:00 PM - 02:45 AM") should return "02:00 PM - 02:45 AM"
   const getTimeSlot = (startTime, duration) => {
-    const startTimeHour = startTime.split(":")[0];
-    const startTimeMinute = startTime.split(":")[1];
+    const startTimeHour = startTime.slice(-5).split(":")[0];
+    const startTimeMinute = startTime.slice(-5).split(":")[1];
     const endTimeHour = parseInt(startTimeHour) + Math.floor(duration / 60);
     const endTimeMinute = parseInt(startTimeMinute) + (duration % 60);
     const endTime = `${endTimeHour}:${endTimeMinute}`;

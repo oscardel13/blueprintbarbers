@@ -23,18 +23,25 @@ const AUTH_OPTIONS = {
   clientSecret: config.CLIENT_SECRET,
 };
 
-function verifyCallback(accessToken, refreshToken, profile, done) {
+async function verifyCallback(accessToken, refreshToken, profile, done) {
   // This is where you can save the client to the database
-  const userObj = {
-    name: profile._json.name,
-    email: profile._json.email,
-    gid: profile._json.sub,
-    picture: profile._json.picture,
-  };
-  if (profile._json.email_verified) {
-    createUser(userObj);
+  try {
+    const userObj = {
+      name: profile._json.name,
+      email: profile._json.email,
+      gid: profile._json.sub, // Keep Google ID for reference if needed
+      picture: profile._json.picture,
+    };
+
+    if (profile._json.email_verified) {
+      const user = await createUser(userObj); // Get MongoDB _id
+      done(null, { _id: user._id, email: userObj.email, gid: userObj.gid }); // Pass _id to session
+    } else {
+      done(null, false, { message: "Email not verified" });
+    }
+  } catch (error) {
+    done(error, null);
   }
-  done(null, profile);
 }
 const userPassport = new Passport();
 
@@ -44,7 +51,8 @@ userPassport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 userPassport.serializeUser((user, done) => {
   const userObj = {
     gid: user.id,
-    email: user._json.email,
+    _id: user._id,
+    email: user.email,
   };
   done(null, userObj);
 });
@@ -71,7 +79,7 @@ async function checkIfAdmin(req, res, next) {
       error: "You must log in!",
     });
   }
-  const isAdmin = await checkAdmin(user.gid);
+  const isAdmin = await checkAdmin(user._id);
   if (!isAdmin) {
     return res.status(403).json({
       error: "You must be admin!",

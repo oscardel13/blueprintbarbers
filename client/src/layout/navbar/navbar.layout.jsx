@@ -67,6 +67,12 @@ const Navigation = () => {
           <NavLink to="/account" className="block p-2 hover:text-white">
             PROFILE
           </NavLink>
+          <NavLink
+            to="/account/appointments"
+            className="block p-2 hover:text-white"
+          >
+            APPOINTMENTS
+          </NavLink>
           <NavLink to="/account/orders" className="block p-2 hover:text-white">
             ORDERS
           </NavLink>
@@ -86,6 +92,12 @@ const Navigation = () => {
         <Dropdown logout={logout} currentUser={currentUser}>
           <NavLink to="/account" className="block p-2 hover:text-white">
             PROFILE
+          </NavLink>
+          <NavLink
+            to="/account/appointments"
+            className="block p-2 hover:text-white"
+          >
+            APPOINTMENTS
           </NavLink>
           <NavLink to="/account/orders" className="block p-2 hover:text-white">
             ORDERS

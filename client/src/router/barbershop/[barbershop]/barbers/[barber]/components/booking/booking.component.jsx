@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import bookingData from "./booking.data";
+import { selectCurrentUser } from "../../../../../../../store/user/user.selector";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 
 import Popover from "../../../../../../../components/popover/popover.component";
@@ -7,24 +7,27 @@ import DaysSection from "./components/days-section/days-section.component";
 import SummarySection from "./components/summary-section/summary-section.component";
 import TimeSection from "./components/times-section/times-section.component";
 import TotalSection from "./components/total-section/total-section.component";
+import { useSelector } from "react-redux";
+import { postAPI } from "../../../../../../../utils/api";
+import { getFirstBookingDay, updateAvailability } from "./booking.helpers";
 
 // if no availability on a date add way to notify me if something opens up
 
 const Booking = ({ service, barber, closeBooking }) => {
-  // function that gets the first bookingDay with open slots
-  const getFirstBookingDay = () => {
-    const firstBookingDay = bookingData.find(({ slots }) => {
-      return slots.length > 0;
-    });
-    return firstBookingDay.date;
-  };
-  const firstBookingDay = getFirstBookingDay();
+  let user = useSelector(selectCurrentUser);
+
+  const availability = updateAvailability(
+    barber.availability,
+    service.duration
+  );
+
+  const firstBookingDay = getFirstBookingDay(availability);
   const [selectedDate, setSelectedDate] = useState(firstBookingDay);
   const [selectedTime, setSelectedTime] = useState(null);
   const [slots, setSlots] = useState([]);
 
   useEffect(() => {
-    const newSlots = bookingData.find(({ date }) => {
+    const newSlots = availability.find(({ date }) => {
       return date === selectedDate;
     });
     setSlots(newSlots.slots);
@@ -41,19 +44,42 @@ const Booking = ({ service, barber, closeBooking }) => {
   const getNextAvailableDate = () => {
     let nextDate;
     let selectedDateFound = false;
-    for (let index in bookingData) {
-      if (selectedDateFound && bookingData[index].slots.length > 0) {
-        nextDate = bookingData[index].date;
+    for (let index in availability) {
+      if (selectedDateFound && availability[index].slots.length > 0) {
+        nextDate = availability[index].date;
         break;
       }
-      if (bookingData[index].date === selectedDate) {
+      if (availability[index].date === selectedDate) {
         selectedDateFound = true;
       }
     }
     if (!nextDate) {
-      nextDate = bookingData[bookingData.length - 1].date;
+      nextDate = availability[availability.length - 1].date;
     }
     setSelectedDate(nextDate);
+  };
+
+  // have this redirect to booking confirmed. it could say on the popover
+  const confirmBooking = async () => {
+    const booking = {
+      barber,
+      user,
+      service,
+      date: selectedDate,
+      time: selectedTime,
+    };
+
+    try {
+      const res = await postAPI("/bookings", booking);
+
+      // If the booking was successful
+      if (res.status === 200) {
+        // Navigate to the booking confirmation page
+        window.location.replace("/booking-confirmed");
+      }
+    } catch (err) {
+      console.error("Booking failed:", err);
+    }
   };
 
   return (
@@ -62,13 +88,14 @@ const Booking = ({ service, barber, closeBooking }) => {
         <DaysSection
           selectedDate={selectedDate}
           updateSelectedDate={updateSelectedDate}
-          availability={bookingData}
+          availability={availability}
         />
         {slots.length > 0 && (
           <TimeSection
             slots={slots}
             selectedTime={selectedTime}
             updateSelectedTime={updateSelectedTime}
+            serviceDuration={service.duration}
           />
         )}
         {slots.length === 0 && (
@@ -95,7 +122,11 @@ const Booking = ({ service, barber, closeBooking }) => {
         {slots.length > 0 && (
           <>
             <hr className="my-5" />
-            <TotalSection total={service.price} duration={service.duration} />
+            <TotalSection
+              confirmBooking={confirmBooking}
+              total={service.price}
+              duration={service.duration}
+            />
           </>
         )}
         <button

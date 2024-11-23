@@ -3,7 +3,6 @@ const { Strategy } = require("passport-google-oauth20");
 
 // update to createBarber, checkBarber
 const { createBarber } = require("../../models/barber/barber.data");
-// const { createUser } = require("../../models/user/user.data");
 require("dotenv").config();
 
 const API_URL = process.env.API_URL || "";
@@ -24,16 +23,27 @@ const AUTH_OPTIONS = {
   clientSecret: config.CLIENT_SECRET,
 };
 
-function verifyCallback(accessToken, refreshToken, profile, done) {
+async function verifyCallback(accessToken, refreshToken, profile, done) {
   // This is where you can save the client to the database
-  const barberObj = {
-    name: profile._json.name,
-    email: profile._json.email,
-    gid: profile._json.sub,
-    picture: profile._json.picture,
-  };
-  if (profile._json.email_verified) {
-    createBarber(barberObj);
+  try {
+    const barberObj = {
+      name: profile._json.name,
+      email: profile._json.email,
+      gid: profile._json.sub,
+      picture: profile._json.picture,
+    };
+    if (profile._json.email_verified) {
+      const barber = await createBarber(barberObj); // Get MongoDB _id
+      done(null, {
+        _id: barber._id,
+        email: barberObj.email,
+        gid: barberObj.gid,
+      }); // Pass _id to session
+    } else {
+      done(null, false, { message: "Email not verified" });
+    }
+  } catch (error) {
+    done(error, null);
   }
   done(null, profile);
 }
@@ -42,10 +52,11 @@ const barberPassport = new Passport();
 barberPassport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 
 // Save the session to cookie
-barberPassport.serializeUser((user, done) => {
+barberPassport.serializeUser((barber, done) => {
   const barberObj = {
-    gid: user.id,
-    email: user._json.email,
+    gid: barber.id,
+    _id: barber._id,
+    email: barber.email,
   };
   done(null, barberObj);
 });
@@ -56,8 +67,8 @@ barberPassport.deserializeUser((obj, done) => {
 });
 
 async function checkIfBarber(req, res, next) {
-  const user = req.isAuthenticated() && req.user;
-  if (!user) {
+  const barber = req.isAuthenticated() && req.user;
+  if (!barber) {
     return res.status(401).json({
       error: "You must log in!",
     });

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { GLobalStyle } from "./global.styles";
 
 import Layout from "./layout/layout";
@@ -18,6 +18,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top on route change
+  }, [location]); // Triggered whenever the location changes
+
   useEffect(() => {
     const setUser = async () => {
       try {

@@ -1,4 +1,5 @@
 export function formatTime(hourString) {
+  hourString = hourString.slice(-5);
   let [hour, minute] = hourString.split(":").map(Number);
 
   // Normalize minutes if greater than or equal to 60

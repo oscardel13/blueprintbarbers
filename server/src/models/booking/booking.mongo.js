@@ -2,19 +2,35 @@ const mongoose = require("mongoose");
 
 // maybe add data from customer, barber, service that will be used even if it repeats
 const BookingSchema = new mongoose.Schema({
-  customerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user", // Assuming you have a User model to reference the customer
+  customer: {
+    type: {
+      _id: { type: mongoose.Schema.Types.ObjectId, required: true },
+      name: { type: String, required: true },
+      picture: { type: String, required: true },
+      email: { type: String, required: true },
+      phone: { type: String },
+    },
     required: true,
   },
-  barberId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "barber", // Assuming you have a Barber model to reference the barber
+  barber: {
+    type: {
+      _id: { type: mongoose.Schema.Types.ObjectId, required: true },
+      name: { type: String, required: true },
+      nickname: { type: String, required: true },
+      picture: { type: String, required: true },
+      address: { type: String, required: true },
+      phone: { type: String, required: true },
+    },
     required: true,
   },
-  serviceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "service", // Assuming you have a Service model to reference the service
+  service: {
+    type: {
+      _id: { type: mongoose.Schema.Types.ObjectId, required: true },
+      name: { type: String, required: true },
+      description: { type: String, default: "" },
+      price: { type: Number, required: true },
+      duration: { type: Number, required: true }, // Duration in minutes
+    },
     required: true,
   },
   startTime: {
@@ -31,13 +47,24 @@ const BookingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["confirmed", "pending", "canceled", "no-show"],
+    enum: ["finished", "confirmed", "pending", "canceled", "no-show"],
     default: "confirmed",
   },
   notes: {
     type: String, // Additional notes for the booking
     default: "",
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model("booking", BookingSchema);
+module.exports = {
+  bookingCollection: mongoose.model("booking", BookingSchema),
+  bookingSchema: BookingSchema,
+};

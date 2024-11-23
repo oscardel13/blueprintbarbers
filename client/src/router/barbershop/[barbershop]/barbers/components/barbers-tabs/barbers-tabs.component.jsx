@@ -7,10 +7,8 @@ import { BarbersTab } from "./barbers-tabs.styles";
 import Barber from "../../[barber]/barber.route";
 import { getAPI } from "../../../../../../utils/api";
 
-import BARBERLIST from "./barbers-tabs.data";
-
 function BarbersTabs() {
-  const [barbers, setBarbers] = useState(BARBERLIST);
+  const [barbers, setBarbers] = useState([]);
 
   useEffect(() => {
     const fetchBarbers = async () => {
@@ -43,7 +41,7 @@ function BarbersTabs() {
       {barbers.map((barber, index) => (
         <Tab eventKey={index} title={barber.name} key={index}>
           <div className="bg-white">
-            <Barber barber={barber} index={index} />
+            <Barber barberId={barber._id} index={index} />
           </div>
         </Tab>
       ))}

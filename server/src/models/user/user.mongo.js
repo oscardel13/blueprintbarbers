@@ -1,32 +1,33 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { bookingSchema } = require("../booking/booking.mongo");
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
   product: {
     type: String,
-    required: true
+    required: true,
   },
   item: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 // Define the User schema
 const userSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   gid: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   picture: {
     type: String,
@@ -34,7 +35,7 @@ const userSchema = new Schema({
   },
   items: {
     type: [itemSchema], // Array of items bought by the user
-    default: []
+    default: [],
   },
   phone: {
     type: String,
@@ -47,7 +48,15 @@ const userSchema = new Schema({
   accessLevel: {
     type: Number,
     default: 0,
-  }
+  },
+  appointments: {
+    type: [bookingSchema], // Update this to hold booking Schema
+    default: [],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

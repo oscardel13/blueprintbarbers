@@ -3,19 +3,24 @@ const { getBarber, updateBarber } = require("../../models/barber/barber.data");
 
 async function update2WeeksBooking(data) {
   // Add the booking to barber's 2WeeksBooking projection
-  let barber = await getBarber(data.barberId);
+  // TODO also have it take out past booking
+  let barber = await getBarber(data.barber._id);
   barber.twoWeeksBooking.push(data);
-  barber.availability = await updateAvailability(
-    barber.twoWeeksBooking,
-    barber.hours
-  );
-  updateBarber(barber);
-  console.log("2WeeksBooking and availability updated");
+
+  // filter out past bookings
+  barber.twoWeeksBooking = barber.twoWeeksBooking.filter((booking) => {
+    return moment(booking.start).isAfter(moment());
+  });
+
+  barber = await updateAvailability(barber);
+
+  console.log("Barber 2WeeksBooking and availability updated");
   return barber;
 }
 
 // this might need to be updated to take accound local
-async function updateAvailability(twoWeeksBooking, hours) {
+async function updateAvailability(barber) {
+  const { twoWeeksBooking, hours } = barber;
   // Helper function to generate 15-minute increment time slots within a time range
   const generateTimeSlots = (date, start, end) => {
     const slots = [];
@@ -92,8 +97,9 @@ async function updateAvailability(twoWeeksBooking, hours) {
     });
   });
 
+  barber.availability = availability;
   // Return updated availability with removed slots
-  return availability;
+  return barber;
 }
 
 module.exports = { update2WeeksBooking, updateAvailability };

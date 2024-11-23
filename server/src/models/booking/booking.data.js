@@ -1,4 +1,4 @@
-const bookingCollection = require("./booking.mongo");
+const { bookingCollection } = require("./booking.mongo");
 
 //SHOULD TAKE INTO ACCOUNT barberID,
 const getBookings = async (skip, limit) => {

@@ -1,4 +1,4 @@
-const Popover = ({ closeTrigger, children }) => {
+const Popover = ({ closeTrigger, children, top = false }) => {
   return (
     <div
       className="fixed flex items-center justify-center top-0 left-0 w-screen h-screen bg-black bg-opacity-80 z-50"
@@ -6,7 +6,7 @@ const Popover = ({ closeTrigger, children }) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="absolute top-0 md:top-auto"
+        className={`${top ? "absolute top-0 md:top-auto" : ""}`}
       >
         {children}
       </div>

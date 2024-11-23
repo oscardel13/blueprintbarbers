@@ -1,49 +1,58 @@
+import { useEffect, useState } from "react";
 import InfoCard from "./components/info-card/info-card.component";
 import BookingHero from "./components/hero-section/hero-section.component";
 import Services from "./components/services/services.component";
+import { getAPI } from "../../../../../utils/api";
 
-const Barber = ({ barber, index }) => {
-  const {
-    name,
-    nickname,
-    picture,
-    address,
-    phone,
-    about,
-    instagramUrl,
-    booksyUrl,
-    hours,
-    services,
-    reviews,
-  } = barber;
+const Barber = ({ barberId, index }) => {
+  const [barber, setBarber] = useState(null);
+  useEffect(() => {
+    const getBarber = async () => {
+      const res = await getAPI(`/barbers/${barberId}`);
+      const data = await res.data;
+      setBarber(data);
+    };
+    getBarber();
+  }, []);
+
   return (
     <div className="flex justify-center">
-      <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
-        <div className="relative flex flex-col w-full lg:w-2/3">
-          <BookingHero
-            name={nickname}
-            address={address}
-            profilePicture={picture}
-            index={index}
-          />
-          <Services barber={barber} services={services} booksyUrl={booksyUrl} />
-          {/* See Our Work */}
-          {/* Reviews */}
-        </div>
+      {barber ? (
+        <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
+          <div className="relative flex flex-col w-full lg:w-2/3">
+            <BookingHero
+              name={barber.nickname}
+              address={barber.address}
+              profilePicture={barber.picture}
+              index={index}
+            />
+            <Services
+              barber={barber}
+              services={barber.services}
+              booksyUrl={barber.booksyUrl}
+            />
+            {/* See Our Work */}
+            {/* Reviews */}
+          </div>
 
-        <div className="fle flex-col w-full lg:w-1/3">
-          <InfoCard
-            name={nickname}
-            phone={phone}
-            address={address}
-            hours={hours}
-            about={about}
-            instagramUrl={instagramUrl}
-            booksyUrl={booksyUrl}
-            profilePicture={picture}
-          />
+          <div className="fle flex-col w-full lg:w-1/3">
+            <InfoCard
+              name={barber.nickname}
+              phone={barber.phone}
+              address={barber.address}
+              hours={barber.hours}
+              about={barber.about}
+              instagramUrl={barber.instagramUrl}
+              booksyUrl={barber.booksyUrl}
+              profilePicture={barber.picture}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex h-full w-full justify-center items-center">
+          <h1>Barber does not exist</h1>
+        </div>
+      )}
     </div>
   );
 };
