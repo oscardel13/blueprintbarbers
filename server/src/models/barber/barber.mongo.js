@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { bookingSchema } = require("../booking/booking.mongo");
+const { userSchema } = require("../user/user.mongo");
 
 const ReviewSchema = new mongoose.Schema({
   user: { type: String, required: true }, // Reference to user
@@ -69,6 +70,7 @@ const BarberSchema = new mongoose.Schema({
     ],
     default: [],
   }, // Array of strings
+  clients: { type: [userSchema], default: [] }, // Array of client IDs
 });
 
 module.exports = mongoose.model("barber", BarberSchema);

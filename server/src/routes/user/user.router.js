@@ -15,6 +15,6 @@ UserAPI.get("/", checkIfAdmin, httpGetUsers);
 UserAPI.get("/checkAdmin", checkIfAdmin, httpCheckIfAdmin);
 UserAPI.get("/:id", checkLoggedIn, httpGetUser);
 UserAPI.put("/:id", checkLoggedIn, httpUpdateUser);
-// UserAPI.delete('/:id', httpDeleteUser)
+UserAPI.delete("/:id", httpDeleteUser);
 
 module.exports = UserAPI;

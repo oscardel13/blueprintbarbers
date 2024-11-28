@@ -48,10 +48,10 @@ const AppointmentCard = ({ appointment }) => {
 
   return (
     <Link
-      className="flex flex-row justify-between w-full border shadow rounded-xl"
+      className="flex flex-row bg-gray-200 justify-between border border-gray-500 shadow rounded-xl"
       to={`/account/appointments/${appointment._id}`}
     >
-      <div className="flex flex-col gap-3 p-3">
+      <div className="flex flex-col gap-3 p-3 md:mr-10">
         {statusComponent(appointment.status)}
         <h5 className="font-semibold">{appointment.service.name}</h5>
         <div className="flex flex-row items-center gap-2">
@@ -61,7 +61,7 @@ const AppointmentCard = ({ appointment }) => {
         </div>
         {status === "finished" ? (
           <button
-            className="py-1 w-60 bg-blue-500 text-white rounded-lg z-30 hover:bg-blue-300"
+            className="py-1 w-60 bg-gray-800 text-white rounded-lg z-30 hover:bg-gray-700"
             onClick={(e) => {
               e.preventDefault(); // Prevent the default navigation
               e.stopPropagation(); // Prevents the click event from reaching the <Link>
@@ -72,7 +72,7 @@ const AppointmentCard = ({ appointment }) => {
           </button>
         ) : (
           <button
-            className="py-1 w-60 bg-blue-500 text-white rounded-lg z-30 hover:bg-blue-300"
+            className="py-1 w-60 bg-gray-800 text-white rounded-lg z-30 hover:bg-gray-700"
             onClick={(e) => {
               e.preventDefault(); // Prevent the default navigation
               e.stopPropagation(); // Prevents the click event from reaching the <Link>
@@ -83,7 +83,7 @@ const AppointmentCard = ({ appointment }) => {
           </button>
         )}
       </div>
-      <div className="flex flex-col justify-center items-center px-7 border rounded-r-xl">
+      <div className="flex flex-col justify-center items-center px-7 border-l-2 border-gray-400 rounded-r-xl">
         <span className="text-center text-sm text-gray-500">{date.month}</span>
         <span className="text-center text-2xl tracking-wider font-semibold">
           {date.day}

@@ -33,6 +33,12 @@ TODO:
 1. make sure params.id = session.user.id
 */
 async function httpUpdateUser(req, res) {
+  const sessionUser = req.user;
+  console.log("sessionUser", sessionUser);
+  console.log("req.body", req.body);
+  if (req.body._id !== sessionUser._id) {
+    return res.status(401).json({ message: "Not authorized" });
+  }
   try {
     const user = await updateUser(req.body);
     res.status(200).json(user);
@@ -43,6 +49,9 @@ async function httpUpdateUser(req, res) {
 
 async function httpDeleteUser(req, res) {
   const sessionUser = req.user;
+  if (req.body._id !== sessionUser._id) {
+    return res.status(401).json({ message: "Not authorized" });
+  }
   try {
     const user = await deleteUser(sessionUser._id);
     res.status(200).json(user);

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 import AppointmentCard from "./components/appointment-card/appointment-card.component";
 import { selectCurrentUser } from "../../../store/user/user.selector";
+import PageHeader from "../../../components/page-header/page-header.component";
 
 const Appointments = () => {
   const user = useSelector(selectCurrentUser);
@@ -11,8 +12,8 @@ const Appointments = () => {
     return <div>Need to be logged in to view this page</div>;
   }
   return (
-    <div className="flex flex-col max-w-[500px] min-h-screen p-2 md:p-10">
-      <h1 className="text-3xl font-semibold">Appointments</h1>
+    <div className="flex flex-col max-w-[500px]">
+      <PageHeader title="Appointments" />
       {
         // if there are no future appointments, display a message
         user.appointments.length === 0 ? (

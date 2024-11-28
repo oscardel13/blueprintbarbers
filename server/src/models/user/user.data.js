@@ -1,4 +1,4 @@
-const userCollection = require("./user.mongo");
+const { userCollection } = require("./user.mongo");
 
 const getUsers = async (skip, limit) => {
   return await userCollection.find().skip(skip).limit(limit).sort("name");

@@ -61,9 +61,14 @@ async function httpDeleteBarber(req, res) {
   }
 }
 
+async function httpCheckBarber(req, res) {
+  res.status(200).send(true);
+}
+
 module.exports = {
   httpGetBarbers,
   httpGetBarber,
   httpUpdateBarber,
   httpDeleteBarber,
+  httpCheckBarber,
 };

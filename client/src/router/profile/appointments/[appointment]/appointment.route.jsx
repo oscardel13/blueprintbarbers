@@ -4,6 +4,7 @@ import { getAPI } from "../../../../utils/api";
 import MapSection from "../../../barbershop/[barbershop]/barbers/[barber]/components/info-card/components/map-section/map-section.component";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import PageHeader from "../../../../components/page-header/page-header.component";
 
 const Appointment = () => {
   let { appointmentId } = useParams();
@@ -60,13 +61,14 @@ const Appointment = () => {
     }
   };
   return (
-    <div className="flex flex-col px-3 py-5 gap-5 max-w-[500px] min-h-screen">
+    <div className="flex flex-col gap-5 w-full max-w-[500px] min-h-screen">
+      <PageHeader title="Appointment" />
       <div className="relative">
         <Link
           to="/account/appointments"
           className="absolute top-1 left-1 hover:text-gray-500"
         >
-          <ArrowBackIcon className="text-3xl font-bold" />
+          {/* <ArrowBackIcon className="text-3xl font-bold" /> */}
         </Link>
         <h1 className="text-3xl font-semibold text-center">
           {new Date(appointment.startTime).toLocaleDateString("en-US", {
@@ -79,11 +81,14 @@ const Appointment = () => {
       <div className="flex flex-row justify-center">
         {statusComponent(appointment.status)}
       </div>
-      <MapSection
-        address={appointment.barber.address}
-        name={appointment.barber.name}
-        profilePicture={appointment.barber.picture}
-      />
+      <div>
+        <MapSection
+          address={appointment.barber.address}
+          name={appointment.barber.name}
+          profilePicture={appointment.barber.picture}
+        />
+      </div>
+
       <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-3">
           <h6 className="font-semibold">{appointment.service.name}</h6>
@@ -97,7 +102,7 @@ const Appointment = () => {
         </div>
         <div className="flex flex-col justify-center text-right">
           <span className="">${appointment.service.price}.00</span>
-          <span className="text-sm text-gray-400">
+          <span className="text-sm text-gray-600">
             {new Date(appointment.startTime).toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
