@@ -4,7 +4,6 @@ import CopiedPopover from "../copied-popover/copied-popover.component";
 
 const BookingHero = ({ name, address, profilePicture, index }) => {
   const [showPopover, setShowPopover] = useState(false); // State to control CopiedPopover visibility
-  const Pic = require(`../../../../../../../assets/${profilePicture}`);
 
   const handleShareClick = () => {
     // Create URL with query parameter
@@ -44,7 +43,7 @@ const BookingHero = ({ name, address, profilePicture, index }) => {
       </div>
       <img
         className="d-block w-full h-[420px] md:h-[650px] object-cover rounded"
-        src={Pic}
+        src={profilePicture}
         alt="barber image"
       />
       <div className="flex flex-col gap-1 py-3">

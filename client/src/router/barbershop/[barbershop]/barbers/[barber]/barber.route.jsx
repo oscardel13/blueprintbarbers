@@ -6,18 +6,27 @@ import { getAPI } from "../../../../../utils/api";
 
 const Barber = ({ barberId, index }) => {
   const [barber, setBarber] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getBarber = async () => {
-      const res = await getAPI(`/barbers/${barberId}`);
-      const data = await res.data;
-      setBarber(data);
+      try{
+        setLoading(true)
+        const res = await getAPI(`/barbers/${barberId}`);
+        const data = await res.data;
+        setBarber(data);
+        setLoading(false)
+      }
+      catch(e){
+        setLoading(false)
+      }
+      
     };
     getBarber();
   }, []);
 
   return (
     <div className="flex justify-center">
-      {barber ? (
+      { loading ? <div className="h-96 flex items-center justify-center"><div className="animate-spin">Loading...</div></div> : barber ? (
         <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
           <div className="relative flex flex-col w-full lg:w-2/3">
             <BookingHero

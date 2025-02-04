@@ -4,7 +4,6 @@ import NavigationPopover from "../../../navigation-option-popover/navigation-opt
 import NearMeIcon from "@mui/icons-material/NearMe";
 
 const MapSection = ({ address, name, profilePicture }) => {
-  const Pic = require(`../../../../../../../../../assets/${profilePicture}`);
   const [showNavigationOptions, setNavigationOptions] = useState(false);
 
   const toggleNavigationOptions = () => {
@@ -19,7 +18,7 @@ const MapSection = ({ address, name, profilePicture }) => {
           <div className="flex flex-row py-1">
             <div className="px-2 w-1/6">
               <img
-                src={Pic}
+                src={profilePicture}
                 alt="Enrique"
                 className="w-10 h-10 rounded-full object-fill"
               />

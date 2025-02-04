@@ -4,8 +4,6 @@ import { formatTime } from "../../../../utils/helper-functions";
 // Update this to get it from this from the store so they can add multiple services and book them all at the same time. also add X in the right to be able to remove them
 
 const SummarySection = ({ service, startTime, barber }) => {
-  const profilePicture = require("../../../../../../../../../assets/" +
-    barber.picture);
   // function that take startTime and servce.duration and return string startTime - endTime (02:00 PM - 02:45 AM) startTime : "15:00" called get Time Slot ("02:00 PM - 02:45 AM") should return "02:00 PM - 02:45 AM"
   const getTimeSlot = (startTime, duration) => {
     const startTimeHour = startTime.slice(-5).split(":")[0];
@@ -40,7 +38,7 @@ const SummarySection = ({ service, startTime, barber }) => {
           </div>
 
           <div className="ml-2 flex flex-row items-center gap-2">
-            <img className="h-8 rounded-full" src={profilePicture} alt="" />
+            <img className="h-8 rounded-full" src={barber.picture} alt="" />
             <span className="text-gray-800">{barber.name}</span>
           </div>
         </div>
