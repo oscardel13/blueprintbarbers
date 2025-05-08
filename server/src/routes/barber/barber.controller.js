@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 const {
   getBarbers,
   getBarber,
@@ -24,7 +26,8 @@ async function httpGetBarber(req, res) {
     if (
       !barber.availability ||
       barber.availability.length === 0 ||
-      barber.availability[0].date.day !== new Date().getDate()
+      barber.availability[0].date.day !== moment().date() ||
+      barber.availability[0].date.month !== moment().format("MMMM")
     ) {
       barber = await updateAvailability(barber);
     }

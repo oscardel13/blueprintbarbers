@@ -98,6 +98,7 @@ async function updateAvailability(barber) {
   });
 
   barber.availability = availability;
+  await updateBarber(barber);
   // Return updated availability with removed slots
   return barber;
 }
