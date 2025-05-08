@@ -1,5 +1,4 @@
 const DayCard = ({ date, openSlots, selectedDate, updateSelectedDate }) => {
-  console.log("day-card.component", date, openSlots);
   const selected = date === selectedDate;
   const isToday = date.day === new Date().getDate().toString();
   return (
