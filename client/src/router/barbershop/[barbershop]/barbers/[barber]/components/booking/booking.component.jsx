@@ -30,6 +30,14 @@ const Booking = ({ service, barber, closeBooking }) => {
     const newSlots = availability.find(({ date }) => {
       return date === selectedDate;
     });
+    // const now = new Date();
+
+    // const filteredSlots = newSlots.slots.filter((slot) => {
+    //   const [datePart, timePart] = slot.split(" ");
+    //   const slotDateTime = new Date(`${datePart}T${timePart}`);
+    //   return slotDateTime >= now;
+    // });
+
     setSlots(newSlots.slots);
   }, [selectedDate]);
 
@@ -89,6 +97,7 @@ const Booking = ({ service, barber, closeBooking }) => {
           selectedDate={selectedDate}
           updateSelectedDate={updateSelectedDate}
           availability={availability}
+          slots={slots}
         />
         {slots.length > 0 && (
           <TimeSection

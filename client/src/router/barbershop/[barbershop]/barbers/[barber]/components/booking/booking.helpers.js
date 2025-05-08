@@ -12,6 +12,17 @@ export function updateAvailability(availability, duration) {
     return day;
   });
 
+  // filter slots that have passed for today
+  const now = moment();
+  if (updatedAvailability?.length > 0) {
+    updatedAvailability[0].slots = updatedAvailability[0].slots.filter(
+      (slot) => {
+        const slotMoment = moment(slot, "YYYY-MM-DD HH:mm");
+        return slotMoment.isSameOrAfter(now);
+      }
+    );
+  }
+
   return updatedAvailability;
 }
 

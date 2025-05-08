@@ -20,20 +20,20 @@ const TimeSection = ({ slots, selectedTime, updateSelectedTime }) => {
 
   // Group slots into morning, afternoon, and evening
   const groupedSlots = {
-    Morning: filteredSlots
+    Morning: slots
       .filter((slot) => {
         const time = slot.split(" ")[1]; // Extract the time portion (e.g., "08:00")
         return parseInt(time.split(":")[0]) < 12;
       })
       .sort(),
-    Afternoon: filteredSlots
+    Afternoon: slots
       .filter((slot) => {
         const time = slot.split(" ")[1]; // Extract the time portion (e.g., "13:00")
         const hour = parseInt(time.split(":")[0]);
         return hour >= 12 && hour < 17;
       })
       .sort(),
-    Evening: filteredSlots
+    Evening: slots
       .filter((slot) => {
         const time = slot.split(" ")[1]; // Extract the time portion (e.g., "18:00")
         return parseInt(time.split(":")[0]) >= 17;
