@@ -9,9 +9,9 @@ async function update2WeeksBooking(data) {
 
   // filter out past bookings
   barber.twoWeeksBooking = barber.twoWeeksBooking.filter((booking) => {
-    return moment(booking.start).isAfter(moment());
+    return moment(booking.start).isSameOrAfter(moment());
   });
-
+  console.log(barber);
   barber = await updateAvailability(barber);
 
   console.log("Barber 2WeeksBooking and availability updated");

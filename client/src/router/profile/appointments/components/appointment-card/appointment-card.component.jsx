@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 
 const AppointmentCard = ({ appointment }) => {
   const status = "confirmed";
-  const profilePicture = require(`../../../../../assets/${appointment.barber.picture}`);
   const statusComponent = (status) => {
     switch (status) {
       case "pending":
@@ -55,7 +54,11 @@ const AppointmentCard = ({ appointment }) => {
         {statusComponent(appointment.status)}
         <h5 className="font-semibold">{appointment.service.name}</h5>
         <div className="flex flex-row items-center gap-2">
-          <img src={profilePicture} className="w-8 h-8 rounded-full" alt="" />{" "}
+          <img
+            src={appointment.barber.picture}
+            className="w-8 h-8 rounded-full"
+            alt=""
+          />{" "}
           {/* need function to get picture */}
           <span>{appointment.barber.name}</span>
         </div>

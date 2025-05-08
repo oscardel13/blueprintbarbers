@@ -4,27 +4,36 @@ import { formatTime } from "../../../../utils/helper-functions";
 
 const TimeSection = ({ slots, selectedTime, updateSelectedTime }) => {
   const [partOfDay, setPartOfDay] = useState("Morning");
+
+  const now = new Date();
+
   const onClick = (time) => {
     setPartOfDay(time);
     updateSelectedTime(groupedSlots[time][0]);
   };
 
+  const filteredSlots = slots.filter((slot) => {
+    const [datePart, timePart] = slot.split(" ");
+    const slotDateTime = new Date(`${datePart}T${timePart}`);
+    return slotDateTime >= now;
+  });
+
   // Group slots into morning, afternoon, and evening
   const groupedSlots = {
-    Morning: slots
+    Morning: filteredSlots
       .filter((slot) => {
         const time = slot.split(" ")[1]; // Extract the time portion (e.g., "08:00")
         return parseInt(time.split(":")[0]) < 12;
       })
       .sort(),
-    Afternoon: slots
+    Afternoon: filteredSlots
       .filter((slot) => {
         const time = slot.split(" ")[1]; // Extract the time portion (e.g., "13:00")
         const hour = parseInt(time.split(":")[0]);
         return hour >= 12 && hour < 17;
       })
       .sort(),
-    Evening: slots
+    Evening: filteredSlots
       .filter((slot) => {
         const time = slot.split(" ")[1]; // Extract the time portion (e.g., "18:00")
         return parseInt(time.split(":")[0]) >= 17;

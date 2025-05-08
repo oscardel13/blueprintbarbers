@@ -6,7 +6,7 @@ bookingEvents.on("bookingCreated", async (data) => {
   // Update 2WeeksBooking and Availability logic
   const barber = await update2WeeksBooking(data);
   const user = await updateUserAppointments(data);
-  //   console.log("barber", barber);
+  console.log("barber", barber);
 });
 
 bookingEvents.on("bookingUpdated", async (data) => {

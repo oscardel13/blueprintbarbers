@@ -30,7 +30,6 @@ const Appointment = () => {
       </div>
     );
   // const appointment = APPOINTMENT_TMP;
-  const barberPictue = require(`../../../../assets/${appointment.barber.picture}`);
 
   const statusComponent = (status) => {
     switch (status) {
@@ -96,7 +95,11 @@ const Appointment = () => {
             {appointment.service.description}
           </p>
           <div className="flex flex-row gap-3">
-            <img src={barberPictue} className="w-8 h-8 rounded-full" alt="" />
+            <img
+              src={appointment.barber.picture}
+              className="w-8 h-8 rounded-full"
+              alt=""
+            />
             <span>{appointment.barber.name}</span>
           </div>
         </div>
