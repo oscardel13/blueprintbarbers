@@ -36,7 +36,7 @@ const Layout = () => {
           />
         )}
         <div
-          className={`xl:ml-[280px] w-[-webkit-fill-available] min-h-screen bg-gray-300 px-3 py-20`}
+          className={`xl:ml-[280px] w-[-webkit-fill-available] min-h-screen bg-gray-300 md:px-3 py-20`}
           onClick={isXlScreen || openSidebar ? toggleSidebar : null}
         >
           {!isXlScreen && openSidebar && (
