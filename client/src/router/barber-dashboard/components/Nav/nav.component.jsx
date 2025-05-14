@@ -24,19 +24,19 @@ const DashboardNav = ({ style, toggleSidebar }) => {
         <hr />
         <NavLink
           Icon={HomeIcon}
-          to="/barber"
+          to="/barber-dashboard"
           title="Home"
           onClick={onClickLink}
         />
         <NavLink
           Icon={AccountBoxIcon}
-          to="/barber/edit"
+          to="/barber-dashboard/edit"
           title="Account"
           onClick={onClickLink}
         />
         <NavLink
           Icon={SettingsIcon}
-          to="/barber/settings"
+          to="/barber-dashboard/settings"
           title="Settings"
           onClick={onClickLink}
         />
@@ -48,18 +48,18 @@ const DashboardNav = ({ style, toggleSidebar }) => {
           <hr />
         </div>
         <NavLinkDropdown Icon={ContentCutIcon} title="Clients">
-          <Link to="/barber/clients" onClick={onClickLink}>
+          <Link to="/barber-dashboard/clients" onClick={onClickLink}>
             List
           </Link>
-          <Link to="/barber/clients/:id" onClick={onClickLink}>
+          <Link to="/barber-dashboard/clients/:id" onClick={onClickLink}>
             Details
           </Link>
         </NavLinkDropdown>
-        <NavLinkDropdown Icon={BookIcon} to="/barber/bookings" title="Bookings">
-          <Link to="/barber/bookings" onClick={onClickLink}>
+        <NavLinkDropdown Icon={BookIcon} to="/barber-dashboard/bookings" title="Bookings">
+          <Link to="/barber-dashboard/bookings" onClick={onClickLink}>
             List
           </Link>
-          <Link to="/barber/bookings/:id" onClick={onClickLink}>
+          <Link to="/barber-dashboard/bookings/:id" onClick={onClickLink}>
             Details
           </Link>
         </NavLinkDropdown>

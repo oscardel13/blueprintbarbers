@@ -3,6 +3,7 @@ import { useState } from "react";
 import Weekly from "./components/weekly/weekly.compnent";
 import Monthly from "./components/monthly/monthly.component";
 import Day from "./components/day/day.component";
+import PageHeader from "../components/page-header/page-header.component";
 
 const BookingsPage = () => {
   const [view, setView] = useState("monthly"); // default to monthly
@@ -13,8 +14,9 @@ const BookingsPage = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="container">
       {/* Top Button Group */}
+      <PageHeader title="Bookings" />
       <div className="flex gap-4 mb-6">
         <button
           onClick={() => handleViewChange("monthly")}

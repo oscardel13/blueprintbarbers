@@ -1,7 +1,9 @@
+import PageHeader from "../components/page-header/page-header.component";
+
 const ClientsPage = () => {
   return (
-    <div>
-      <h1>Clients</h1>
+    <div className="container">
+    <PageHeader title="Clients" />
     </div>
   );
 };

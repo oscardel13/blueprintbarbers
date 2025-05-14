@@ -12,7 +12,7 @@ import SettingsPage from "./settings/settings.route";
 function BarberRoutes() {
   return (
     <Routes>
-      <Route path="barber" element={<Layout />}>
+      <Route path="barber-dashboard" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="clients">
           <Route index element={<ClientsPage />} />
