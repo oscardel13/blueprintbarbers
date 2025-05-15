@@ -8,11 +8,10 @@ const API_URL = process.env.REACT_APP_API_URL || "https://api.blueprintbarbers.c
 // const API_URL = process.env.REACT_APP_API_URL || "http://192.168.86.44:8000";
 
 
-export const getAPI = async (path, body) => {
-    const response = await API.get(`${API_URL}${path}`, JSON.stringify(body),{
-        headers: {
-            'Content-Type': "application/json"
-        }
+export const getAPI = async (path, params) => {
+    console.log(params)
+    const response = await API.get(`${API_URL}${path}`, {
+        params: params,
     })
     return response
 }

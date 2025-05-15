@@ -10,21 +10,57 @@ const { bookingEmitters } = require("../../events/events");
 const { checkIfBarber } = require("../auth/auth.barber");
 
 const { getPagination } = require("../../utils/query");
-const { createBookingDateTime } = require("./booking.helpers");
+const { createBookingDateTime, simplifiedBookings } = require("./booking.helpers");
 
 const httpGetBookings = async (req, res) => {
   const { skip, limit } = getPagination(req.query);
   try {
-    const bookings = await getBookings(skip, limit);
+    const bookings = await getBookings(query={}, skip, limit);
     res.status(200).json(bookings);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// TODO add check to see if they own it if not return error not owner
+const httpGetBookingsForDay = async(req, res) => {
+  try{
+    // should get this from body not params
+    const barberId = req.query.barberId
+    const clientId = req.query.cleintId
+    const dateString = req.query.date
+    const start = new Date(dateString); // e.g., "2024-12-04"
+    const end = new Date(dateString);
+    end.setDate(end.getDate() + 1);
+    let query = {startTime: {
+      $gte: start,
+      $lt: end
+    }}
+
+    if (barberId !== undefined) {
+      query = { 'barber._id': barberId, ...query };
+    }
+
+  if (clientId !== undefined){
+      query = {'customer._id': clientId, ...query}
+    }
+      const bookings = await getBookings(query)
+      
+    
+    res.status(200).json(simplifiedBookings(bookings));
+  }
+  catch(err){
+    res.status(500).json({message: "Server error"})
+  }
+}
+
+/* TODO 
+add check to see if they own it if not return error not owner
+make it more specific instead of id say barberId
+or clientId
+*/
 const httpGetBooking = async (req, res) => {
   try {
+    console.log(req.params.id)
     const booking = await getBooking(req.params.id);
     res.status(200).json(booking);
   } catch (err) {
@@ -102,4 +138,5 @@ module.exports = {
   httpsCreateBooking,
   httpUpdateBooking,
   httpDeleteBooking,
+  httpGetBookingsForDay
 };

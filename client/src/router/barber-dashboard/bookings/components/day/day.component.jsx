@@ -1,26 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAPI } from "../../../../../utils/api";
+import { Link } from "react-router-dom";
 
 const Day = ({ selectedDay, setSelectedDay }) => {
-  const [currentDay, setCurrentDay] = useState(selectedDay);
+  const [bookings, setBookings] = useState([]);
 
-  // non-overlapping test data
-  const bookings = [
-    { start: "09:00", end: "09:45", name: "John Doe", service: "Haircut" },
-    { start: "09:45", end: "10:30", name: "Doe John", service: "Haircut" },
-    { start: "14:00", end: "15:00", name: "Billie Green", service: "Haircut" },
-    { start: "11:30", end: "12:30", name: "Alex Brown", service: "Shave" },
-  ];
+  useEffect(()=>{
+    console.log("Day Changed")
+    const getBookings = async () => {
+                console.log(selectedDay)
+                try{
+                    const params = {
+                      // barberId: null,
+                      date: selectedDay 
+                    }
+                    const res = await getAPI('/bookings/day', params)
+                    console.log(res)
+                    setBookings(res.data)
+                }
+                catch(err){
+                    console.log(err)
+                }
+            }
+            
+            getBookings()
+  }, [selectedDay])
+
+  function formatTo12Hour(timeString) {
+    const [hourStr, minute] = timeString.split(":");
+    let hour = parseInt(hourStr);
+    const ampm = hour >= 12 ? "PM" : "AM";
+    hour = hour % 12 || 12; // convert 0 -> 12
+    return `${hour}:${minute} ${ampm}`;
+  }
 
   const goToPreviousDay = () => {
-    const prev = new Date(currentDay);
+    const prev = new Date(selectedDay);
     prev.setDate(prev.getDate() - 1);
-    setCurrentDay(prev);
     setSelectedDay(prev);
   };
   const goToNextDay = () => {
-    const next = new Date(currentDay);
+    const next = new Date(selectedDay);
     next.setDate(next.getDate() + 1);
-    setCurrentDay(next);
     setSelectedDay(next);
   };
 
@@ -56,7 +77,7 @@ const Day = ({ selectedDay, setSelectedDay }) => {
           &lt;
         </button>
         <h2 className="text-lg font-semibold">
-          {currentDay.toLocaleDateString(undefined, {
+          {selectedDay.toLocaleDateString(undefined, {
             weekday: "long",
             year: "numeric",
             month: "long",
@@ -110,23 +131,25 @@ const Day = ({ selectedDay, setSelectedDay }) => {
         {bookings.map((b, idx) => {
           const { top, height } = getBookingStyles(b);
           return (
-            <div
+            <Link
+              to={`/barber-dashboard/bookings/${b._id}`}
               key={idx}
-              className="absolute bg-black border-l-4 border-gray-800 rounded p-2 shadow-sm z-10"
+              className="absolute cursor-pointer bg-black border-l-4 border-gray-800 rounded p-2 shadow-sm z-10"
               style={{
                 top: top + 13.5, // nudge just below the line
                 height: height - 9, // end before next line
                 left: 71, // match paddingLeft
                 right: 1,
               }}
+              
             >
               <div className="flex flex-row items-center gap-2 font-semibold text-white">
                 <div>{b.name}</div>
                 <span>&#8226;</span>
                 <div>{b.service}</div>
               </div>
-              <div className="text-white">{`${b.start} - ${b.end}`}</div>
-            </div>
+              <div className="text-white">{`${formatTo12Hour(b.start)} - ${formatTo12Hour(b.end)}`}</div>
+            </Link>
           );
         })}
       </div>

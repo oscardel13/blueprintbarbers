@@ -19,4 +19,24 @@ function createBookingDateTime(time, service) {
   };
 }
 
-module.exports = { createBookingDateTime };
+/*
+  const bookings = [
+    { start: "09:00", end: "09:45", name: "John Doe", service: "Haircut" },
+    { start: "09:45", end: "10:30", name: "Doe John", service: "Haircut" },
+    { start: "14:00", end: "15:00", name: "Billie Green", service: "Haircut" },
+    { start: "11:30", end: "12:30", name: "Alex Brown", service: "Shave" },
+  ];
+*/
+function simplifiedBookings(bookings){
+  const formatted = bookings.map((b) => {
+    return {
+    _id: b._id,
+    start: b.startTime.toISOString().substring(11, 16), // "HH:mm"
+    end: b.endTime.toISOString().substring(11, 16),
+    name: b.customer.name,
+    service: b.service.name,
+  }});
+  return formatted
+}
+
+module.exports = { createBookingDateTime, simplifiedBookings };

@@ -1,8 +1,9 @@
 const { bookingCollection } = require("./booking.mongo");
 
 //SHOULD TAKE INTO ACCOUNT barberID,
-const getBookings = async (skip, limit) => {
-  return await bookingCollection.find().skip(skip).limit(limit);
+const getBookings = async (query={}, skip = 0, limit = 0) => {
+  return await bookingCollection.find(query).skip(skip).limit(limit);
+  
 };
 
 const createBooking = async (booking) => {
