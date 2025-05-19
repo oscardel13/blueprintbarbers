@@ -6,9 +6,7 @@ const Day = ({ selectedDay, setSelectedDay }) => {
   const [bookings, setBookings] = useState([]);
 
   useEffect(()=>{
-    console.log("Day Changed")
     const getBookings = async () => {
-                console.log(selectedDay)
                 try{
                     const params = {
                       // barberId: null,

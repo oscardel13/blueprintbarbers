@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import { getAPI } from "../../../../utils/api";
 import MapSection from "../../../barbershop/[barbershop]/barbers/[barber]/components/info-card/components/map-section/map-section.component";
 
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PageHeader from "../../../../components/page-header/page-header.component";
 
 const Appointment = () => {
@@ -63,12 +62,6 @@ const Appointment = () => {
     <div className="flex flex-col gap-5 w-full max-w-[500px] min-h-screen">
       <PageHeader title="Appointment" />
       <div className="relative">
-        <Link
-          to="/account/appointments"
-          className="absolute top-1 left-1 hover:text-gray-500"
-        >
-          {/* <ArrowBackIcon className="text-3xl font-bold" /> */}
-        </Link>
         <h1 className="text-3xl font-semibold text-center">
           {new Date(appointment.startTime).toLocaleDateString("en-US", {
             month: "short", // Abbreviated month (e.g., Jan, Feb)

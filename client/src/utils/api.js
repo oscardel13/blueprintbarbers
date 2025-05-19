@@ -9,7 +9,6 @@ const API_URL = process.env.REACT_APP_API_URL || "https://api.blueprintbarbers.c
 
 
 export const getAPI = async (path, params) => {
-    console.log(params)
     const response = await API.get(`${API_URL}${path}`, {
         params: params,
     })

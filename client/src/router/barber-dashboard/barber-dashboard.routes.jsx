@@ -20,7 +20,7 @@ function BarberRoutes() {
         </Route>
         <Route path="bookings">
           <Route index element={<BookingsPage />} />
-          <Route path=":id" element={<BookingPage />} />
+          <Route path=":bookingId" element={<BookingPage />} />
         </Route>
 
         <Route path="edit" element={<EditPage />} />
