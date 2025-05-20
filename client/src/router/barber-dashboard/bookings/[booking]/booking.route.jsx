@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getAPI } from "../../../../utils/api";
+import { getAPI, putAPI } from "../../../../utils/api";
 
 import PageHeader from "../../components/page-header/page-header.component";
+import Alert from "../components/alert/alert.component";
 
 const BookingPage = () => {
   let { bookingId } = useParams();
   const [booking, setBooking] = useState(null);
-  console.log(booking)
+  const [showAlert, setShowAlert] = useState(false);
+
   useEffect(() => {
     const fetchBooking = async () => {
       try {
@@ -27,7 +29,6 @@ const BookingPage = () => {
         <h1 className="font-semibold text-5xl">Loading...</h1>
       </div>
     );
-  // const booking = APPOINTMENT_TMP;
 
   const statusComponent = (status) => {
     switch (status) {
@@ -58,9 +59,21 @@ const BookingPage = () => {
     }
   };
 
+  const cancelBooking = async() => {
+    const cancelBool = confirm("Are you trying to cancel booking")
+  }
+
+  const updateBooking = async() => {
+    alert("updating Booking")
+    setShowAlert(true)
+  }
+
   return (
     <div className="container">
       <PageHeader title="Booking" />
+      {
+        showAlert ? null : <Alert/>
+      }
       <div className="flex flex-col gap-3 w-96">
         {statusComponent(booking.status)}
         <div className="flex flex-row p-3 border border-gray-200 bg-white shadow-lg rounded-lg gap-5">
@@ -91,6 +104,9 @@ const BookingPage = () => {
           <div className="w-1/6">0</div>
           <div></div>
         </div>
+
+        <hr/>
+
         <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-1">
           <h6 className="font-semibold">{booking.service.name}</h6>
@@ -111,6 +127,16 @@ const BookingPage = () => {
         </div>
       </div>
 
+      <hr/>
+
+      <div className="flex flex-row gap-1">
+        <div className="w-1/2 text-white">
+            <button className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg" onClick={cancelBooking}>Cancel</button>
+        </div>
+        <div className="w-1/2 text-white">
+          <button className="flex w-full h-10 rounded-lg justify-center items-center bg-gray-600 shadow-lg" onClick={updateBooking}>Edit</button>
+        </div>
+      </div>
 
       </div>
     </div>
