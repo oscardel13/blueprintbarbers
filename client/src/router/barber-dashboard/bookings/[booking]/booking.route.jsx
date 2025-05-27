@@ -10,6 +10,14 @@ const BookingPage = () => {
   const [booking, setBooking] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
 
+  const cancelBooking = async() => {
+    alert("Are you trying to cancel booking")
+  }
+
+  const triggerUpdateBooking = () => {
+    setShowAlert((prev) => !prev)
+  };
+
   useEffect(() => {
     const fetchBooking = async () => {
       try {
@@ -23,6 +31,7 @@ const BookingPage = () => {
     };
     fetchBooking();
   }, [bookingId]);
+
   if (!booking)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -59,20 +68,15 @@ const BookingPage = () => {
     }
   };
 
-  const cancelBooking = async() => {
-    const cancelBool = confirm("Are you trying to cancel booking")
-  }
-
-  const updateBooking = async() => {
-    alert("updating Booking")
-    setShowAlert(true)
-  }
-
   return (
     <div className="container">
       <PageHeader title="Booking" />
       {
-        showAlert ? null : <Alert/>
+        showAlert && 
+          <Alert closeAlert={triggerUpdateBooking}>
+              <h1 className="text-xl font-semibold">Update Booking</h1>
+              <p>Update date, barber, or service!</p>
+          </Alert>
       }
       <div className="flex flex-col gap-3 w-96">
         {statusComponent(booking.status)}
@@ -134,7 +138,7 @@ const BookingPage = () => {
             <button className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg" onClick={cancelBooking}>Cancel</button>
         </div>
         <div className="w-1/2 text-white">
-          <button className="flex w-full h-10 rounded-lg justify-center items-center bg-gray-600 shadow-lg" onClick={updateBooking}>Edit</button>
+          <button className="flex w-full h-10 rounded-lg justify-center items-center bg-gray-600 shadow-lg" onClick={triggerUpdateBooking}>Edit</button>
         </div>
       </div>
 

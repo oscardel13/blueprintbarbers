@@ -5,7 +5,7 @@ const Popover = ({ closeTrigger, children, top = false }) => {
       onClick={closeTrigger} // Trigger close when clicking outside
     >
       <div
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => (e.stopPropagation())} // prevents box from also triggering closeTrigger
         className={`${top ? "absolute top-0 md:top-auto" : ""}`}
       >
         {children}
