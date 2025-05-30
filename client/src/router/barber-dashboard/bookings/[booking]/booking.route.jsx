@@ -5,18 +5,43 @@ import { getAPI, putAPI } from "../../../../utils/api";
 import PageHeader from "../../components/page-header/page-header.component";
 import Alert from "../components/alert/alert.component";
 
+const STATUS_COLOR = {
+  "pending" : "yellow-700",
+  "confirmed" : "green-500",
+  "canceled": "red-400",
+  "finished": "gray-300"
+}
+
 const BookingPage = () => {
   let { bookingId } = useParams();
   const [booking, setBooking] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [waiting, setWaiting] = useState(false);
+  const [updatePopover, setUpdatePopover] = useState(false)
 
-  const cancelBooking = async() => {
-    alert("Are you trying to cancel booking")
+  const triggerCancelBooking = async() => {
+    setShowAlert((prev) => !prev)
   }
 
   const triggerUpdateBooking = () => {
-    setShowAlert((prev) => !prev)
+    setUpdatePopover((prev) => !prev)
   };
+
+  const cancelBooking = async() => {
+    setWaiting(true)
+    try{
+      const body = {
+        status: "canceled"
+      }
+      const res = await putAPI(`/bookings/${booking._id}`, body)
+      setShowAlert(false)
+      setWaiting(false)
+      setBooking(res.data)
+    }
+    catch(err){
+      alert(err)
+    }
+  }
 
   useEffect(() => {
     const fetchBooking = async () => {
@@ -39,47 +64,25 @@ const BookingPage = () => {
       </div>
     );
 
-  const statusComponent = (status) => {
-    switch (status) {
-      case "pending":
-        return (
-          <span className="px-5 py-2 border text text-center text-gray-100 bg-yellow-700 rounded-full">
-            Pending
-          </span>
-        );
-      case "confirmed":
-        return (
-          <span className="px-5 py-2 border text text-center text-gray-100 bg-green-500 rounded-full">
-            Confirmed
-          </span>
-        );
-      case "finished":
-        return (
-          <span className="px-5 py-2 border text text-center text-gray-700 bg-gray-300 rounded-full">
-            Finished
-          </span>
-        );
-      default:
-        return (
-          <span className="px-5 py-2 border text text-center text-gray-700 bg-gray-300 rounded-full">
-            Pending
-          </span>
-        );
-    }
-  };
-
   return (
     <div className="container">
       <PageHeader title="Booking" />
       {
         showAlert && 
-          <Alert closeAlert={triggerUpdateBooking}>
-              <h1 className="text-xl font-semibold">Update Booking</h1>
-              <p>Update date, barber, or service!</p>
+          <Alert closeAlert={triggerCancelBooking} confirmAlert={cancelBooking}>
+              {
+                waiting ? <div><h1 className="text-xl font-semibold">Cancel Booking</h1>
+              <p>Waiting...</p></div> : <div><h1 className="text-xl font-semibold">Cancel Booking</h1>
+              <p>{`Are you sure you want to cancel booking for ${booking.customer.name} - ${booking.service.name} for ${booking.startTime}`}</p></div>
+              }
           </Alert>
       }
       <div className="flex flex-col gap-3 w-96">
-        {statusComponent(booking.status)}
+        <div className="flex justify-center">
+          <span className={`w-60 px-5 py-2 text text-center text-white bg-${STATUS_COLOR[booking.status]} rounded-full shadow-md`}>
+            {booking.status}
+          </span>
+        </div>
         <div className="flex flex-row p-3 border border-gray-200 bg-white shadow-lg rounded-lg gap-5">
           <div className="flex flex-col">
             <span className="text-sm text-gray-400">Start</span>
@@ -135,7 +138,11 @@ const BookingPage = () => {
 
       <div className="flex flex-row gap-1">
         <div className="w-1/2 text-white">
-            <button className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg" onClick={cancelBooking}>Cancel</button>
+            <button className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg" onClick={triggerCancelBooking}>Cancel</button
+            
+            
+            
+            >
         </div>
         <div className="w-1/2 text-white">
           <button className="flex w-full h-10 rounded-lg justify-center items-center bg-gray-600 shadow-lg" onClick={triggerUpdateBooking}>Edit</button>

@@ -15,13 +15,8 @@ const itemSchema = new Schema({
   owner: {
     type: String,
     default: "" // Default value for owner field
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-    required: true
   }
-}); 
+}, { timestamps: true }); 
 
 // Define the Product schema
 const productSchema = new Schema({
@@ -58,20 +53,10 @@ const productSchema = new Schema({
     type: Boolean,
     default: false
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    required: true
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-    required: true
-  },
   archived: {
     type: Boolean,
     default: false
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

@@ -54,15 +54,7 @@ const BookingSchema = new mongoose.Schema({
     type: String, // Additional notes for the booking
     default: "",
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, { timestamps: true });
 
 module.exports = {
   bookingCollection: mongoose.model("booking", BookingSchema),

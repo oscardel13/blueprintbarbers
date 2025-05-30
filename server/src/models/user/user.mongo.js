@@ -53,11 +53,7 @@ const userSchema = new Schema({
     type: [bookingSchema], // Update this to hold booking Schema
     default: [],
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, { timestamps: true });
 
 module.exports = {
   userSchema: userSchema,

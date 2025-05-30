@@ -25,10 +25,6 @@ const BarberSchema = new mongoose.Schema({
   instagramUrl: { type: String, default: "" },
   booksyUrl: { type: String },
   images: { type: [String], default: [] },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
   hours: {
     sunday: { type: [[String]], default: [] },
     monday: { type: [[String]], default: [] },
@@ -71,6 +67,6 @@ const BarberSchema = new mongoose.Schema({
     default: [],
   }, // Array of strings
   clients: { type: [userSchema], default: [] }, // Array of client IDs
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("barber", BarberSchema);
