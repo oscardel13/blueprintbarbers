@@ -2,6 +2,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { Link } from "react-router-dom";
 
 // consider adding some ads here
+// have buttons to return to the barber page or barbershop (like book another)
 const BookingConfirmed = () => {
   return (
     <div className="relative flex flex-col justify-center items-center p-10 bg-white h-screen w-screen rounded-lg shadow-lg border">

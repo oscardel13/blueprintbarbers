@@ -3,15 +3,18 @@ import { Link, useParams } from "react-router-dom";
 import { getAPI, putAPI } from "../../../../utils/api";
 
 import PageHeader from "../../components/page-header/page-header.component";
+import UpdateBooking from "../../../../components/update_booking/update_booking.comonent";
 import Alert from "../components/alert/alert.component";
 
+// bug not showing color properly
 const STATUS_COLOR = {
   "pending" : "yellow-700",
   "confirmed" : "green-500",
   "canceled": "red-400",
-  "finished": "gray-300"
+  "finished": "gray-600"
 }
 
+// if pending it should have 2 bottons: confirm and deny
 const BookingPage = () => {
   let { bookingId } = useParams();
   const [booking, setBooking] = useState(null);
@@ -76,6 +79,9 @@ const BookingPage = () => {
               <p>{`Are you sure you want to cancel booking for ${booking.customer.name} - ${booking.service.name} for ${booking.startTime}`}</p></div>
               }
           </Alert>
+      }
+      {
+        updatePopover && <UpdateBooking service={booking.service} barber={booking.barber} closeBooking={triggerUpdateBooking}/>
       }
       <div className="flex flex-col gap-3 w-96">
         <div className="flex justify-center">

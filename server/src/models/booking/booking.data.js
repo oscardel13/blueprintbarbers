@@ -6,6 +6,14 @@ const getBookings = async (query={}, skip = 0, limit = 0) => {
   
 };
 
+const upsertBooking = async (filter, update) => {
+  return await bookingCollection.findOneAndUpdate(
+    filter, // Usually _id
+    { $set: update },
+    { new: true, upsert: true }
+  );
+};
+
 const createBooking = async (booking) => {
   return await bookingCollection.create(booking);
 };
@@ -30,6 +38,7 @@ const deleteBooking = async (id) => {
 
 module.exports = {
   createBooking,
+  upsertBooking,
   getBookings,
   getBooking,
   updateBooking,

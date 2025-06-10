@@ -115,7 +115,7 @@ const httpUpdateBooking = async (req, res) => {
     req.body._id = req.params.id;
   }
   if (req.body._id === undefined || req.body._id === null || req.body._id === ""){
-    res.status(401).json({message: "unauthurized"})
+    res.status(401).json({message: "unauthorized"})
   }
   try {
     const booking = await updateBooking(req.body);
