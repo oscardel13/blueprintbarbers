@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getAPI, putAPI } from "../../../../utils/api";
 
 import PageHeader from "../../components/page-header/page-header.component";
 import UpdateBooking from "../../../../components/update_booking/update_booking.comonent";
 import Alert from "../components/alert/alert.component";
+import { selectCurrentBarber } from "../../../../store/barber/barber.selector";
 
 // bug not showing color properly
 const STATUS_COLOR = {
@@ -15,12 +17,17 @@ const STATUS_COLOR = {
 }
 
 // if pending it should have 2 bottons: confirm and deny
+// TODO copy enrique barber data to your own. when clicking edit is not working because 
+// lacking data
 const BookingPage = () => {
   let { bookingId } = useParams();
   const [booking, setBooking] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [updatePopover, setUpdatePopover] = useState(false)
+
+  const barber = useSelector(selectCurrentBarber)
+  console.log(barber)
 
   const triggerCancelBooking = async() => {
     setShowAlert((prev) => !prev)
@@ -81,7 +88,7 @@ const BookingPage = () => {
           </Alert>
       }
       {
-        updatePopover && <UpdateBooking service={booking.service} barber={booking.barber} closeBooking={triggerUpdateBooking}/>
+        updatePopover && <UpdateBooking service={booking.service} barber={barber} closeBooking={triggerUpdateBooking}/>
       }
       <div className="flex flex-col gap-3 w-96">
         <div className="flex justify-center">

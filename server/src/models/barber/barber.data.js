@@ -1,4 +1,5 @@
 const barbersCollection = require("./barber.mongo");
+const mongoose = require("mongoose");
 
 const getBarbers = async (skip, limit) => {
   return await barbersCollection.find({}).skip(skip).limit(limit);
@@ -11,8 +12,18 @@ const createBarber = async (barber) => {
   });
 };
 
-const getBarber = async (id) => {
-  return await barbersCollection.findOne({ _id: id });
+const getBarber = async (identifier) => {
+  let query = {};
+
+  if (mongoose.Types.ObjectId.isValid(identifier)) {
+    // Try to find by MongoDB _id
+    query = { _id: identifier };
+  } else {
+    // Fallback to gid (custom ID)
+    query = { gid: identifier };
+  }
+
+  return await barbersCollection.findOne(query);
 };
 
 const updateBarber = async (barber) => {

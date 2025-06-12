@@ -22,7 +22,10 @@ async function httpGetBarbers(req, res) {
 async function httpGetBarber(req, res) {
   const barberID = req.params.id;
   try {
+    console.log("FETCHING, barberID:", barberID)
+    
     let barber = await getBarber(barberID);
+    console.log("fetch correctly")
     if (
       !barber.availability ||
       barber.availability.length === 0 ||

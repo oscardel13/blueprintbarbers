@@ -119,7 +119,6 @@ const httpUpdateBooking = async (req, res) => {
   }
   try {
     const booking = await updateBooking(req.body);
-    // remember to uncomment it and test it
     bookingEmitters.emitUpdatingBookingEvent(booking);
     res.status(200).json(booking);
   } catch (err) {

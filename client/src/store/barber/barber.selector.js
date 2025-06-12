@@ -1,0 +1,1 @@
+export const selectCurrentBarber = (state) => state.barber.currentBarber;

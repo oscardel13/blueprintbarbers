@@ -8,8 +8,31 @@ import BookingsPage from "./bookings/bookings.route";
 import BookingPage from "./bookings/[booking]/booking.route";
 import EditPage from "./edit/edit.route";
 import SettingsPage from "./settings/settings.route";
+import { useEffect } from "react";
+import { getAPI } from "../../utils/api";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../store/user/user.selector";
+import { useDispatch } from "react-redux";
+import { setCurrentBarber } from "../../store/barber/barber.reducer";
 
 function BarberRoutes() {
+  const dispatch = useDispatch()
+  const user = useSelector(selectCurrentUser)
+  useEffect(()=>{    
+      const setBarber = async() =>{
+        try{
+          // update api so it checks user to get it maybe have me like user
+          if (user?.gid){
+            const barber = await getAPI(`/barbers/${user.gid}`)
+            dispatch(setCurrentBarber(barber.data))
+          }
+        }
+        catch(err){
+          alert("ERROR")
+        }
+      }
+      setBarber()
+  }, [user])
   return (
     <Routes>
       <Route path="barber-dashboard" element={<Layout />}>
