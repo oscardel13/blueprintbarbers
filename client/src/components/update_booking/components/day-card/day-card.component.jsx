@@ -3,7 +3,7 @@ const DayCard = ({ date, openSlots, selectedDate, updateSelectedDate }) => {
   const isToday = date.day === new Date().getDate().toString();
   return (
     <div
-      className={`flex flex-col flex-shrink-0 justify-center h-24 w-16 px-1 py-2 border border-gray-400 rounded-lg cursor-pointer hover:bg-gray-100 invisible-scrollbar ${
+      className={`flex flex-col flex-shrink-0 text-center justify-center h-24 w-16 px-1 py-2 border border-gray-400 rounded-lg cursor-pointer hover:bg-gray-100 invisible-scrollbar ${
         selected ? "bg-blue-500" : openSlots === 0 ? "text-gray-500" : ""
       }`}
       onClick={() => updateSelectedDate(date)}

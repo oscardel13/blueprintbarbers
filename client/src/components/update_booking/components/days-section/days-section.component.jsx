@@ -15,7 +15,7 @@ const DaysSection = ({ selectedDate, updateSelectedDate, availability }) => {
 
   return (
     <div className="pt-3">
-      <h3 className="w-full text-cente text-3xl font-semibold">
+      <h3 className="w-full text-center text-3xl font-semibold">
         {`${selectedDate.month} ${selectedDate.year}`}
       </h3>
       <ScollContainer>

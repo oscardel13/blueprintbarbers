@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { selectCurrentUser } from "../../store/user/user.selector";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 
 import Popover from "../../components/popover/popover.component";
@@ -7,34 +6,63 @@ import DaysSection from "./components/days-section/days-section.component";
 import SummarySection from "./components/summary-section/summary-section.component";
 import TimeSection from "./components/times-section/times-section.component";
 import TotalSection from "./components/total-section/total-section.component";
-import { useSelector } from "react-redux";
-import { putAPI } from "../../utils/api";
+import { getAPI, putAPI } from "../../utils/api";
 import { getFirstBookingDay, updateAvailability } from "./booking.helpers";
 import Confirmation from "./components/confirmation/confirmation.component";
 
 // if no availability on a date add way to notify me if something opens 
 
-const UpdateBooking = ({ service, barber, closeBooking }) => {
-  let user = useSelector(selectCurrentUser);
-
-  const availability = updateAvailability(
+const UpdateBooking = ({ service, barberId, closeBooking }) => {
+  const [barber, setBarber] = useState(null)
+  
+  let availability = []
+  if (barber?.availability){
+  availability = updateAvailability(
     barber.availability,
     service.duration
-  );
+  )}
 
-  const firstBookingDay = getFirstBookingDay(availability);
-  const [selectedDate, setSelectedDate] = useState(firstBookingDay);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [slots, setSlots] = useState([]);
   const [confirmedBooking, setConfirmedBooking] = useState(false);
+
+  console.log(selectedDate)
+
+  useEffect(()=>{
+    const getBarber = async() => {
+      try{
+        const res = await getAPI(`/barbers/${barberId}`)
+        setBarber(res.data)
+        setSelectedDate(getFirstBookingDay(updateAvailability(
+    res.data.availability,
+    service.duration
+  )))
+      }
+      catch(err){
+        alert(err)
+      }
+    }
+    getBarber()
+  }, [])
 
   useEffect(() => {
     const newSlots = availability.find(({ date }) => {
       return date === selectedDate;
     });
-
-    setSlots(newSlots.slots);
+    if (newSlots?.slots)
+      setSlots(newSlots.slots);
   }, [selectedDate]);
+
+  if (!barber || !selectedDate) {
+    return (
+      <Popover closeTrigger={closeBooking}>
+        <div className="flex justify-center items-center w-screen md:w-[768px] h-96 bg-white rounded-lg shadow-lg border">
+          <p className="text-gray-500 text-lg">Loading barber info...</p>
+        </div>
+      </Popover>
+    );
+  } 
 
   const updateSelectedDate = (date) => {
     setSelectedDate(date);
@@ -65,9 +93,6 @@ const UpdateBooking = ({ service, barber, closeBooking }) => {
   // have this redirect to booking confirmed. it could say on the popover
   const confirmBooking = async () => {
     const booking = {
-      barber,
-      user,
-      service,
       date: selectedDate,
       time: selectedTime,
     };

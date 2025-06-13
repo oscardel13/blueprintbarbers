@@ -27,7 +27,6 @@ const BookingPage = () => {
   const [updatePopover, setUpdatePopover] = useState(false)
 
   const barber = useSelector(selectCurrentBarber)
-  console.log(barber)
 
   const triggerCancelBooking = async() => {
     setShowAlert((prev) => !prev)
@@ -88,7 +87,7 @@ const BookingPage = () => {
           </Alert>
       }
       {
-        updatePopover && <UpdateBooking service={booking.service} barber={barber} closeBooking={triggerUpdateBooking}/>
+        updatePopover && <UpdateBooking service={booking.service} barberId={booking.barber._id} closeBooking={triggerUpdateBooking}/>
       }
       <div className="flex flex-col gap-3 w-96">
         <div className="flex justify-center">
