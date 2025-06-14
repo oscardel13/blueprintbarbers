@@ -54,7 +54,7 @@ function filterSlots(slots, duration) {
 
 // function that gets the first bookingDay with open slots
 export const getFirstBookingDay = (availability) => {
-  if (availability.length === 0) return null 
+  if (availability.length === 0) return null;
   const firstBookingDay = availability?.find(({ slots }) => {
     return slots.length > 0;
   });

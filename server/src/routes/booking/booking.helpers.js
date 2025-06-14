@@ -27,16 +27,60 @@ function createBookingDateTime(time, service) {
     { start: "11:30", end: "12:30", name: "Alex Brown", service: "Shave" },
   ];
 */
-function simplifiedBookings(bookings){
+function simplifiedBookings(bookings) {
   const formatted = bookings.map((b) => {
     return {
-    _id: b._id,
-    start: b.startTime.toISOString().substring(11, 16), // "HH:mm"
-    end: b.endTime.toISOString().substring(11, 16),
-    name: b.customer.name,
-    service: b.service.name,
-  }});
-  return formatted
+      _id: b._id,
+      start: b.startTime.toISOString().substring(11, 16), // "HH:mm"
+      end: b.endTime.toISOString().substring(11, 16),
+      name: b.customer.name,
+      service: b.service.name,
+    };
+  });
+  return formatted;
 }
 
-module.exports = { createBookingDateTime, simplifiedBookings };
+function buildBookingBody({
+  customer,
+  barber,
+  service,
+  startTime,
+  endTime,
+  notes = "",
+}) {
+  return {
+    customer: {
+      _id: customer._id,
+      name: customer.name,
+      picture: customer.picture,
+      email: customer.email,
+      phone: customer.phone || "",
+    },
+    barber: {
+      _id: barber._id,
+      name: barber.name,
+      nickname: barber.nickname,
+      picture: barber.picture,
+      phone: barber.phone,
+      address: barber.address,
+    },
+    service: {
+      _id: service._id,
+      name: service.name,
+      description: service.description || "",
+      price: service.price,
+      duration: service.duration,
+    },
+    startTime,
+    endTime,
+    address: barber.address,
+    notes,
+    status: "confirmed", // Optional: can override if needed
+  };
+}
+
+module.exports = {
+  createBookingDateTime,
+  simplifiedBookings,
+  buildBookingBody,
+};

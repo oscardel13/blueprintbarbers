@@ -10,6 +10,7 @@ import TotalSection from "./components/total-section/total-section.component";
 import { useSelector } from "react-redux";
 import { postAPI } from "../../../../../../../utils/api";
 import { getFirstBookingDay, updateAvailability } from "./booking.helpers";
+import { createBooking_Start_End_Time } from "../../../../../../../utils/helper-functions";
 
 // if no availability on a date add way to notify me if something opens up
 
@@ -69,12 +70,16 @@ const Booking = ({ service, barber, closeBooking }) => {
 
   // have this redirect to booking confirmed. it could say on the popover
   const confirmBooking = async () => {
+    const { startTime, endTime } = createBooking_Start_End_Time(
+      selectedTime,
+      service
+    );
     const booking = {
       barber,
-      user,
+      customer: user,
       service,
-      date: selectedDate,
-      time: selectedTime,
+      startTime,
+      endTime,
     };
 
     try {

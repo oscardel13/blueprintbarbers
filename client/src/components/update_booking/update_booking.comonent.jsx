@@ -9,49 +9,47 @@ import TotalSection from "./components/total-section/total-section.component";
 import { getAPI, putAPI } from "../../utils/api";
 import { getFirstBookingDay, updateAvailability } from "./booking.helpers";
 import Confirmation from "./components/confirmation/confirmation.component";
+import { createBooking_Start_End_Time } from "../../utils/helper-functions";
 
-// if no availability on a date add way to notify me if something opens 
+// if no availability on a date add way to notify me if something opens
 
-const UpdateBooking = ({ service, barberId, closeBooking }) => {
-  const [barber, setBarber] = useState(null)
-  
-  let availability = []
-  if (barber?.availability){
-  availability = updateAvailability(
-    barber.availability,
-    service.duration
-  )}
+const UpdateBooking = ({ service, barberId, bookingId, closeBooking }) => {
+  const [barber, setBarber] = useState(null);
+
+  let availability = [];
+  if (barber?.availability) {
+    availability = updateAvailability(barber.availability, service.duration);
+  }
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [slots, setSlots] = useState([]);
   const [confirmedBooking, setConfirmedBooking] = useState(false);
 
-  console.log(selectedDate)
+  console.log(selectedDate);
 
-  useEffect(()=>{
-    const getBarber = async() => {
-      try{
-        const res = await getAPI(`/barbers/${barberId}`)
-        setBarber(res.data)
-        setSelectedDate(getFirstBookingDay(updateAvailability(
-    res.data.availability,
-    service.duration
-  )))
+  useEffect(() => {
+    const getBarber = async () => {
+      try {
+        const res = await getAPI(`/barbers/${barberId}`);
+        setBarber(res.data);
+        setSelectedDate(
+          getFirstBookingDay(
+            updateAvailability(res.data.availability, service.duration)
+          )
+        );
+      } catch (err) {
+        alert(err);
       }
-      catch(err){
-        alert(err)
-      }
-    }
-    getBarber()
-  }, [])
+    };
+    getBarber();
+  }, []);
 
   useEffect(() => {
     const newSlots = availability.find(({ date }) => {
       return date === selectedDate;
     });
-    if (newSlots?.slots)
-      setSlots(newSlots.slots);
+    if (newSlots?.slots) setSlots(newSlots.slots);
   }, [selectedDate]);
 
   if (!barber || !selectedDate) {
@@ -62,7 +60,7 @@ const UpdateBooking = ({ service, barberId, closeBooking }) => {
         </div>
       </Popover>
     );
-  } 
+  }
 
   const updateSelectedDate = (date) => {
     setSelectedDate(date);
@@ -92,18 +90,22 @@ const UpdateBooking = ({ service, barberId, closeBooking }) => {
 
   // have this redirect to booking confirmed. it could say on the popover
   const confirmBooking = async () => {
+    const { startTime, endTime } = createBooking_Start_End_Time(
+      selectedTime,
+      service
+    );
     const booking = {
-      date: selectedDate,
-      time: selectedTime,
+      startTime,
+      endTime,
     };
 
     try {
-      const res = await putAPI("/bookings", booking);
+      const res = await putAPI(`/bookings/${bookingId}`, booking);
 
       // If the booking was successful
       if (res.status === 200) {
         // Navigate to the booking confirmation page
-        setConfirmedBooking(true)
+        setConfirmedBooking(true);
       }
     } catch (err) {
       console.error("Booking failed:", err);
@@ -112,10 +114,10 @@ const UpdateBooking = ({ service, barberId, closeBooking }) => {
 
   return (
     <Popover closeTrigger={closeBooking}>
-      {
-        confirmedBooking ? 
-          <Confirmation/> : 
-          <div className="relative flex flex-col px-3 py-5 bg-white w-screen md:w-[768px] rounded-lg shadow-lg border">
+      {confirmedBooking ? (
+        <Confirmation />
+      ) : (
+        <div className="relative flex flex-col px-3 py-5 bg-white w-screen md:w-[768px] rounded-lg shadow-lg border">
           <DaysSection
             selectedDate={selectedDate}
             updateSelectedDate={updateSelectedDate}
@@ -161,15 +163,14 @@ const UpdateBooking = ({ service, barberId, closeBooking }) => {
               />
             </>
           )}
-        <button
-          onClick={closeBooking}
-          className="absolute flex justify-center items-center top-5 right-5 text-black text-4xl hover:animate-spin90 hover:text-gray-500 w-4 h-4"
-        >
-          &times;
-        </button>
-      </div>
-       }
-      
+          <button
+            onClick={closeBooking}
+            className="absolute flex justify-center items-center top-5 right-5 text-black text-4xl hover:animate-spin90 hover:text-gray-500 w-4 h-4"
+          >
+            &times;
+          </button>
+        </div>
+      )}
     </Popover>
   );
 };
