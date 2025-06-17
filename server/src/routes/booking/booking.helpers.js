@@ -35,6 +35,7 @@ function simplifiedBookings(bookings) {
       end: b.endTime.toISOString().substring(11, 16),
       name: b.customer.name,
       service: b.service.name,
+      status: b.status
     };
   });
   return formatted;

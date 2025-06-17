@@ -23,7 +23,7 @@ async function httpGetBarber(req, res) {
   const barberID = req.params.id;
   try {
     console.log("FETCHING, barberID:", barberID)
-    
+
     let barber = await getBarber(barberID);
     console.log("fetch correctly")
     if (
@@ -34,6 +34,7 @@ async function httpGetBarber(req, res) {
     ) {
       barber = await updateAvailability(barber);
     }
+    
     res.status(200).json(barber);
   } catch (err) {
     res.status(500).json({ message: "Server error" });

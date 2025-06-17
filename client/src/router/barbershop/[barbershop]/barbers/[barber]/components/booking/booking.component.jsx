@@ -97,7 +97,7 @@ const Booking = ({ service, barber, closeBooking }) => {
 
   return (
     <Popover closeTrigger={closeBooking}>
-      <div className="relative flex flex-col px-3 py-5 bg-white w-screen md:w-[768px] rounded-lg shadow-lg border">
+      <div className="relative flex flex-col px-3 py-5 bg-white w-screen md:w-[768px] max-h-screen rounded-lg shadow-lg border overflow-y-auto">
         <DaysSection
           selectedDate={selectedDate}
           updateSelectedDate={updateSelectedDate}

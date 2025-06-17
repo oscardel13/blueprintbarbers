@@ -26,8 +26,6 @@ const UpdateBooking = ({ service, barberId, bookingId, closeBooking }) => {
   const [slots, setSlots] = useState([]);
   const [confirmedBooking, setConfirmedBooking] = useState(false);
 
-  console.log(selectedDate);
-
   useEffect(() => {
     const getBarber = async () => {
       try {
@@ -95,6 +93,7 @@ const UpdateBooking = ({ service, barberId, bookingId, closeBooking }) => {
       service
     );
     const booking = {
+      _id: bookingId,
       startTime,
       endTime,
     };
@@ -117,7 +116,7 @@ const UpdateBooking = ({ service, barberId, bookingId, closeBooking }) => {
       {confirmedBooking ? (
         <Confirmation />
       ) : (
-        <div className="relative flex flex-col px-3 py-5 bg-white w-screen md:w-[768px] rounded-lg shadow-lg border">
+        <div className="relative flex flex-col flex-auto px-3 py-5 bg-white w-screen md:w-[768px] rounded-lg shadow-lg border max-h-screen overflow-auto">
           <DaysSection
             selectedDate={selectedDate}
             updateSelectedDate={updateSelectedDate}
