@@ -5,13 +5,6 @@ import Monthly from "./components/monthly/monthly.component";
 import Day from "./components/day/day.component";
 import PageHeader from "../components/page-header/page-header.component";
 
-/* the color on the boxes should indeicate status of booking
-green - confirmed
-yellow - pending
-gray - finished
-canceled - won't show
-*/
-
 const BookingsPage = () => {
   const [view, setView] = useState("monthly"); // default to monthly
   const [selectedDay, setSelectedDay] = useState(new Date()); // default to today
