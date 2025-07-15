@@ -5,6 +5,11 @@ import AppointmentCard from "./components/appointment-card/appointment-card.comp
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import PageHeader from "../../../components/page-header/page-header.component";
 
+/*
+TODO add past appointments
+have it closed. so be a toggle feature that when expanded calls API to get it
+and only calls it once not for every expand
+*/
 const Appointments = () => {
   const user = useSelector(selectCurrentUser);
   const [finishedAppointments, setFinishedAppointments] = useState([]);

@@ -33,9 +33,16 @@ const httpGetBookingsForDay = async (req, res) => {
     const barberId = req.query.barberId;
     const clientId = req.query.cleintId;
     const dateString = req.query.date;
-    const start = new Date(dateString); // e.g., "2024-12-04"
+    const start = new Date(dateString)
+    // const start = new Date(
+    //   startDateTime.getFullYear(),
+    //   startDateTime.getMonth(),
+    //   startDateTime.getDate(),
+    //   0, 0, 0, 0
+    // );
     const end = new Date(dateString);
     end.setDate(end.getDate() + 1);
+    console.log(start, end)
     let query = {
       startTime: {
         $gte: start,

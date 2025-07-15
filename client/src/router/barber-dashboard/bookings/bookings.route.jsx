@@ -7,7 +7,8 @@ import PageHeader from "../components/page-header/page-header.component";
 
 const BookingsPage = () => {
   const [view, setView] = useState("monthly"); // default to monthly
-  const [selectedDay, setSelectedDay] = useState(new Date()); // default to today
+  const now = new Date();
+  const [selectedDay, setSelectedDay] = useState(new Date(now.getFullYear(), now.getMonth(), now.getDate())); // default to today
 
   const handleViewChange = (newView) => {
     setView(newView);

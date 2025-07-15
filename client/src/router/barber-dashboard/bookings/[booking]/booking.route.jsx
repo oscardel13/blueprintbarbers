@@ -1,35 +1,33 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getAPI, putAPI } from "../../../../utils/api";
 
 import PageHeader from "../../components/page-header/page-header.component";
 import UpdateBooking from "../../../../components/update_booking/update_booking.comonent";
 import Alert from "../components/alert/alert.component";
-import { selectCurrentBarber } from "../../../../store/barber/barber.selector";
 
-// bug not showing color properly
 const STATUS_COLOR = {
-  pending: "yellow-700",
+  pending: "yellow-600",
   confirmed: "green-500",
-  canceled: "red-400",
+  canceled: "red-600",
+  "no-show": "red-600",
   finished: "gray-600",
 };
 
-// if pending it should have 2 bottons: confirm and deny
-// TODO copy enrique barber data to your own. when clicking edit is not working because
-// lacking data
 const BookingPage = () => {
   let { bookingId } = useParams();
   const [booking, setBooking] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
+  const [cancelPopover, setCancelPopover] = useState(false);
+  const [noShowPopover, setNoShowPopover] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [updatePopover, setUpdatePopover] = useState(false);
 
-  const barber = useSelector(selectCurrentBarber);
-
   const triggerCancelBooking = async () => {
-    setShowAlert((prev) => !prev);
+    setCancelPopover((prev) => !prev);
+  };
+
+  const triggerNoShowBooking = async () => {
+    setNoShowPopover((prev) => !prev);
   };
 
   const triggerUpdateBooking = () => {
@@ -43,13 +41,58 @@ const BookingPage = () => {
         status: "canceled",
       };
       const res = await putAPI(`/bookings/${booking._id}`, body);
-      setShowAlert(false);
+      setCancelPopover(false);
       setWaiting(false);
       setBooking(res.data);
     } catch (err) {
       alert(err);
     }
   };
+
+  const noShowBooking = async () => {
+    setWaiting(true);
+    try {
+      const body = {
+        status: "no-show",
+      };
+      const res = await putAPI(`/bookings/${booking._id}`, body);
+      setNoShowPopover(false);
+      setWaiting(false);
+      setBooking(res.data);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const undoNoShowBooking = async () => {
+    setWaiting(true);
+    try {
+      const body = {
+        status: "finished",
+      };
+      const res = await putAPI(`/bookings/${booking._id}`, body);
+      setNoShowPopover(false);
+      setWaiting(false);
+      setBooking(res.data);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const confirmBooking = async () => {
+    setWaiting(true);
+    try {
+      const body = {
+        status: "confirmed",
+      };
+      const res = await putAPI(`/bookings/${booking._id}`, body);
+      setCancelPopover(false);
+      setWaiting(false);
+      setBooking(res.data);
+    } catch (err) {
+      alert(err);
+    }
+  }
 
   useEffect(() => {
     const fetchBooking = async () => {
@@ -75,7 +118,7 @@ const BookingPage = () => {
   return (
     <div className="container">
       <PageHeader title="Booking" />
-      {showAlert && (
+      {cancelPopover && (
         <Alert closeAlert={triggerCancelBooking} confirmAlert={cancelBooking}>
           {waiting ? (
             <div>
@@ -85,11 +128,38 @@ const BookingPage = () => {
           ) : (
             <div>
               <h1 className="text-xl font-semibold">Cancel Booking</h1>
-              <p>{`Are you sure you want to cancel booking for ${booking.customer.name} - ${booking.service.name} for ${booking.startTime}`}</p>
+              <p>{`Are you sure you want to cancel booking: ${booking.customer.name} - ${booking.service.name} for ${new Date(booking.startTime).toLocaleDateString("en-US", {
+              weekday: "long",
+              month: "long",
+              day: "2-digit",
+              year: "numeric"
+              })}`}</p>
             </div>
           )}
         </Alert>
       )}
+      {
+        noShowPopover && (
+          <Alert closeAlert={triggerNoShowBooking} confirmAlert={noShowBooking}>
+            {waiting ? (
+              <div>
+                <h1 className="text-xl font-semibold">No-Showed?</h1>
+                <p>Waiting...</p>
+              </div>
+            ) : (
+              <div>
+                <h1 className="text-xl font-semibold">No-Showed?</h1>
+                <p>{`Are you sure you want to No-Show booking: ${booking.customer.name} - ${booking.service.name} for ${new Date(booking.startTime).toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "2-digit",
+                year: "numeric"
+                })}`}</p>
+              </div>
+            )}
+          </Alert>
+        )
+      }
       {updatePopover && (
         <UpdateBooking
           service={booking.service}
@@ -111,14 +181,22 @@ const BookingPage = () => {
         <div className="flex flex-row p-3 border border-gray-200 bg-white shadow-lg rounded-lg gap-5">
           <div className="flex flex-col">
             <span className="text-sm text-gray-400">Start</span>
-            <span>10:00 AM</span>
+            <span>{new Date(booking.startTime).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}</span>
           </div>
 
           <div className="w-px bg-gray-300 mx-" />
 
           <div className="flex flex-col items-start">
             <span className="text-sm text-gray-400">Date</span>
-            <span>{booking.startTime}</span>
+            <span>{new Date(booking.startTime).toLocaleDateString("en-US", {
+              weekday: "long",
+              month: "long",
+              day: "2-digit",
+              year: "numeric"
+              })}</span>
           </div>
         </div>
         <div className="flex flex-row p-2 items-center">
@@ -165,24 +243,80 @@ const BookingPage = () => {
 
         <hr />
 
-        <div className="flex flex-row gap-1">
-          <div className="w-1/2 text-white">
-            <button
-              className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg"
-              onClick={triggerCancelBooking}
-            >
-              Cancel
-            </button>
-          </div>
-          <div className="w-1/2 text-white">
-            <button
-              className="flex w-full h-10 rounded-lg justify-center items-center bg-gray-600 shadow-lg"
-              onClick={triggerUpdateBooking}
-            >
-              Edit
-            </button>
-          </div>
-        </div>
+        {
+          booking?.status === "pending" ? 
+            <div className="flex flex-row gap-1">
+              <div className="w-1/2 text-white">
+                <button
+                  className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg"
+                  onClick={triggerCancelBooking}
+                >
+                  Deny
+                </button>
+              </div>
+              <div className="w-1/2 text-white">
+                <button
+                  className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
+                  onClick={confirmBooking}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          
+          : booking?.status === "confirmed" ? 
+            <div className="flex flex-row gap-1">
+              <div className="w-1/2 text-white">
+                <button
+                  className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg"
+                  onClick={triggerCancelBooking}
+                >
+                  Cancel
+                </button>
+              </div>
+              <div className="w-1/2 text-white">
+                <button
+                  className="flex w-full h-10 rounded-lg justify-center items-center bg-gray-600 shadow-lg"
+                  onClick={triggerUpdateBooking}
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          :booking?.status === "canceled" ?
+            <div className="flex flex-row gap-1">
+              <div className="w-full text-white">
+                <button
+                  className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
+                  onClick={confirmBooking}
+                >
+                  Undo Cancel
+                </button>
+              </div>
+            </div>
+          :booking?.status === "no-show" ?
+            <div className="flex flex-row gap-1">
+              <div className="w-full text-white">
+                <button
+                  className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
+                  onClick={undoNoShowBooking}
+                >
+                  Undo No-Show
+                </button>
+              </div>
+            </div>
+          :
+           <div className="flex flex-row gap-1">
+              <div className="w-full text-white">
+                <button
+                  className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 hover:bg-red-400 shadow-lg"
+                  onClick={triggerNoShowBooking}
+                >
+                  No-Showed
+                </button>
+              </div>
+            </div>
+        }
       </div>
     </div>
   );

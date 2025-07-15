@@ -4,10 +4,17 @@ import { getAPI } from "../../../../utils/api";
 import MapSection from "../../../barbershop/[barbershop]/barbers/[barber]/components/info-card/components/map-section/map-section.component";
 
 import PageHeader from "../../../../components/page-header/page-header.component";
+import UpdateBooking from "../../../../components/update_booking/update_booking.comonent";
 
 const Appointment = () => {
   let { appointmentId } = useParams();
   const [appointment, setAppointment] = useState(null);
+  const [updatePopover, setUpdatePopover] = useState(false);
+
+  const triggerUpdateBooking = () => {
+    setUpdatePopover((prev) => !prev);
+  };
+
 
   useEffect(() => {
     const fetchAppointment = async () => {
@@ -28,7 +35,6 @@ const Appointment = () => {
         <h1 className="font-semibold text-5xl">Loading...</h1>
       </div>
     );
-  // const appointment = APPOINTMENT_TMP;
 
   const statusComponent = (status) => {
     switch (status) {
@@ -46,7 +52,7 @@ const Appointment = () => {
         );
       case "finished":
         return (
-          <span className="px-5 py-2 border text text-gray-700 bg-gray-300 rounded-full">
+          <span className="px-5 py-2 border text text-white bg-gray-600 rounded-full">
             Finished
           </span>
         );
@@ -60,6 +66,14 @@ const Appointment = () => {
   };
   return (
     <div className="flex flex-col gap-5 w-full max-w-[500px] min-h-screen">
+      {updatePopover && (
+        <UpdateBooking
+          service={appointment.service}
+          barberId={appointment.barber._id}
+          bookingId={appointment._id}
+          closeBooking={triggerUpdateBooking}
+        />
+      )}
       <PageHeader title="Appointment" />
       <div className="relative">
         <h1 className="text-3xl font-semibold text-center">
@@ -93,7 +107,7 @@ const Appointment = () => {
               className="w-8 h-8 rounded-full"
               alt=""
             />
-            <span>{appointment.barber.name}</span>
+            <span className="underline">{appointment.barber.name}</span>
           </div>
         </div>
         <div className="flex flex-col justify-center text-right">
@@ -115,7 +129,7 @@ const Appointment = () => {
       <div className="px-1">
         {appointment.status === "finished" ? (
           <button
-            className="py-1 w-full h-20 bg-blue-500 text-white rounded-lg z-30 hover:bg-blue-300"
+            className="py-1 w-full h-20 bg-blue-600 text-white rounded-lg z-30 hover:bg-blue-300"
             onClick={(e) => {
               e.preventDefault(); // Prevent the default navigation
               e.stopPropagation(); // Prevents the click event from reaching the <Link>
@@ -126,12 +140,8 @@ const Appointment = () => {
           </button>
         ) : (
           <button
-            className="py-1 w-full h-12 bg-blue-500 text-white rounded-lg z-30 hover:bg-blue-300"
-            onClick={(e) => {
-              e.preventDefault(); // Prevent the default navigation
-              e.stopPropagation(); // Prevents the click event from reaching the <Link>
-              console.log("Reschedule/Cancel");
-            }}
+            className="py-1 w-full h-12 bg-blue-600 text-white rounded-lg z-30 hover:bg-blue-300"
+            onClick={triggerUpdateBooking}
           >
             Reschedule/Cancel
           </button>

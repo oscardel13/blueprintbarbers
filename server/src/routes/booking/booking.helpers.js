@@ -31,8 +31,8 @@ function simplifiedBookings(bookings) {
   const formatted = bookings.map((b) => {
     return {
       _id: b._id,
-      start: b.startTime.toISOString().substring(11, 16), // "HH:mm"
-      end: b.endTime.toISOString().substring(11, 16),
+      start: b.startTime, // "HH:mm"
+      end: b.endTime,
       name: b.customer.name,
       service: b.service.name,
       status: b.status

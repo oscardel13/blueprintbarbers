@@ -29,14 +29,6 @@ const Day = ({ selectedDay, setSelectedDay }) => {
             getBookings()
   }, [selectedDay])
 
-  function formatTo12Hour(timeString) {
-    const [hourStr, minute] = timeString.split(":");
-    let hour = parseInt(hourStr);
-    const ampm = hour >= 12 ? "PM" : "AM";
-    hour = hour % 12 || 12; // convert 0 -> 12
-    return `${hour}:${minute} ${ampm}`;
-  }
-
   const goToPreviousDay = () => {
     const prev = new Date(selectedDay);
     prev.setDate(prev.getDate() - 1);
@@ -54,8 +46,11 @@ const Day = ({ selectedDay, setSelectedDay }) => {
 
   // calculate top offset and height in px
   const getBookingStyles = ({ start, end }) => {
-    const [sh, sm] = start.split(":").map(Number);
-    const [eh, em] = end.split(":").map(Number);
+    const sh = Number(new Date(start).toLocaleTimeString("en-US", { hour: "numeric", hourCycle: "h23" }));
+    const sm = Number(new Date(start).toLocaleTimeString("en-US", { minute: "numeric" }));
+    const eh = Number(new Date(end).toLocaleTimeString("en-US", { hour: "numeric", hourCycle: "h23" }));
+    const em = Number(new Date(end).toLocaleTimeString("en-US", { minute: "numeric" }));
+
     const startTotal = sh * 60 + sm;
     const endTotal = eh * 60 + em;
     const top = (startTotal - dayStartMinutes) * pxPerMinute;
@@ -64,10 +59,10 @@ const Day = ({ selectedDay, setSelectedDay }) => {
   };
 
   const formatFullTime = (h) =>
-    new Date(0, 0, 0, h, 0).toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    });
+    new Date(h).toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+              });
 
   return (
     <div className="py-4 lg:px-60">
@@ -109,7 +104,10 @@ const Day = ({ selectedDay, setSelectedDay }) => {
               {/* solid line at top of each hour */}
               <div className="absolute top-0 left-0 right-0 flex items-center">
                 <div className="w-[70px] text-right pr-2 text-sm font-medium">
-                  {formatFullTime(hour)}
+                  {new Date(0, 0, 0, hour, 0).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    })}
                 </div>
                 <div className="flex-1 border-t border-gray-700" />
               </div>
@@ -151,7 +149,7 @@ const Day = ({ selectedDay, setSelectedDay }) => {
                 <span>&#8226;</span>
                 <div>{b.service}</div>
               </div>
-              <div className="text-white">{`${formatTo12Hour(b.start)} - ${formatTo12Hour(b.end)}`}</div>
+              <div className="text-white">{`${formatFullTime(b.start)} - ${formatFullTime(b.end)}`}</div>
             </Link>
           );
         })}
