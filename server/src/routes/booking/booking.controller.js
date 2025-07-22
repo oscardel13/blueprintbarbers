@@ -65,6 +65,27 @@ const httpGetBookingsForDay = async (req, res) => {
   }
 };
 
+// ADD MORE CHECKS CLIENT IS REQUIRED
+const httpGetPastBookings = async (req, res) => {
+  const { skip, limit } = getPagination(req.query);
+  const now = req.query.now ? new Date(req.query.now) : new Date(); // fallback to server time if not sent
+
+  const query = {
+    startTime: { $lt: now },
+  };
+
+  if (req.query.client) {
+    query.client = req.query.client;
+  }
+
+  try {
+    const bookings = await getBookings(query, skip, limit);
+    res.status(200).json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 /* TODO 
 add check to see if they own it if not return error not owner
 make it more specific instead of id say barberId
@@ -72,7 +93,6 @@ or clientId
 */
 const httpGetBooking = async (req, res) => {
   try {
-    console.log(req.params.id);
     const booking = await getBooking(req.params.id);
     res.status(200).json(booking);
   } catch (err) {
@@ -129,4 +149,5 @@ module.exports = {
   httpUpdateBooking,
   httpDeleteBooking,
   httpGetBookingsForDay,
+  httpGetPastBookings
 };
