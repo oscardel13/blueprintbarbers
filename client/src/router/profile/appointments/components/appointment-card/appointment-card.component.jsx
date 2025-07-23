@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
+// TODO BOOK BUTTON
 const AppointmentCard = ({ appointment }) => {
-  const status = "confirmed";
   const statusComponent = (status) => {
     switch (status) {
       case "pending":
@@ -25,7 +25,7 @@ const AppointmentCard = ({ appointment }) => {
       default:
         return (
           <span className="px-3 w-min border text-sm text-gray-700 bg-gray-300 rounded-full">
-            Pending
+            Canceled
           </span>
         );
     }
@@ -62,7 +62,7 @@ const AppointmentCard = ({ appointment }) => {
           {/* need function to get picture */}
           <span>{appointment.barber.name}</span>
         </div>
-        {status === "finished" ? (
+        {appointment.status === "finished" || new Date(appointment.endTime) < new Date() ? (
           <button
             className="py-1 w-60 bg-gray-800 text-white rounded-lg z-30 hover:bg-gray-700"
             onClick={(e) => {

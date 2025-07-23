@@ -8,11 +8,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { getAPI } from "../../../utils/api";
 
-/*
-TODO add past appointments
-have it closed. so be a toggle feature that when expanded calls API to get it
-and only calls it once not for every expand
-*/
 const Appointments = () => {
   const user = useSelector(selectCurrentUser);
   const [finishedAppointments, setFinishedAppointments] = useState(null);
