@@ -27,11 +27,9 @@ const Appointments = () => {
       return
     // TODO
     const res = await getAPI(`/bookings/past`, {
-      client: user?._id,
-      // now: new Date().toISOString(), // client-local time in UTC
+      client: user._id,
+      now: new Date().toISOString(), // client-local time in UTC
     })
-
-    console.log(res)
     
     setFinishedAppointments(res.data)
   }
@@ -61,23 +59,29 @@ const Appointments = () => {
         <div className="flex flex-row justify-between items-center">
           <h3 className="text-2xl font-bold">Finished Appointments</h3>
           <button className="cursor-pointer"  onClick={triggerExpand}>
-            <ExpandMoreIcon/>
+            {
+              isExpanded ? 
+                <ExpandLessIcon/>
+              :
+                <ExpandMoreIcon/>
+            }
           </button>
         </div>
       </div>
       {
         // if there are no finished appointments, display a message
-        isExpanded ? !finishedAppointments ? (
+        isExpanded ? !finishedAppointments || finishedAppointments.length === 0 ? (
           <h3 className="text-xl">No finished appointments</h3>
         ) : (
+          <div className="flex flex-col gap-3 py-2">
+          {
           finishedAppointments.map((appointment, index) => {
             return (
-              <>
-                <h3 className="text-xl">Finished Appointments</h3>
                 <AppointmentCard key={index} appointment={appointment} />
-              </>
             );
-          })
+            
+          })}
+          </div>
         ) : null
       }
     </div>

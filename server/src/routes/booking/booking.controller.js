@@ -7,6 +7,7 @@ const {
   upsertBooking,
 } = require("../../models/booking/booking.data");
 const { bookingEmitters } = require("../../events/events");
+const mongoose = require("mongoose");
 
 const { checkIfBarber } = require("../auth/auth.barber");
 
@@ -29,7 +30,6 @@ const httpGetBookings = async (req, res) => {
 
 const httpGetBookingsForDay = async (req, res) => {
   try {
-    // should get this from body not params
     const barberId = req.query.barberId;
     const clientId = req.query.cleintId;
     const dateString = req.query.date;
@@ -69,13 +69,13 @@ const httpGetBookingsForDay = async (req, res) => {
 const httpGetPastBookings = async (req, res) => {
   const { skip, limit } = getPagination(req.query);
   const now = req.query.now ? new Date(req.query.now) : new Date(); // fallback to server time if not sent
-
+  console.log(req.query)
   const query = {
     startTime: { $lt: now },
   };
 
   if (req.query.client) {
-    query.client = req.query.client;
+    query["customer._id"] = new mongoose.Types.ObjectId(req.query.client);
   }
 
   try {
