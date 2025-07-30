@@ -127,9 +127,9 @@ const Appointment = () => {
       </div>
       <hr />
       <div className="px-1">
-        {appointment.status === "finished" ? (
+        {appointment.status === "finished" || new Date(appointment.endTime) < new Date() ? (
           <button
-            className="py-1 w-full h-20 bg-blue-600 text-white rounded-lg z-30 hover:bg-blue-300"
+            className="py-1 w-full h-12 bg-blue-600 text-white rounded-lg z-30 hover:bg-blue-300"
             onClick={(e) => {
               e.preventDefault(); // Prevent the default navigation
               e.stopPropagation(); // Prevents the click event from reaching the <Link>
