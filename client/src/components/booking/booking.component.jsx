@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 
-import Popover from "../../components/popover/popover.component";
+import Popover from "../popover/popover.component";
 import DaysSection from "./components/days-section/days-section.component";
 import SummarySection from "./components/summary-section/summary-section.component";
 import TimeSection from "./components/times-section/times-section.component";
 import TotalSection from "./components/total-section/total-section.component";
-import { getAPI, putAPI } from "../../utils/api";
+import { getAPI, postAPI, putAPI } from "../../utils/api";
 import { getFirstBookingDay, updateAvailability } from "./booking.helpers";
 import Confirmation from "./components/confirmation/confirmation.component";
 import { createBooking_Start_End_Time } from "../../utils/helper-functions";
+import { selectCurrentUser } from "../../store/user/user.selector";
+import { setCurrentUser } from "../../store/user/user.reducer";
 
 // if no availability on a date add way to notify me if something opens
 
-const UpdateBooking = ({ service, barberId, bookingId, closeBooking }) => {
-  const [barber, setBarber] = useState(null);
+const BookingPopover = ({ service, barberId, bookingId = null, closeBooking }) => {
+    const dispatch = useDispatch();
+    const user = useSelector(selectCurrentUser);
+    const [barber, setBarber] = useState(null);
 
   let availability = [];
   if (barber?.availability) {
@@ -92,19 +98,41 @@ const UpdateBooking = ({ service, barberId, bookingId, closeBooking }) => {
       selectedTime,
       service
     );
-    const booking = {
-      _id: bookingId,
-      startTime,
-      endTime,
-    };
 
     try {
-      const res = await putAPI(`/bookings/${bookingId}`, booking);
+      let res;
+      if (bookingId){
+      const booking = {
+            _id: bookingId,
+            startTime,
+            endTime,
+          };
+        res = await putAPI(`/bookings/${bookingId}`, booking);
+      }
+      else{
+        const booking = {
+          barber,
+          customer: user,
+          service,
+          startTime,
+          endTime,
+        };
+        res = await postAPI(`/bookings`, booking);
+      }
+
+      
 
       // If the booking was successful
       if (res.status === 200) {
         // Navigate to the booking confirmation page
+        const updatedUser = {
+          ...user,
+          appointments: [...(user.appointments || []), res.data]
+        };
+
+        dispatch(setCurrentUser(updatedUser))
         setConfirmedBooking(true);
+        
       }
     } catch (err) {
       console.error("Booking failed:", err);
@@ -159,6 +187,7 @@ const UpdateBooking = ({ service, barberId, bookingId, closeBooking }) => {
                 confirmBooking={confirmBooking}
                 total={service.price}
                 duration={service.duration}
+                bookingId={bookingId}
               />
             </>
           )}
@@ -174,4 +203,4 @@ const UpdateBooking = ({ service, barberId, bookingId, closeBooking }) => {
   );
 };
 
-export default UpdateBooking;
+export default BookingPopover;

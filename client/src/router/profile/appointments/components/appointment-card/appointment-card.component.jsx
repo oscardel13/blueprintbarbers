@@ -1,7 +1,18 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import BookingPopover from "../../../../../components/booking/booking.component";
 
 // TODO BOOK BUTTON
 const AppointmentCard = ({ appointment }) => {
+  const [bookingPopover, setbookingPopover] = useState(false);
+
+  const triggerBookingPopover = (e) => {
+    //prevent defult 
+    e.preventDefault();
+    e.stopPropagation();
+    setbookingPopover((prev) => !prev);
+  };
+
   const statusComponent = (status) => {
     switch (status) {
       case "pending":
@@ -46,54 +57,56 @@ const AppointmentCard = ({ appointment }) => {
   const date = dateObject(appointment.startTime);
 
   return (
-    <Link
-      className="flex flex-row bg-gray-200 justify-between border border-gray-500 shadow rounded-xl"
-      to={`/account/appointments/${appointment._id}`}
-    >
-      <div className="flex flex-col gap-3 p-3 md:mr-10">
-        {statusComponent(appointment.status)}
-        <h5 className="font-semibold">{appointment.service.name}</h5>
-        <div className="flex flex-row items-center gap-2">
-          <img
-            src={appointment.barber.picture}
-            className="w-8 h-8 rounded-full"
-            alt=""
-          />{" "}
-          {/* need function to get picture */}
-          <span>{appointment.barber.name}</span>
+    <>
+      {bookingPopover && (appointment.status === "finished" || new Date(appointment.endTime) < new Date()) ? 
+        <BookingPopover
+          service={appointment.service}
+          barberId={appointment.barber._id}
+          closeBooking={triggerBookingPopover}
+        /> : bookingPopover ? 
+          <BookingPopover
+          service={appointment.service}
+          barberId={appointment.barber._id}
+          bookingId={appointment._id}
+          closeBooking={triggerBookingPopover}
+        /> : null
+      }
+      <Link
+        className="flex flex-row bg-gray-200 justify-between border border-gray-500 shadow rounded-xl"
+        to={`/account/appointments/${appointment._id}`}
+      >
+        <div className="flex flex-col gap-3 p-3 md:mr-10">
+          {statusComponent(appointment.status)}
+          <h5 className="font-semibold">{appointment.service.name}</h5>
+          <div className="flex flex-row items-center gap-2">
+            <img
+              src={appointment.barber.picture}
+              className="w-8 h-8 rounded-full"
+              alt=""
+            />{" "}
+            {/* need function to get picture */}
+            <span>{appointment.barber.name}</span>
+          </div>
+          <button
+            className="py-1 w-60 bg-gray-800 text-white rounded-lg z-30 hover:bg-gray-600"
+            onClick={triggerBookingPopover}
+          >
+            {
+              appointment.status === "finished" || new Date(appointment.endTime) < new Date() ? 
+              "Book Again" : "Reschedule/Cancel"
+            }
+            
+          </button>
         </div>
-        {appointment.status === "finished" || new Date(appointment.endTime) < new Date() ? (
-          <button
-            className="py-1 w-60 bg-gray-800 text-white rounded-lg z-30 hover:bg-gray-700"
-            onClick={(e) => {
-              e.preventDefault(); // Prevent the default navigation
-              e.stopPropagation(); // Prevents the click event from reaching the <Link>
-              console.log("Booking again");
-            }}
-          >
-            Book again
-          </button>
-        ) : (
-          <button
-            className="py-1 w-60 bg-gray-800 text-white rounded-lg z-30 hover:bg-gray-700"
-            onClick={(e) => {
-              e.preventDefault(); // Prevent the default navigation
-              e.stopPropagation(); // Prevents the click event from reaching the <Link>
-              console.log("Reschedule/Cancel");
-            }}
-          >
-            Reschedule/Cancel
-          </button>
-        )}
-      </div>
-      <div className="flex flex-col justify-center items-center px-7 border-l-2 border-gray-400 rounded-r-xl">
-        <span className="text-center text-sm text-gray-500">{date.month}</span>
-        <span className="text-center text-2xl tracking-wider font-semibold">
-          {date.day}
-        </span>
-        <span className="text-center text-sm text-gray-500">{date.time}</span>
-      </div>
-    </Link>
+        <div className="flex flex-col justify-center items-center px-7 border-l-2 border-gray-400 rounded-r-xl">
+          <span className="text-center text-sm text-gray-500">{date.month}</span>
+          <span className="text-center text-2xl tracking-wider font-semibold">
+            {date.day}
+          </span>
+          <span className="text-center text-sm text-gray-500">{date.time}</span>
+        </div>
+      </Link>
+    </>
   );
 };
 

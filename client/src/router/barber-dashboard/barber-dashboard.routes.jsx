@@ -15,7 +15,7 @@ import { selectCurrentUser } from "../../store/user/user.selector";
 import { useDispatch } from "react-redux";
 import { setCurrentBarber } from "../../store/barber/barber.reducer";
 
-function BarberRoutes() {
+function BarberDashboardRoutes() {
   const dispatch = useDispatch()
   const user = useSelector(selectCurrentUser)
   useEffect(()=>{    
@@ -53,4 +53,4 @@ function BarberRoutes() {
   );
 }
 
-export default BarberRoutes;
+export default BarberDashboardRoutes;

@@ -15,7 +15,8 @@ import { setCurrentUser } from "./store/user/user.reducer";
 import { getAPI } from "./utils/api";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import BarberRoutes from "./router/barber-dashboard/barber-dashboard.routes";
+import BarberDashboardRoutes from "./router/barber-dashboard/barber-dashboard.routes";
+import BarberRoutes from "./router/barber/barber.routes";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,10 +47,11 @@ function App() {
           {BarbershopRoutes()}
           {AccountRoutes()}
           {StoreRoutes()}
+          {BarberRoutes()}
         </Route>
       </Routes>
       <DashboardRoutes />
-      <BarberRoutes />
+      <BarberDashboardRoutes />
     </>
   );
 }

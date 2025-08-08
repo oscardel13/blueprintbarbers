@@ -1,6 +1,6 @@
 import { durationToMinutes } from "../../../../utils/helper-functions";
 
-const TotalSection = ({ total, duration, confirmBooking }) => {
+const TotalSection = ({ total, duration, confirmBooking, bookingId }) => {
   return (
     <div className="flex flex-col md:px-7">
       <div className="flex flex-col py-3">
@@ -12,11 +12,15 @@ const TotalSection = ({ total, duration, confirmBooking }) => {
           {durationToMinutes(duration)}
         </span>
       </div>
+      
       <button
         className="flex w-full py-3 justify-center items-center bg-blue-600 hover:bg-blue-600 text-white rounded-lg shadow"
         onClick={confirmBooking}
       >
-        Book
+        {
+          bookingId ? "Update Booking" : "Book"
+        }
+        
       </button>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { durationToMinutes } from "../../../utils/helper-functions";
-import Booking from "../../booking/booking.component";
+import BookingPopover from "../../../../../../../../components/booking/booking.component";
+
 // Service card (service name, cost, duration) tailwind
 const ServiceCard = ({ barber, service, booksyUrl }) => {
   const [showBooking, setShowBooking] = useState(false);
@@ -36,8 +37,8 @@ const ServiceCard = ({ barber, service, booksyUrl }) => {
         </div>
       </div>
       {showBooking && (
-        <Booking
-          barber={barber}
+        <BookingPopover
+          barberId={barber._id}
           service={service}
           closeBooking={triggerBooking}
         />

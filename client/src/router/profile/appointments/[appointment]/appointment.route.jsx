@@ -4,15 +4,15 @@ import { getAPI } from "../../../../utils/api";
 import MapSection from "../../../barbershop/[barbershop]/barbers/[barber]/components/info-card/components/map-section/map-section.component";
 
 import PageHeader from "../../../../components/page-header/page-header.component";
-import UpdateBooking from "../../../../components/update_booking/update_booking.comonent";
+import BookingPopover from "../../../../components/booking/booking.component";
 
 const Appointment = () => {
   let { appointmentId } = useParams();
   const [appointment, setAppointment] = useState(null);
-  const [updatePopover, setUpdatePopover] = useState(false);
+  const [bookingPopover, setbookingPopover] = useState(false);
 
-  const triggerUpdateBooking = () => {
-    setUpdatePopover((prev) => !prev);
+  const triggerBookingPopover = () => {
+    setbookingPopover((prev) => !prev);
   };
 
 
@@ -66,14 +66,19 @@ const Appointment = () => {
   };
   return (
     <div className="flex flex-col gap-5 w-full max-w-[500px] min-h-screen">
-      {updatePopover && (
-        <UpdateBooking
+      {bookingPopover && (appointment.status === "finished" || new Date(appointment.endTime) < new Date()) ? 
+        <BookingPopover
+          service={appointment.service}
+          barberId={appointment.barber._id}
+          closeBooking={triggerBookingPopover}
+        /> : bookingPopover ? 
+          <BookingPopover
           service={appointment.service}
           barberId={appointment.barber._id}
           bookingId={appointment._id}
-          closeBooking={triggerUpdateBooking}
-        />
-      )}
+          closeBooking={triggerBookingPopover}
+        /> : null
+      }
       <PageHeader title="Appointment" />
       <div className="relative">
         <h1 className="text-3xl font-semibold text-center">
@@ -127,25 +132,16 @@ const Appointment = () => {
       </div>
       <hr />
       <div className="px-1">
-        {appointment.status === "finished" || new Date(appointment.endTime) < new Date() ? (
-          <button
-            className="py-1 w-full h-12 bg-blue-600 text-white rounded-lg z-30 hover:bg-blue-300"
-            onClick={(e) => {
-              e.preventDefault(); // Prevent the default navigation
-              e.stopPropagation(); // Prevents the click event from reaching the <Link>
-              console.log("Booking again");
-            }}
-          >
-            Book again
-          </button>
-        ) : (
-          <button
-            className="py-1 w-full h-12 bg-blue-600 text-white rounded-lg z-30 hover:bg-blue-300"
-            onClick={triggerUpdateBooking}
-          >
-            Reschedule/Cancel
-          </button>
-        )}
+        <button
+          className="py-1 w-full h-12 bg-gray-800 text-white rounded-lg z-30 hover:bg-gray-600"
+          onClick={triggerBookingPopover}
+        >
+          {
+            appointment.status === "finished" || new Date(appointment.endTime) < new Date() ? 
+            "Book Again" : "Reschedule/Cancel"
+          }
+          
+        </button>
       </div>
     </div>
   );

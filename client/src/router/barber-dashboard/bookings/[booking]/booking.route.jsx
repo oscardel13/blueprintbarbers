@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getAPI, putAPI } from "../../../../utils/api";
 
 import PageHeader from "../../components/page-header/page-header.component";
-import UpdateBooking from "../../../../components/update_booking/update_booking.comonent";
+import BookingPopover from "../../../../components/booking/booking.component";
 import Alert from "../components/alert/alert.component";
 
 const STATUS_COLOR = {
@@ -161,7 +161,7 @@ const BookingPage = () => {
         )
       }
       {updatePopover && (
-        <UpdateBooking
+        <BookingPopover
           service={booking.service}
           barberId={booking.barber._id}
           bookingId={booking._id}

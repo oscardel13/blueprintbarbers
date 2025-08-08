@@ -20,7 +20,6 @@ const Appointments = () => {
   const fetchFinishedAppointments = async () =>{
     if (finishedAppointments)
       return
-    // TODO
     const res = await getAPI(`/bookings/past`, {
       client: user._id,
       now: new Date().toISOString(), // client-local time in UTC
