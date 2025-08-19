@@ -18,6 +18,11 @@ const BarberSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   gid: { type: String, required: true },
   nickname: { type: String, default: "" },
+  barbershop: 
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "barbershop",
+    },
   picture: { type: String, default: "" },
   address: { type: String, default: "" },
   phone: { type: String, default: "" },
