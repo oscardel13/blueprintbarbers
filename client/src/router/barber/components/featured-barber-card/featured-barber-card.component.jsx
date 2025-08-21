@@ -12,7 +12,7 @@ const FeaturedBarberCard = ({ barber }) => {
   };
 
   return (
-    <Link to={`/barber/${barber._id}`}  className="relative w-72 flex-shrink-0">
+    <Link to={`/barbers/${barber._id}`}  className="relative w-72 flex-shrink-0">
       <div>
         <div className="absolute top-0 right-0 z-10 bg-[rgb(0,0,0,0.6)] flex flex-col w-20 rounded justify-center items-center p-2">
           <h6 className="text-white font-semibold text-md">5.0</h6>

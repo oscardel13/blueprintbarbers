@@ -50,21 +50,8 @@ function buildBookingBody({
   notes = "",
 }) {
   return {
-    customer: {
-      _id: customer._id,
-      name: customer.name,
-      picture: customer.picture,
-      email: customer.email,
-      phone: customer.phone || "",
-    },
-    barber: {
-      _id: barber._id,
-      name: barber.name,
-      nickname: barber.nickname,
-      picture: barber.picture,
-      phone: barber.phone,
-      address: barber.address,
-    },
+    customer: customer._id,
+    barber: barber._id,
     service: {
       _id: service._id,
       name: service.name,
@@ -76,7 +63,6 @@ function buildBookingBody({
     endTime,
     address: barber.address,
     notes,
-    status: "confirmed", // Optional: can override if needed
   };
 }
 

@@ -4,7 +4,7 @@ import Barber from "./[barber]/[barber].route";
 
 function BarberRoutes() {
   return (
-    <Route path="barber">
+    <Route path="barbers">
       <Route index element={<BarberLanding />} />
       <Route path=":barberId">
         <Route index element={<Barber />} />

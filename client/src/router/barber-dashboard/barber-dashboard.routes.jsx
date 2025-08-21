@@ -28,7 +28,7 @@ function BarberDashboardRoutes() {
           }
         }
         catch(err){
-          alert("ERROR")
+          alert("Not Barber")
         }
       }
       setBarber()

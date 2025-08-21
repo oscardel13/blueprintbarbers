@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import AppointmentCard from "./components/appointment-card/appointment-card.component";
@@ -10,8 +10,22 @@ import { getAPI } from "../../../utils/api";
 
 const Appointments = () => {
   const user = useSelector(selectCurrentUser);
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [finishedAppointments, setFinishedAppointments] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false)
+
+  useEffect(()=>{
+    const getUpcomingAppointments = async () => {
+      try{
+        const res = await getAPI('/bookings/upcoming')
+        setUpcomingAppointments(res.data)
+      }
+      catch(err){
+        console.log(`Error: ${err?.message}`)
+      }
+    }
+    getUpcomingAppointments()
+  }, [])
 
   if (!user) {
     return <div>Need to be logged in to view this page</div>;
@@ -38,12 +52,12 @@ const Appointments = () => {
       <PageHeader title="Appointments" />
       {
         // if there are no future appointments, display a message
-        user.appointments.length === 0 ? (
+        upcomingAppointments.length === 0 ? (
           <h3 className="text-2xl font-bold">No future appointments</h3>
         ) : (
           <div className="flex flex-col gap-5 pb-5">
             <h3 className="text-2xl font-bold">Upcoming Appointments</h3>
-            {user.appointments.map((appointment, index) => {
+            {upcomingAppointments.map((appointment, index) => {
               return <AppointmentCard key={index} appointment={appointment} />;
             })}
           </div>

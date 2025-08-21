@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import bgImage2 from '../../assets/landing_bg_2.jpg'
 import { getAPI } from "../../utils/api";
 import { Link } from "react-router-dom";
-import FeaturedBarberCard from "./components/featued-barber-card/featured-barber-card.component";
+import FeaturedBarberCard from "./components/featured-barber-card/featured-barber-card.component";
 
 export default function BarberSearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -115,7 +115,7 @@ export default function BarberSearchPage() {
               </p> */}
             </div>
             <div className="px-4">
-              <Link to={`/barber/${barber._id}`} className="text-blue-600 font-medium hover:underline">
+              <Link to={`/barbers/${barber._id}`} className="text-blue-600 font-medium hover:underline">
                 View →
               </Link>
             </div>

@@ -104,9 +104,12 @@ const httpsCreateBooking = async (req, res) => {
   try {
     const bookingBody = buildBookingBody(req.body);
     const booking = await upsertBooking(bookingBody);
+    console.log("upsert passed")
     bookingEmitters.emitCreateBookingEvent(booking);
+    console.log("emit passed")
     res.status(200).json(booking);
   } catch (err) {
+    console.log(err)
     res.status(500).json({ message: "Server error" });
   }
 };

@@ -128,7 +128,7 @@ const Navigation = () => {
               HOME
             </NavLink>
             <NavLink
-              to="/barbershops/barbers"
+              to="/barbers"
               className="block text-gray-400 p-2"
             >
               BARBERS

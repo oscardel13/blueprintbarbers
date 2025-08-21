@@ -5,7 +5,6 @@ import Services from "../components/services/services.component";
 import { getAPI } from "../../../utils/api";
 import { Link, useParams } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import PageHeader from "../components/page-header/page-header.component";
 
 const Barber = ({ index }) => {
   let { barberId } = useParams();
@@ -35,7 +34,7 @@ const Barber = ({ index }) => {
         <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
           <div className="relative flex flex-col w-full lg:w-2/3">
             <div className="flex justify-between items-center mb-4 flex-wrap py-3">
-              <Link to={"/barber"} className="px-4 py-2 bg-gray-200 shadow-lg rounded-full"> <ArrowBackIcon/> Back to Barbers</Link>
+              <Link to={"/barbers"} className="px-4 py-2 bg-gray-200 shadow-lg rounded-full"> <ArrowBackIcon/> Back to Search</Link>
               <Link to={`/barbershop/${barber.barbershop?._id || ""}`} className="px-4 py-2 bg-gray-200 shadow-lg rounded-full">Barbershop: {"Blueprint"}</Link>
             </div>
             <BookingHero

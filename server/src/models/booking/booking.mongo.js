@@ -3,26 +3,15 @@ const mongoose = require("mongoose");
 // maybe add data from customer, barber, service that will be used even if it repeats
 const BookingSchema = new mongoose.Schema({
   customer: {
-    type: {
-      _id: { type: mongoose.Schema.Types.ObjectId, required: true },
-      name: { type: String, required: true },
-      picture: { type: String, required: true },
-      email: { type: String, required: true },
-      phone: { type: String },
-    },
-    required: true,
-  },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+        required: true
+      },
   barber: {
-    type: {
-      _id: { type: mongoose.Schema.Types.ObjectId, required: true },
-      name: { type: String, required: true },
-      nickname: { type: String, required: true },
-      picture: { type: String, required: true },
-      address: { type: String, required: true },
-      phone: { type: String, required: true },
-    },
-    required: true,
-  },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "barber",
+        required: true
+      },
   service: {
     type: {
       _id: { type: mongoose.Schema.Types.ObjectId, required: true },
@@ -48,7 +37,7 @@ const BookingSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["finished", "confirmed", "pending", "canceled", "no-show"],
-    default: "confirmed",
+    default: "pending",
   },
   notes: {
     type: String, // Additional notes for the booking
