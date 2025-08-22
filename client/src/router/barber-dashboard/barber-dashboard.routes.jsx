@@ -28,7 +28,8 @@ function BarberDashboardRoutes() {
           }
         }
         catch(err){
-          alert("Not Barber")
+          // alert("Not Barber")
+          console.log("Not a barber")
         }
       }
       setBarber()

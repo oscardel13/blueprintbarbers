@@ -17,7 +17,10 @@ const Appointments = () => {
   useEffect(()=>{
     const getUpcomingAppointments = async () => {
       try{
-        const res = await getAPI('/bookings/upcoming')
+        const res = await getAPI(`/bookings`, {
+          clientId: user._id,
+          start: new Date().toISOString(), // client-local time in UTC
+        })
         setUpcomingAppointments(res.data)
       }
       catch(err){
@@ -25,7 +28,7 @@ const Appointments = () => {
       }
     }
     getUpcomingAppointments()
-  }, [])
+  }, [user])
 
   if (!user) {
     return <div>Need to be logged in to view this page</div>;
@@ -34,9 +37,9 @@ const Appointments = () => {
   const fetchFinishedAppointments = async () =>{
     if (finishedAppointments)
       return
-    const res = await getAPI(`/bookings/past`, {
-      client: user._id,
-      now: new Date().toISOString(), // client-local time in UTC
+    const res = await getAPI(`/bookings`, {
+      clientId: user._id,
+      end: new Date().toISOString(), // client-local time in UTC
     })
     
     setFinishedAppointments(res.data)

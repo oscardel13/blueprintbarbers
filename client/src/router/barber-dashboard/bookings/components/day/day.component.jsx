@@ -14,11 +14,16 @@ const Day = ({ selectedDay, setSelectedDay }) => {
   useEffect(()=>{
     const getBookings = async () => {
                 try{
+                    const start = new Date(selectedDay)
+                    const end = new Date(selectedDay);
+                    end.setDate(end.getDate() + 1);
                     const params = {
-                      // barberId: null,
-                      date: selectedDay 
+                      // barber: null,
+                      start,
+                      end
                     }
-                    const res = await getAPI('/bookings/day', params)
+                    const res = await getAPI('/bookings', params)
+                    console.log()
                     setBookings(res.data)
                 }
                 catch(err){
@@ -45,11 +50,11 @@ const Day = ({ selectedDay, setSelectedDay }) => {
   const dayStartMinutes = 8 * 60; // 8:00 AM
 
   // calculate top offset and height in px
-  const getBookingStyles = ({ start, end }) => {
-    const sh = Number(new Date(start).toLocaleTimeString("en-US", { hour: "numeric", hourCycle: "h23" }));
-    const sm = Number(new Date(start).toLocaleTimeString("en-US", { minute: "numeric" }));
-    const eh = Number(new Date(end).toLocaleTimeString("en-US", { hour: "numeric", hourCycle: "h23" }));
-    const em = Number(new Date(end).toLocaleTimeString("en-US", { minute: "numeric" }));
+  const getBookingStyles = ({ startTime, endTime }) => {
+    const sh = Number(new Date(startTime).toLocaleTimeString("en-US", { hour: "numeric", hourCycle: "h23" }));
+    const sm = Number(new Date(startTime).toLocaleTimeString("en-US", { minute: "numeric" }));
+    const eh = Number(new Date(endTime).toLocaleTimeString("en-US", { hour: "numeric", hourCycle: "h23" }));
+    const em = Number(new Date(endTime).toLocaleTimeString("en-US", { minute: "numeric" }));
 
     const startTotal = sh * 60 + sm;
     const endTotal = eh * 60 + em;
@@ -147,9 +152,9 @@ const Day = ({ selectedDay, setSelectedDay }) => {
               <div className="flex flex-row items-center gap-2 font-semibold text-white">
                 <div>{b.name}</div>
                 <span>&#8226;</span>
-                <div>{b.service}</div>
+                <div>{b.service.name}</div>
               </div>
-              <div className="text-white">{`${formatFullTime(b.start)} - ${formatFullTime(b.end)}`}</div>
+              <div className="text-white">{`${formatFullTime(b.startTime)} - ${formatFullTime(b.endTime)}`}</div>
             </Link>
           );
         })}

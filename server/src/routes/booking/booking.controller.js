@@ -7,77 +7,16 @@ const {
   upsertBooking,
 } = require("../../models/booking/booking.data");
 const { bookingEmitters } = require("../../events/events");
-const mongoose = require("mongoose");
-
-const { checkIfBarber } = require("../auth/auth.barber");
 
 const { getPagination } = require("../../utils/query");
 const {
-  createBookingDateTime,
-  simplifiedBookings,
   buildBookingBody,
+  getBookingsParser,
 } = require("./booking.helpers");
 
 const httpGetBookings = async (req, res) => {
   const { skip, limit } = getPagination(req.query);
-  try {
-    const bookings = await getBookings((query = {}), skip, limit);
-    res.status(200).json(bookings);
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-const httpGetBookingsForDay = async (req, res) => {
-  try {
-    const barberId = req.query.barberId;
-    const clientId = req.query.cleintId;
-    const dateString = req.query.date;
-    const start = new Date(dateString)
-    // const start = new Date(
-    //   startDateTime.getFullYear(),
-    //   startDateTime.getMonth(),
-    //   startDateTime.getDate(),
-    //   0, 0, 0, 0
-    // );
-    const end = new Date(dateString);
-    end.setDate(end.getDate() + 1);
-    console.log(start, end)
-    let query = {
-      startTime: {
-        $gte: start,
-        $lt: end,
-      },
-    };
-
-    if (barberId !== undefined) {
-      query = { "barber._id": barberId, ...query };
-    }
-
-    if (clientId !== undefined) {
-      query = { "customer._id": clientId, ...query };
-    }
-    const bookings = await getBookings(query);
-
-    res.status(200).json(simplifiedBookings(bookings));
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// ADD MORE CHECKS CLIENT IS REQUIRED
-const httpGetPastBookings = async (req, res) => {
-  const { skip, limit } = getPagination(req.query);
-  const now = req.query.now ? new Date(req.query.now) : new Date(); // fallback to server time if not sent
-  console.log(req.query)
-  const query = {
-    startTime: { $lt: now },
-  };
-
-  if (req.query.client) {
-    query["customer._id"] = new mongoose.Types.ObjectId(req.query.client);
-  }
-
+  const query = getBookingsParser(req.query)
   try {
     const bookings = await getBookings(query, skip, limit);
     res.status(200).json(bookings);
@@ -104,9 +43,7 @@ const httpsCreateBooking = async (req, res) => {
   try {
     const bookingBody = buildBookingBody(req.body);
     const booking = await upsertBooking(bookingBody);
-    console.log("upsert passed")
     bookingEmitters.emitCreateBookingEvent(booking);
-    console.log("emit passed")
     res.status(200).json(booking);
   } catch (err) {
     console.log(err)
@@ -151,6 +88,4 @@ module.exports = {
   httpsCreateBooking,
   httpUpdateBooking,
   httpDeleteBooking,
-  httpGetBookingsForDay,
-  httpGetPastBookings
 };
