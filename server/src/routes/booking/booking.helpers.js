@@ -38,7 +38,12 @@ function getBookingsParser(params){
     start && end  ? { $gte: start, $lte: end } :
     undefined;
 
-  return query
+  let sortDir =
+    start && !end ? 1 :     // future → ascending
+    !start && end ? -1 :    // past → descending
+    1;                      // default ascending
+
+  return { query, sortDir };
 }
 
 module.exports = {

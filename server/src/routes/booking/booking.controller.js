@@ -16,9 +16,9 @@ const {
 
 const httpGetBookings = async (req, res) => {
   const { skip, limit } = getPagination(req.query);
-  const query = getBookingsParser(req.query)
+  const { query, sortDir } = getBookingsParser(req.query);
   try {
-    const bookings = await getBookings(query, skip, limit);
+    const bookings = await getBookings(query, skip, limit, sortDir);
     res.status(200).json(bookings);
   } catch (err) {
     res.status(500).json({ message: "Server error" });

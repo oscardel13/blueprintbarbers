@@ -1,11 +1,12 @@
 const { bookingCollection } = require("./booking.mongo");
 
 // SHOULD TAKE INTO ACCOUNT barberID,
-const getBookings = async (query = {}, skip = 0, limit = 0) => {
+const getBookings = async (query = {}, skip = 0, limit = 0, sortDir = 1) => {
   return await bookingCollection
     .find(query)
     .skip(skip)
     .limit(limit)
+    .sort({ startTime: sortDir })
     .populate("customer", "name picture email phone") // only these fields
     .populate("barber", "name nickname picture address phone");
 };
