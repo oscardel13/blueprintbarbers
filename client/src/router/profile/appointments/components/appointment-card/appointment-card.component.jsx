@@ -84,7 +84,6 @@ const AppointmentCard = ({ appointment }) => {
               className="w-8 h-8 rounded-full"
               alt=""
             />{" "}
-            {/* need function to get picture */}
             <span>{appointment.barber.name}</span>
           </div>
           <button

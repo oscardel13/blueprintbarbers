@@ -112,7 +112,7 @@ const Appointment = () => {
               className="w-8 h-8 rounded-full"
               alt=""
             />
-            <span className="underline">{appointment.barber.name}</span>
+            <Link to={`/barbers/${appointment.barber._id}`} className="underline">{appointment.barber.name}</Link>
           </div>
         </div>
         <div className="flex flex-col justify-center text-right">

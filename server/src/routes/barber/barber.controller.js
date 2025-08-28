@@ -6,7 +6,7 @@ const {
   updateBarber,
   deleteBarber,
 } = require("../../models/barber/barber.data");
-const { updateAvailability } = require("../../services/barber/barber.service");
+const { updateAvailability, getBarberAvailability } = require("../../services/barber/barber.service");
 const { getPagination } = require("../../utils/query");
 
 async function httpGetBarbers(req, res) {
@@ -22,18 +22,15 @@ async function httpGetBarbers(req, res) {
 async function httpGetBarber(req, res) {
   const barberID = req.params.id;
   try {
-    console.log("FETCHING, barberID:", barberID)
-
     let barber = await getBarber(barberID);
-    console.log("fetch correctly")
-    if (
-      !barber.availability ||
-      barber.availability.length === 0 ||
-      barber.availability[0].date.day !== moment().date() ||
-      barber.availability[0].date.month !== moment().format("MMMM")
-    ) {
-      barber = await updateAvailability(barber);
-    }
+    // if (
+    //   !barber.availability ||
+    //   barber.availability.length === 0 ||
+    //   barber.availability[0].date.day !== moment().date() ||
+    //   barber.availability[0].date.month !== moment().format("MMMM")
+    // ) {
+    //   barber = await updateAvailability(barber);
+    // }
     
     res.status(200).json(barber);
   } catch (err) {
@@ -72,10 +69,22 @@ async function httpCheckBarber(req, res) {
   res.status(200).send(true);
 }
 
+async function httpGetBarberAvailability(req, res){
+  const barberId = req.params.id;
+  try {
+    const barberAvailability = await getBarberAvailability(barberId)
+    
+    res.status(200).json(barberAvailability);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
 module.exports = {
   httpGetBarbers,
   httpGetBarber,
   httpUpdateBarber,
   httpDeleteBarber,
   httpCheckBarber,
+  httpGetBarberAvailability
 };

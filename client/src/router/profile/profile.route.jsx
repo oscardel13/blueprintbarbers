@@ -4,6 +4,7 @@ import InventoryList from "./components/inventory-list/inventory-list.component"
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { Link } from "react-router-dom";
 import AppointmentCard from "./appointments/components/appointment-card/appointment-card.component";
+import UpcomingAppointments from "./components/upcoming-appointments/upcoming-appointments.component";
 
 const ProfilePage = () => {
   const user = useSelector(selectCurrentUser);
@@ -37,18 +38,7 @@ const ProfilePage = () => {
           >
             All Appointments
           </Link>
-          {user && user.appointments.length > 0 ? (
-            <div className="w-full">
-              <h6 className="pb-2">Upcoming Appointments</h6>
-              <div className="flex flex-col w-full lg:flex-row flex-wrap gap-3">
-                {user.appointments.map((appointment, index) => (
-                  <AppointmentCard key={index} appointment={appointment} />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <h6>No upcoming appointments</h6>
-          )}
+          <UpcomingAppointments/>
         </div>
         <div className="flex flex-col gap-5">
           <h3 className="text-3xl font-semibold pt-5">Inventory</h3>

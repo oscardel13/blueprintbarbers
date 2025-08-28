@@ -43,7 +43,7 @@ const httpsCreateBooking = async (req, res) => {
   try {
     const bookingBody = buildBookingBody(req.body);
     const booking = await upsertBooking(bookingBody);
-    bookingEmitters.emitCreateBookingEvent(booking);
+    // bookingEmitters.emitCreateBookingEvent(booking);
     res.status(200).json(booking);
   } catch (err) {
     console.log(err)
@@ -66,7 +66,7 @@ const httpUpdateBooking = async (req, res) => {
 
   try {
     const booking = await updateBooking(req.body);
-    bookingEmitters.emitUpdatingBookingEvent(booking);
+    // bookingEmitters.emitUpdatingBookingEvent(booking);
     res.status(200).json(booking);
   } catch (err) {
     res.status(500).json({ message: "Server error" });

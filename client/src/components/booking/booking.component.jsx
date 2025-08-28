@@ -18,14 +18,10 @@ import { setCurrentUser } from "../../store/user/user.reducer";
 // if no availability on a date add way to notify me if something opens
 
 const BookingPopover = ({ service, barberId, bookingId = null, closeBooking }) => {
-    const dispatch = useDispatch();
-    const user = useSelector(selectCurrentUser);
-    const [barber, setBarber] = useState(null);
-
-  let availability = [];
-  if (barber?.availability) {
-    availability = updateAvailability(barber.availability, service.duration);
-  }
+  const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
+  const [barber, setBarber] = useState(null);
+  const [availability, setAvailability] = useState()
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -35,12 +31,14 @@ const BookingPopover = ({ service, barberId, bookingId = null, closeBooking }) =
   useEffect(() => {
     const getBarber = async () => {
       try {
-        const res = await getAPI(`/barbers/${barberId}`);
-        setBarber(res.data);
+        const res = await getAPI(`/barbers/${barberId}/availability`);
+        console.log(res.data)
+        setBarber(res.data.barber);
+        const availability = updateAvailability(res.data.availability, service.duration)
+        console.log("AVAILABILITY:", availability)
+        setAvailability(availability)
         setSelectedDate(
-          getFirstBookingDay(
-            updateAvailability(res.data.availability, service.duration)
-          )
+          getFirstBookingDay(availability)
         );
       } catch (err) {
         alert(err);
@@ -50,7 +48,7 @@ const BookingPopover = ({ service, barberId, bookingId = null, closeBooking }) =
   }, []);
 
   useEffect(() => {
-    const newSlots = availability.find(({ date }) => {
+    const newSlots = availability?.find(({ date }) => {
       return date === selectedDate;
     });
     if (newSlots?.slots) setSlots(newSlots.slots);
