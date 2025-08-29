@@ -7,11 +7,11 @@ import BookingPopover from "../../../../components/booking/booking.component";
 import Alert from "../components/alert/alert.component";
 
 const STATUS_COLOR = {
-  pending: "yellow-600",
-  confirmed: "green-500",
-  canceled: "red-600",
-  "no-show": "red-600",
-  finished: "gray-600",
+  pending: "bg-yellow-600",
+  confirmed: "bg-green-500",
+  canceled: "bg-red-600",
+  "no-show": "bg-red-600",
+  finished: "bg-gray-600",
 };
 
 const BookingPage = () => {
@@ -171,7 +171,7 @@ const BookingPage = () => {
       <div className="flex flex-col gap-3 w-96">
         <div className="flex justify-center">
           <span
-            className={`w-60 px-5 py-2 text text-center text-white bg-${
+            className={`w-60 px-5 py-2 text text-center text-white ${
               STATUS_COLOR[booking.status]
             } rounded-full shadow-md`}
           >

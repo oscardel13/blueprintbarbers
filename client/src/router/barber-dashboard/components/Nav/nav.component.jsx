@@ -31,7 +31,7 @@ const DashboardNav = ({ style, toggleSidebar }) => {
         <NavLink
           Icon={AccountBoxIcon}
           to="/barber-dashboard/edit"
-          title="Account"
+          title="Profile"
           onClick={onClickLink}
         />
         <NavLink

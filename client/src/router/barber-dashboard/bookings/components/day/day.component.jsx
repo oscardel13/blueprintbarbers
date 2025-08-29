@@ -3,10 +3,10 @@ import { getAPI } from "../../../../../utils/api";
 import { Link } from "react-router-dom";
 
 const STATUS_TO_COLOR = {
-  "confirmed" : "green-600",
-  "pending": "yellow-600",
-  "finished": "gray-600"
-}
+  confirmed: "border-green-600",
+  canceled: "border-red-600",
+  pending: "border-yellow-600",
+};
 
 const Day = ({ selectedDay, setSelectedDay }) => {
   const [bookings, setBookings] = useState([]);
@@ -140,7 +140,7 @@ const Day = ({ selectedDay, setSelectedDay }) => {
             <Link
               to={`/barber-dashboard/bookings/${b._id}`}
               key={idx}
-              className={`absolute cursor-pointer bg-black border-l-8 border-${STATUS_TO_COLOR[b.status] ?? "gray-600"} rounded p-2 shadow-sm z-10`}
+              className={`absolute cursor-pointer bg-black border-l-8 ${STATUS_TO_COLOR[b.status] ?? "border-gray-600"} rounded p-2 shadow-sm z-10`}
               style={{
                 top: top + 13.5, // nudge just below the line
                 height: height - 9, // end before next line

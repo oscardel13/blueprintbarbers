@@ -53,7 +53,6 @@ const BarberSchema = new mongoose.Schema({
     averageRating: { type: Number, default: 0 }, // Store pre-calculated average
     totalReviews: { type: Number, default: 0 }, // Store total number of reviews
   },
-  twoWeeksBooking: { type: [bookingSchema], default: [] }, // Update this to hold booking Schema
   availability: {
     type: [
       {
