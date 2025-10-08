@@ -4,38 +4,51 @@ import BookingHero from "../components/hero-section/hero-section.component";
 import Services from "../components/services/services.component";
 import { getAPI } from "../../../utils/api";
 import { Link, useParams } from "react-router-dom";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Barber = ({ index }) => {
   let { barberId } = useParams();
   const [barber, setBarber] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
     const getBarber = async () => {
-      try{
-        setLoading(true)
+      try {
+        setLoading(true);
         const res = await getAPI(`/barbers/${barberId}`);
         const data = res.data;
         setBarber(data);
-        setLoading(false)
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
       }
-      catch(e){
-        setLoading(false)
-      }
-      
     };
     getBarber();
   }, []);
 
   return (
     <div className="flex justify-center">
-      { loading ? <div className="h-96 flex items-center justify-center"><div className="animate-spin">Loading...</div></div> : barber ? (
+      {loading ? (
+        <div className="h-96 flex items-center justify-center">
+          <div className="animate-spin">Loading...</div>
+        </div>
+      ) : barber ? (
         <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
           <div className="relative flex flex-col w-full lg:w-2/3">
             <div className="flex justify-between items-center mb-4 flex-wrap py-3">
-              <Link to={"/barbers"} className="px-4 py-2 bg-gray-200 shadow-lg rounded-full"> <ArrowBackIcon/> Back to Search</Link>
-              <Link to={`/barbershop/${barber.barbershop?._id || ""}`} className="px-4 py-2 bg-gray-200 shadow-lg rounded-full">Barbershop: {"Blueprint"}</Link>
+              <Link
+                to={"/barbers"}
+                className="px-4 py-2 bg-gray-200 shadow-lg rounded-full"
+              >
+                {" "}
+                <ArrowBackIcon /> Back to Search
+              </Link>
+              <Link
+                to={`/barbershops/${barber.barbershop?._id || ""}`}
+                className="px-4 py-2 bg-gray-200 shadow-lg rounded-full"
+              >
+                Barbershop: {"Blueprint"}
+              </Link>
             </div>
             <BookingHero
               name={barber.nickname}
