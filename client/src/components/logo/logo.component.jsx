@@ -1,4 +1,4 @@
-function Logo() {
+function Logo({ styling }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -7,8 +7,9 @@ function Logo() {
       version="1.1"
       viewBox="0 0 450 150"
       xmlSpace="preserve"
+      className={styling}
     >
-      <g >
+      <g>
         <path
           fill="white"
           stroke="none"

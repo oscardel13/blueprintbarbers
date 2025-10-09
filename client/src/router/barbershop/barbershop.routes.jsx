@@ -1,12 +1,13 @@
 import { Route } from "react-router-dom";
-import Barbers from "./[barbershop]/barbers/barbers.route";
+import BarbershopSearchPage from "./barbershops.page";
+import Barbershop from "./[barbershop]/barbershop.route";
 
 function BarbershopRoutes() {
   return (
     <Route path="barbershops">
-      <Route index element={<Barbers />} />
-      <Route path=":barbershop">
-        <Route index element={<Barbers />} />
+      <Route index element={<BarbershopSearchPage />} />
+      <Route path=":barbershopId">
+        <Route index element={<Barbershop />} />
         {/* <Route path="barbers">
             <Route index element={<Barbers />} />
             <Route path=":barber">

@@ -44,7 +44,7 @@ const Barber = ({ index }) => {
                 <ArrowBackIcon /> Back to Search
               </Link>
               <Link
-                to={`/barbershops/${barber.barbershop?._id || ""}`}
+                to={`/barbershops/${barber.barbershop?._id || "blueprint"}`}
                 className="px-4 py-2 bg-gray-200 shadow-lg rounded-full"
               >
                 Barbershop: {"Blueprint"}
