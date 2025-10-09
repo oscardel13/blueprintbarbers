@@ -11,10 +11,10 @@ const Footer = () => {
         <div className="flex justify-between items-center flex-col space-y-5">
           <div className="flex flex-col justify-center items-center">
             <h3 className="text-white text-center lg:text-left">
-              <Logo styling={"scale-75"} />
+              <Logo styling={"scale-50"} />
             </h3>
             <p className="text-lg text-white font-medium">
-              Call to make appointment:{" "}
+              Schedule Appointment:{" "}
               <a
                 href="tel:7202335047"
                 className="font-semibold hover:underline hover:text-blue-200 transition"

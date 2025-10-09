@@ -27,17 +27,19 @@ const Landing = () => {
     >
       {/* Dark overlay */}
       <div className={`absolute inset-0 bg-black/40`} />
-      <div className="flex flex-col items-center w-full text-white text-center space-y-6 z-20">
-        <Logo styling={"scale-75 sm:scale-100 md:scale-125 lg:scale-150"} />
-        <p className="text-lg font-medium">
-          Call to make appointment:{" "}
-          <a
-            href="tel:7202335047"
-            className="font-semibold hover:underline hover:text-blue-200 transition"
-          >
-            720-233-5047
-          </a>
-        </p>
+      <div className="flex flex-col items-center w-full">
+        <div className="flex absolute top-20 sm:top-1/4 flex-col items-center w-full text-white text-center sm:space-y-6 z-20">
+          <Logo styling={"scale-75 sm:scale-100 md:scale-125 lg:scale-150"} />
+          <p className="text-lg font-medium">
+            Schedule Appointment:{" "}
+            <a
+              href="tel:7202335047"
+              className="font-bold hover:underline hover:text-blue-200 transition"
+            >
+              720-233-5047
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

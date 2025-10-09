@@ -4,11 +4,11 @@ import Footer from "./footer/footer.component";
 
 const Layout = () => {
   return (
-    <>
+    <div className="overflow-x-hidden">
       <Navbar />
       <Outlet />
       <Footer />
-    </>
+    </div>
   );
 };
 
