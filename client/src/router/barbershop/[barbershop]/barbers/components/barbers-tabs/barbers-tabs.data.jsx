@@ -3,6 +3,7 @@ import LuisGrid from "../image-grids/luis-grid.component";
 import JavierGrid from "../image-grids/javier-grid.component";
 import TonyGrid from "../image-grids/tony-grid.component";
 import ElvinGrid from "../image-grids/elvin-grid.component";
+import VictorGrid from "../image-grids/victor-grid.component";
 
 const BARBERLIST = [
   {
@@ -287,6 +288,51 @@ const BARBERLIST = [
         description: "Hair Wash, Haircut, Design, Beard, Eyebrows",
         images: [],
         price: 70,
+        duration: 60,
+      },
+    ],
+    reviews: [],
+  },
+  {
+    name: "Victor",
+    nickname: "VTB Cutz",
+    profilePicture: "victor-profile-picture.jpg",
+    address: "11178 huron st, Suite 200, Northglenn, 80234",
+    phone: "3038106640",
+    about: "",
+    instagramUrl: "https://www.instagram.com/vtb_cutz/",
+    booksyUrl:
+      "https://booksy.com/en-us/822360_vtb-cutz_barber-shop_134761_denver#ba_s=sh_1",
+    ImageGrid: <VictorGrid />,
+    hours: {
+      sunday: [],
+      monday: [["10:00", "18:00"]],
+      tuesday: [["10:00", "18:00"]],
+      wednesday: [["10:00", "19:00"]],
+      thursday: [["10:00", "19:00"]],
+      friday: [["09:00", "19:00"]],
+      saturday: [["8:00", "17:00"]],
+    },
+    services: [
+      {
+        name: "Haircut/Design",
+        description: "",
+        images: [],
+        price: 50,
+        duration: 60,
+      },
+      {
+        name: "Kids Cut (4-12 yeard olg)",
+        description: "",
+        images: [],
+        price: 40,
+        duration: 40,
+      },
+      {
+        name: "Haircut and Beard",
+        description: "",
+        images: [],
+        price: 55,
         duration: 60,
       },
     ],
