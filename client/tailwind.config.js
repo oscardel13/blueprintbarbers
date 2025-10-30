@@ -12,6 +12,23 @@ module.exports = {
       animation: {
         spin90: "spin90 0.5s ease-in-out",
       },
+      fontFamily: {
+        gothic: [
+          '"Gothic"',
+          "system-ui",
+          "-apple-system",
+          '"Segoe UI"',
+          "Roboto",
+          '"Helvetica Neue"',
+          "Arial",
+          '"Noto Sans"',
+          '"Liberation Sans"',
+          "sans-serif",
+        ],
+      },
+      colors: {
+        dark: "#212529",
+      },
     },
   },
   plugins: [],

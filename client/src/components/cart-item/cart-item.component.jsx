@@ -1,7 +1,7 @@
-import { memo, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { memo, useState } from "react";
+import { useDispatch } from "react-redux";
 
-import { clearItemFromCart } from '../../store/cart/cart.reducer';
+import { clearItemFromCart } from "../../store/cart/cart.reducer";
 
 const CartItem = memo(({ item }) => {
   const dispatch = useDispatch();
@@ -40,22 +40,30 @@ const CartItem = memo(({ item }) => {
 
   return (
     <div
-      className={`w-full flex h-20 mb-4 ${isHovered ? 'hover:bg-gray-100' : ''}`}
+      className={`w-full flex h-20 mb-4 ${
+        isHovered ? "hover:bg-gray-100" : ""
+      }`}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img src={product.images[0]} alt={`${product.name}`} className="w-16 object-cover rounded-md"/>
-      <div className="w-70 flex flex-col items-start justify-center p-3">
+      <img
+        src={product.images[0]}
+        alt={`${product.name}`}
+        className="w-16 object-cover rounded-md"
+      />
+      <div className="w-70 flex flex-col items-start justify-center p-3 text-gray-800">
         <span className="text-base leading-none">{product.name}</span>
         <span className="text-base leading-none">Size: {product.size[0]}</span>
-        <span className="text-base leading-none">{product.quantity} x ${product.pricing}</span>
+        <span className="text-base leading-none">
+          {product.quantity} x ${product.pricing}
+        </span>
       </div>
       <button
         onClick={() => onRemove()}
         className={`border-0 bg-red-500 cursor-pointer font-bold text-gray-300 h-full w-0 ${
-          isRemoving || isHovered ? 'w-16 px-2 text-white' : ''
+          isRemoving || isHovered ? "w-16 px-2 text-white" : ""
         }`}
       >
         X

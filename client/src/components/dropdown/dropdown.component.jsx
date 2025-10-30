@@ -10,7 +10,7 @@ const NavigationDropdown = (props) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-50">
       <div
         className="flex items-center cursor-pointer p-2 hover:bg-[rgba(107,114,128,0.4)] hover:text-white"
         onClick={toggleDropdown}
@@ -20,13 +20,13 @@ const NavigationDropdown = (props) => {
           className="h-8 rounded-full"
           alt={currentUser.name}
         />
-        <span className="text-gray-400 ml-2">{currentUser.name}</span>
+        {/* <span className="text-gray-400 ml-2">{currentUser.name}</span> */}
         <div className="text-right ml-2 text-gray-400">
           <KeyboardArrowDownIcon />
         </div>
       </div>
       {isDropdownOpen && (
-        <div className="p-3 text-gray-400 grid grid-cols-1 gap-2 lg:absolute lg:flex lg:flex-col lg:justify-center lg:w-max lg:top-[52px] lg:right-3 lg:bg-gray-300 lg:text-black lg:border-solid lg:border-black lg:border-[1px]">
+        <div className="p-3 bg-dark text-gray-400 grid grid-cols-1 gap-2 lg:absolute lg:flex lg:flex-col lg:justify-center lg:w-max lg:top-[52px] lg:right-3 lg:bg-gray-300 lg:text-black lg:border-solid lg:border-black lg:border-[1px]">
           <div className="flex flex-row p-2 items-center">
             <img
               src={currentUser.picture}

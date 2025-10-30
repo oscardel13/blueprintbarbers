@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./store/user/user.reducer";
 import { getAPI } from "./utils/api";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import BarberDashboardRoutes from "./router/barber-dashboard/barber-dashboard.routes";
 import BarberRoutes from "./router/barber/barber.routes";
 
