@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 
 const FeaturedBarberCard = ({ barber }) => {
   const [showPopover, setShowPopover] = useState(false); // State to control CopiedPopover visibility
-    const { nickname, address, picture, name } = barber
+  const { nickname, address, picture, name } = barber;
   // TODO: update this to just copy URL
   const handleShareClick = () => {
-    alert("COPIED URL")
+    alert("COPIED URL");
   };
 
   return (
-    <Link to={`/barbers/${barber._id}`}  className="relative w-72 flex-shrink-0">
+    <Link to={`/barbers/${barber._id}`} className="relative w-72 flex-shrink-0">
       <div>
         <div className="absolute top-0 right-0 z-10 bg-[rgb(0,0,0,0.6)] flex flex-col w-20 rounded justify-center items-center p-2">
           <h6 className="text-white font-semibold text-md">5.0</h6>
@@ -33,7 +33,9 @@ const FeaturedBarberCard = ({ barber }) => {
             <IosShareIcon />
           </span>
         </div>
-        <span className="text-gray-500 text-xs text-left">{address}</span>
+        <span className="text-gray-500 text-xs text-left">
+          {address.formatted}
+        </span>
       </div>
       {showPopover && <CopiedPopover />}{" "}
       {/* Show CopiedPopover conditionally */}

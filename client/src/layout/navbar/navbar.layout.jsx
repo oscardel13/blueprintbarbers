@@ -179,7 +179,7 @@ const Navigation = () => {
           </div>
 
           {/* Center: desktop nav */}
-          <div className="hidden lg:flex lg:flex-1">
+          <div className="hidden lg:flex lg:flex-1 ml-5">
             <div id="primary-nav" className="flex items-center gap-2">
               <TWNavLink to="/" end className="px-3">
                 HOME

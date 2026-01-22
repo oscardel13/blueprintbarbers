@@ -26,7 +26,7 @@ const MapSection = ({ address, name, profilePicture }) => {
             <div className="pl-1 flex flex-col w-5/6">
               <h5 className="font-medium text-left">{name}</h5>
               <span className="text-gray-500 text-xs flex flex-wrap">
-                {address}
+                {address.formatted}
               </span>
             </div>
           </div>
@@ -43,7 +43,7 @@ const MapSection = ({ address, name, profilePicture }) => {
       {showNavigationOptions && (
         <NavigationPopover
           closeTrigger={toggleNavigationOptions}
-          address={address}
+          address={address.formatted}
         />
       )}
     </div>

@@ -52,7 +52,7 @@ const Barber = ({ index }) => {
             </div>
             <BookingHero
               name={barber.nickname}
-              address={barber.address}
+              address={barber.address.formatted}
               profilePicture={barber.picture}
               index={index}
             />

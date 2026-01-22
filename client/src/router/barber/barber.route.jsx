@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import bgImage2 from '../../assets/landing_bg_2.jpg'
+import bgImage2 from "../../assets/landing_bg_2.jpg";
 import { getAPI } from "../../utils/api";
 import { Link } from "react-router-dom";
 import FeaturedBarberCard from "./components/featured-barber-card/featured-barber-card.component";
@@ -8,18 +8,15 @@ export default function BarberSearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [barbers, setBarbers] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const getClosestBarbers = async () => {
-        try{
-            const response = await getAPI("/barbers")
-            setBarbers(response.data)
-        }
-        catch(err){
-
-        }
-    }
-    getClosestBarbers()
-  },[])
+      try {
+        const response = await getAPI("/barbers");
+        setBarbers(response.data);
+      } catch (err) {}
+    };
+    getClosestBarbers();
+  }, []);
 
   const filteredBarbers = barbers.filter((barber) =>
     `${barber.name} ${barber.nickname}`
@@ -30,7 +27,10 @@ export default function BarberSearchPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* HERO SECTION with video */}
-      <div className="relative h-96 w-full overflow-hidden bg-contain" style={{backgroundImage: `url(${bgImage2})`}}>
+      <div
+        className="relative h-96 w-full overflow-hidden bg-contain"
+        style={{ backgroundImage: `url(${bgImage2})` }}
+      >
         {/* <video
           className="absolute inset-0 w-full h-full object-cover"
           src="../../assets/landing_bg_2.jpg"
@@ -75,19 +75,19 @@ export default function BarberSearchPage() {
         </button>
       </div>
 
-    <div className="my-5 px-5">
+      <div className="my-5 px-20">
         <h3 className="text-2xl font-bold">Featured Barbers</h3>
-        <div className="flex flex-row flex-nowrap overflow-x-auto gap-5 mt-5 snap-x 
+        <div
+          className="flex flex-row flex-nowrap overflow-x-auto gap-5 mt-5 snap-x 
             snap-mandatory
             scroll-smooth
-            [-webkit-overflow-scrolling:touch]">
-                {
-                    filteredBarbers.map(barber => (
-                        <FeaturedBarberCard barber={barber} />
-                    ))
-                }
+            [-webkit-overflow-scrolling:touch]"
+        >
+          {filteredBarbers.map((barber) => (
+            <FeaturedBarberCard barber={barber} />
+          ))}
         </div>
-    </div>
+      </div>
 
       {/* BARBER LIST */}
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-4">
@@ -103,19 +103,24 @@ export default function BarberSearchPage() {
               className="w-20 h-20 object-cover"
             />
             <div className="flex-1 p-4">
-              <h2 className="text-lg font-semibold">{barber.nickname || barber.name}</h2>
+              <h2 className="text-lg font-semibold">
+                {barber.nickname || barber.name}
+              </h2>
               <p className="text-sm text-gray-600">
-                Works at { "Blueprint" /*barber.shop*/}
+                Works at {"Blueprint" /*barber.shop*/}
               </p>
               <p className="text-sm text-gray-600">
-                ⭐ { "5" /*barber.rating*/} | { "Denver"/*barber.city*/}
+                ⭐ {"5" /*barber.rating*/} | {"Denver" /*barber.city*/}
               </p>
               {/* <p className="text-sm text-gray-500">
                 {barber.services.join(", ")}
               </p> */}
             </div>
             <div className="px-4">
-              <Link to={`/barbers/${barber._id}`} className="text-blue-600 font-medium hover:underline">
+              <Link
+                to={`/barbers/${barber._id}`}
+                className="text-blue-600 font-medium hover:underline"
+              >
                 View →
               </Link>
             </div>

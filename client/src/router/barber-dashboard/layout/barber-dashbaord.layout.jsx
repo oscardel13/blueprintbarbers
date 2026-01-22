@@ -29,7 +29,7 @@ const Layout = () => {
         {/* Show DashboardNav based on screen size and openSidebar state */}
         {(isXlScreen || openSidebar) && (
           <DashboardNav
-            style={`fixed h-screen z-2 bg-[rgb(33,37,41)] col-span-2 text-[rgb(156,163,175)] xl:min-w-[280px] ${
+            style={`fixed h-screen z-20 bg-[rgb(33,37,41)] col-span-2 text-[rgb(156,163,175)] xl:min-w-[280px] ${
               isXlScreen || openSidebar ? "block" : "hidden"
             }`}
             toggleSidebar={toggleSidebar}
