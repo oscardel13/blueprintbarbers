@@ -3,7 +3,7 @@ const { bookingSchema } = require("../booking/booking.mongo");
 const { userSchema } = require("../user/user.mongo");
 
 const ReviewSchema = new mongoose.Schema({
-  user: { type: String, required: true }, // Reference to user
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
   rating: { type: Number, required: true, min: 1, max: 5 },
   comment: { type: String, default: "" },
   date: { type: Date, default: Date.now },
@@ -11,14 +11,15 @@ const ReviewSchema = new mongoose.Schema({
 
 const BarberSchema = new mongoose.Schema(
   {
-    barbershopId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "barbershop",
+      ref: "user",
     },
     name: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
+    contactEmail: { type: String, required: true, unique: true },
     gid: { type: String, required: true },
     nickname: { type: String, default: "" },
+    slug: { type: String, required: false, unique: true },
     barbershop: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "barbershop",
@@ -42,7 +43,7 @@ const BarberSchema = new mongoose.Schema(
     about: { type: String, default: "" },
     instagramUrl: { type: String, default: "" },
     booksyUrl: { type: String },
-    images: { type: [String], default: [] },
+    gallery: { type: [String], default: [] },
     hours: {
       sunday: { type: [[String]], default: [] },
       monday: { type: [[String]], default: [] },
@@ -83,7 +84,7 @@ const BarberSchema = new mongoose.Schema(
       ],
       default: [],
     }, // Array of strings
-    clients: { type: [userSchema], default: [] }, // Array of client IDs
+    clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
   },
   { timestamps: true },
 );

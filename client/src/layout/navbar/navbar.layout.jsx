@@ -10,8 +10,10 @@ import Dropdown from "../../components/dropdown/dropdown.component";
 import { selectIsCartOpen } from "../../store/cart/cart.selector";
 import {
   selectCurrentUser,
-  selectIsSignInOpen,
+  selectIsSignInOpenUser,
 } from "../../store/user/user.selector";
+
+import { selectCurrentBarber } from "../../store/barber/barber.selector";
 import { toggleSignIn } from "../../store/user/user.reducer";
 import { getAPI } from "../../utils/api";
 
@@ -30,7 +32,7 @@ function TWNavLink({ to, className, children, end = false }) {
         cx(
           "block px-2 py-2 lg:px-3 lg:py-2 transition-colors",
           isActive ? "text-white" : "text-gray-400 hover:text-white",
-          className
+          className,
         )
       }
     >
@@ -49,7 +51,7 @@ function DropdownNavLink({ to, className, children, end = false }) {
         cx(
           "block px-2 py-2 lg:px-3 lg:py-2 transition-colors",
           isActive ? "text-white" : "lg:text-gray-800 hover:text-white",
-          className
+          className,
         )
       }
     >
@@ -63,8 +65,9 @@ const Navigation = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isCartOpen = useSelector(selectIsCartOpen);
+  const currentBarber = useSelector(selectCurrentBarber);
   const currentUser = useSelector(selectCurrentUser);
-  const isSignInOpen = useSelector(selectIsSignInOpen);
+  const isSignInOpen = useSelector(selectIsSignInOpenUser);
 
   const toggleMobile = () => setMobileOpen((s) => !s);
 
@@ -82,8 +85,8 @@ const Navigation = () => {
     dispatch(toggleSignIn());
   };
 
-  const userLinks = () => {
-    if (!currentUser) {
+  const authLinks = () => {
+    if (!currentUser && !currentBarber) {
       return (
         <button
           className="block px-3 py-2 text-gray-400 hover:text-white"
@@ -95,7 +98,7 @@ const Navigation = () => {
     }
 
     // Keep your existing access level logic; just render Tailwind links
-    if (currentUser.accessLevel === 0) {
+    if (currentUser && !currentBarber) {
       return (
         <Dropdown logout={logout} currentUser={currentUser}>
           <DropdownNavLink to="/account">PROFILE</DropdownNavLink>
@@ -106,21 +109,19 @@ const Navigation = () => {
         </Dropdown>
       );
     }
-    if (currentUser.accessLevel === 1) {
-      return (
-        <Dropdown logout={logout} currentUser={currentUser}>
-          <DropdownNavLink to="/dashboard">DASHBOARD</DropdownNavLink>
-        </Dropdown>
-      );
-    }
     return (
       <Dropdown logout={logout} currentUser={currentUser}>
+        <DropdownNavLink to="/barber-dashboard">
+          BARBER DASHBOARD
+        </DropdownNavLink>
         <DropdownNavLink to="/account">PROFILE</DropdownNavLink>
         <DropdownNavLink to="/account/appointments">
           APPOINTMENTS
         </DropdownNavLink>
         <DropdownNavLink to="/account/orders">ORDERS</DropdownNavLink>
-        <DropdownNavLink to="/dashboard">DASHBOARD</DropdownNavLink>
+        {currentUser?.accessLevel >= 1 && (
+          <DropdownNavLink to="/dashboard">DASHBOARD</DropdownNavLink>
+        )}
       </Dropdown>
     );
   };
@@ -201,7 +202,7 @@ const Navigation = () => {
             </div>
 
             {/* User dropdown / sign in */}
-            <div className="hidden lg:flex items-center">{userLinks()}</div>
+            <div className="hidden lg:flex items-center">{authLinks()}</div>
 
             {/* Desktop cart icon */}
             <div className="hidden lg:block">
@@ -224,7 +225,7 @@ const Navigation = () => {
             </TWNavLink>
 
             {/* Mobile user links */}
-            <div className="pt-2 border-t border-gray-800">{userLinks()}</div>
+            <div className="pt-2 border-t border-gray-800">{authLinks()}</div>
           </div>
         </div>
       </div>

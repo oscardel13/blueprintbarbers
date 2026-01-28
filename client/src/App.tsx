@@ -16,6 +16,7 @@ import { getAPI } from "./utils/api";
 
 import BarberDashboardRoutes from "./router/barber-dashboard/barber-dashboard.routes";
 import BarberRoutes from "./router/barber/barber.routes";
+import { setCurrentBarber } from "./store/barber/barber.reducer";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,10 +31,14 @@ function App() {
       try {
         const user = await getAPI("/users/me");
         dispatch(setCurrentUser(user.data));
+
+        const barber = await getAPI("/barbers/me");
+        dispatch(setCurrentBarber(barber.data.barber));
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
+
     setUser();
   }, []);
   return (

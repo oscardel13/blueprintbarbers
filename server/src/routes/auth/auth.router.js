@@ -17,20 +17,20 @@ authRouter.get(
   },
   userPassport.authenticate("google", {
     scope: ["email", "profile"],
-  })
+  }),
 );
 
 authRouter.get(
   "/barber/google",
   (req, res, next) => {
     // Store the current URL in the session
-    req.session.redirectUrl = req.query.path || "/";
+    req.session.redirectUrl = "/barber-dashboard" || req.query.path;
 
     next();
   },
   barberPassport.authenticate("google", {
     scope: ["email", "profile"],
-  })
+  }),
 );
 
 authRouter.get(
@@ -43,7 +43,7 @@ authRouter.get(
     const redirectUrl = `${CLIENT_URL}${req.session.redirectUrl}`;
     delete req.session.redirectUrl; // Clear it from session if you want
     res.redirect(redirectUrl);
-  }
+  },
 );
 
 authRouter.get(
@@ -56,7 +56,7 @@ authRouter.get(
     const redirectUrl = `${CLIENT_URL}${req.session.redirectUrl}`;
     delete req.session.redirectUrl; // Clear it from session if you want
     res.redirect(redirectUrl);
-  }
+  },
 );
 
 // Need a better system than just send

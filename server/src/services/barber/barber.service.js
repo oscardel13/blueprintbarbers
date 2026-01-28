@@ -1,5 +1,8 @@
 const moment = require("moment");
-const { getBarber, updateBarber } = require("../../models/barber/barber.data");
+const {
+  getBarberById,
+  updateBarber,
+} = require("../../models/barber/barber.data");
 const { getBookings } = require("../../models/booking/booking.data");
 
 // TODO: make sure if booking is canceled it doesn't consider it.
@@ -82,28 +85,30 @@ async function calculateAvailability(futureBookings, hours) {
   return availability;
 }
 
-async function getBarberAvailability(barberId){
-  try{
-    const barber = await getBarber(barberId)
-    const start = new Date()
+async function getBarberAvailability(barberId) {
+  try {
+    const barber = await getBarberById(barberId);
+
+    const start = new Date();
     const futureBookings = await getBookings({
       barber: barberId,
-      startTime: { $gt: start }
-    })
+      startTime: { $gt: start },
+    });
 
-    const availability = await calculateAvailability(futureBookings, barber.hours)
+    const availability = await calculateAvailability(
+      futureBookings,
+      barber.hours,
+    );
 
     const simplifiedBarber = {
       _id: barber._id,
       name: barber.name,
-      picture: barber.picture
-    }
+      picture: barber.picture,
+    };
 
-    return { barber: simplifiedBarber , availability}
-
-  }
-  catch(err){
-    console.log("Error", err)
+    return { barber: simplifiedBarber, availability };
+  } catch (err) {
+    console.log("Error", err);
   }
 }
 

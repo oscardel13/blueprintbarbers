@@ -8,7 +8,7 @@ const DashboardGuard = ({ children }) => {
   useEffect(() => {
     const checkBarber = async () => {
       try {
-        const res = await getAPI(`/barbers/check-barber`);
+        const res = await getAPI(`/barbers/me`);
       } catch (err) {
         window.alert("You are not authorized to access this page");
         return navigate("/");

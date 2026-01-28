@@ -34,12 +34,12 @@ const DashboardNav = ({ style, toggleSidebar }) => {
           title="Profile"
           onClick={onClickLink}
         />
-        <NavLink
+        {/* <NavLink
           Icon={SettingsIcon}
           to="/barber-dashboard/settings"
           title="Settings"
           onClick={onClickLink}
-        />
+        /> */}
       </div>
       <div className="p-4">
         <div className="py-3">
@@ -52,15 +52,19 @@ const DashboardNav = ({ style, toggleSidebar }) => {
             List
           </Link>
           <Link to="/barber-dashboard/clients/:id" onClick={onClickLink}>
-            Details
+            Last Viewed Client
           </Link>
         </NavLinkDropdown>
-        <NavLinkDropdown Icon={BookIcon} to="/barber-dashboard/bookings" title="Bookings">
+        <NavLinkDropdown
+          Icon={BookIcon}
+          to="/barber-dashboard/bookings"
+          title="Bookings"
+        >
           <Link to="/barber-dashboard/bookings" onClick={onClickLink}>
             List
           </Link>
           <Link to="/barber-dashboard/bookings/:id" onClick={onClickLink}>
-            Details
+            Last Viewed Booking
           </Link>
         </NavLinkDropdown>
       </div>

@@ -15,8 +15,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import EditSectionCardComponent from "../edit-section-card/edit-section-card.component";
 
-// TODO CHECK IF WORKS ON MOBILE
-function SortableImageCard({ id, img, index, onRemove }) {
+function SortableImageCard({ id, img, index, onRemove, onSetCover, isCover }) {
   const {
     attributes,
     listeners,
@@ -46,6 +45,12 @@ function SortableImageCard({ id, img, index, onRemove }) {
           draggable={false}
         />
 
+        {isCover ? (
+          <div className="absolute top-2 left-2 bg-black/80 text-white text-xs font-semibold px-2 py-1 rounded">
+            Cover
+          </div>
+        ) : null}
+
         <button
           type="button"
           onClick={() => onRemove(index)}
@@ -54,15 +59,24 @@ function SortableImageCard({ id, img, index, onRemove }) {
           Remove
         </button>
 
-        {/* Drag handle (nice on mobile) */}
-        <button
-          type="button"
-          className="absolute bottom-2 left-2 bg-white/90 hover:bg-white text-gray-700 px-2 py-1 rounded text-xs font-medium cursor-grab active:cursor-grabbing"
-          {...attributes}
-          {...listeners}
-        >
-          Drag
-        </button>
+        <div className="absolute bottom-2 left-2 flex gap-2">
+          <button
+            type="button"
+            className="bg-white/90 hover:bg-white text-gray-700 px-2 py-1 rounded text-xs font-medium"
+            onClick={() => onSetCover(id)}
+          >
+            Set cover
+          </button>
+
+          <button
+            type="button"
+            className="bg-white/90 hover:bg-white text-gray-700 px-2 py-1 rounded text-xs font-medium cursor-grab active:cursor-grabbing"
+            {...attributes}
+            {...listeners}
+          >
+            Drag
+          </button>
+        </div>
       </div>
 
       <div className="mt-2 text-xs text-gray-600">
@@ -72,38 +86,52 @@ function SortableImageCard({ id, img, index, onRemove }) {
   );
 }
 
-const PortfolioInfoComponent = ({ barberData, handleInputChange }) => {
+const makeId = () =>
+  `img:${crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`}`;
+
+const PortfolioInfoComponent = ({
+  barberData,
+  setField,
+
+  // optional (for badges later)
+  errorCount = 0,
+  forceOpen,
+  onOpenChange,
+}) => {
   const fileInputRef = useRef(null);
+
+  // draft shape:
+  // barberData.gallery = [{ url, file? }]
+  // barberData.galleryCoverId = string (optional)
+  const coverId = barberData.galleryCoverId || null;
 
   const gallery = useMemo(() => {
     const raw = barberData.gallery || [];
-    // Normalize to { id, url, file? }
     return raw.map((item, idx) => {
-      if (typeof item === "string") {
-        return { id: `url:${item}`, url: item };
-      }
-      // prefer stable _id, else url, else fallback index-based id
-      const stableId = item._id
-        ? `db:${item._id}`
-        : item.url
-          ? `url:${item.url}`
-          : `idx:${idx}`;
+      if (typeof item === "string") return { id: `url:${item}`, url: item };
+
+      const stableId =
+        item.id || item._id
+          ? `db:${item._id}`
+          : item.url
+            ? `url:${item.url}`
+            : `idx:${idx}`;
+
       return { ...item, id: item.id || stableId };
     });
   }, [barberData.gallery]);
 
   const setGallery = (next) => {
-    // strip internal dnd-kit id field if you don't want it saved
     const cleaned = next.map(({ id, ...rest }) => rest);
-    handleInputChange({ target: { name: "gallery", value: cleaned } });
+    setField("gallery", cleaned);
+  };
+
+  const setCover = (id) => {
+    setField("galleryCoverId", id);
   };
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 6, // prevents accidental drags while scrolling
-      },
-    }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
   );
 
   const openFilePicker = () => fileInputRef.current?.click();
@@ -116,14 +144,14 @@ const PortfolioInfoComponent = ({ barberData, handleInputChange }) => {
 
     const newItems = images.map((file) => {
       const url = URL.createObjectURL(file);
-      return {
-        id: `local:${crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`}`,
-        url,
-        file,
-      };
+      return { id: makeId(), url, file, status: "queued" };
     });
 
-    setGallery([...gallery, ...newItems]);
+    const next = [...gallery, ...newItems];
+    setGallery(next);
+
+    // if no cover set yet, set first added as cover
+    if (!coverId && newItems[0]) setCover(newItems[0].id);
   };
 
   const onFileChange = (e) => {
@@ -132,8 +160,14 @@ const PortfolioInfoComponent = ({ barberData, handleInputChange }) => {
   };
 
   const onRemove = (index) => {
+    const removed = gallery[index];
     const next = gallery.filter((_, i) => i !== index);
     setGallery(next);
+
+    // if removing cover, pick next first
+    if (removed?.id && removed.id === coverId) {
+      setCover(next[0]?.id || null);
+    }
   };
 
   const onDragEnd = (event) => {
@@ -144,11 +178,9 @@ const PortfolioInfoComponent = ({ barberData, handleInputChange }) => {
     const newIndex = gallery.findIndex((g) => g.id === over.id);
     if (oldIndex === -1 || newIndex === -1) return;
 
-    const next = arrayMove(gallery, oldIndex, newIndex);
-    setGallery(next);
+    setGallery(arrayMove(gallery, oldIndex, newIndex));
   };
 
-  // Optional: drop files into the gallery area to add
   const onDropFiles = (e) => {
     e.preventDefault();
     if (e.dataTransfer?.files?.length) addFiles(e.dataTransfer.files);
@@ -156,8 +188,17 @@ const PortfolioInfoComponent = ({ barberData, handleInputChange }) => {
 
   const ids = gallery.map((g) => g.id);
 
+  const uploadQueue = gallery.filter((g) => g.file);
+
   return (
-    <EditSectionCardComponent title="Gallery" defaultOpen={false}>
+    <EditSectionCardComponent
+      title="Gallery"
+      defaultOpen={false}
+      errorCount={errorCount}
+      forceOpen={forceOpen}
+      onOpenChange={onOpenChange}
+      description="Reorder with Drag. Set a cover image for your profile."
+    >
       <div className="flex items-center justify-between gap-4">
         <button
           type="button"
@@ -177,10 +218,29 @@ const PortfolioInfoComponent = ({ barberData, handleInputChange }) => {
         />
       </div>
 
-      <p className="text-sm text-gray-600">
-        Drag using the <span className="font-medium">Drag</span> button to
-        reorder. Drop image files here to add.
-      </p>
+      {uploadQueue.length > 0 ? (
+        <div className="border rounded-xl p-3 bg-gray-50">
+          <p className="text-sm font-semibold text-gray-800">Upload queue</p>
+          <div className="mt-2 space-y-2">
+            {uploadQueue.map((g, idx) => (
+              <div
+                key={g.id || idx}
+                className="flex items-center justify-between"
+              >
+                <p className="text-sm text-gray-700 truncate">
+                  {g.file?.name || "image"}
+                </p>
+                <span className="text-xs font-semibold px-2 py-1 rounded bg-yellow-100 text-yellow-800">
+                  queued
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            When you wire the API, queued items will upload on Save.
+          </p>
+        </div>
+      ) : null}
 
       <div
         className="border rounded-xl p-4 bg-gray-50"
@@ -210,6 +270,8 @@ const PortfolioInfoComponent = ({ barberData, handleInputChange }) => {
                     img={img}
                     index={index}
                     onRemove={onRemove}
+                    onSetCover={setCover}
+                    isCover={img.id === coverId || (!coverId && index === 0)}
                   />
                 ))}
               </div>

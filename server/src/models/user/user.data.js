@@ -4,6 +4,10 @@ const getUsers = async (skip, limit) => {
   return await userCollection.find().skip(skip).limit(limit).sort("name");
 };
 
+const getMyUser = async (id) => {
+  return await userCollection.findOne({ _id: id });
+};
+
 const getUser = async (id) => {
   return await userCollection.findOne({ _id: id });
 };
@@ -32,6 +36,7 @@ const checkAdmin = async (id) => {
 
 module.exports = {
   getUsers,
+  getMyUser,
   getUser,
   updateUser,
   deleteUser,

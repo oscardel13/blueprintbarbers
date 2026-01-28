@@ -1,10 +1,10 @@
 const {
   getUser,
+  getMyUser,
   getUsers,
   updateUser,
   deleteUser,
 } = require("../../models/user/user.data");
-const { filterUserAppointments } = require("../../services/user/user.service");
 const { getPagination } = require("../../utils/query");
 
 async function httpGetUsers(req, res) {
@@ -18,10 +18,19 @@ async function httpGetUsers(req, res) {
 }
 
 async function httpGetUser(req, res) {
+  const userId = req.params.id;
+  try {
+    let user = await getUser(userId);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+async function httpGetMyUser(req, res) {
   const SessionUser = req.user;
   try {
-    let user = await getUser(SessionUser._id);
-    user = await filterUserAppointments(user);
+    let user = await getMyUser(SessionUser._id);
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
@@ -67,6 +76,7 @@ async function httpCheckIfAdmin(req, res) {
 module.exports = {
   httpGetUsers,
   httpGetUser,
+  httpGetMyUser,
   httpUpdateUser,
   httpDeleteUser,
   httpCheckIfAdmin,

@@ -9,10 +9,7 @@ const {
 const { bookingEmitters } = require("../../events/events");
 
 const { getPagination } = require("../../utils/query");
-const {
-  buildBookingBody,
-  getBookingsParser,
-} = require("./booking.helpers");
+const { buildBookingBody, getBookingsParser } = require("./booking.helpers");
 
 const httpGetBookings = async (req, res) => {
   const { skip, limit } = getPagination(req.query);
@@ -46,7 +43,7 @@ const httpsCreateBooking = async (req, res) => {
     // bookingEmitters.emitCreateBookingEvent(booking);
     res.status(200).json(booking);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(500).json({ message: "Server error" });
   }
 };

@@ -17,11 +17,16 @@ import { setCurrentUser } from "../../store/user/user.reducer";
 
 // if no availability on a date add way to notify me if something opens
 
-const BookingPopover = ({ service, barberId, bookingId = null, closeBooking }) => {
+const BookingPopover = ({
+  service,
+  barberId,
+  bookingId = null,
+  closeBooking,
+}) => {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
   const [barber, setBarber] = useState(null);
-  const [availability, setAvailability] = useState()
+  const [availability, setAvailability] = useState();
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -32,14 +37,15 @@ const BookingPopover = ({ service, barberId, bookingId = null, closeBooking }) =
     const getBarber = async () => {
       try {
         const res = await getAPI(`/barbers/${barberId}/availability`);
-        console.log(res.data)
+        console.log("Barber data:", res.data);
         setBarber(res.data.barber);
-        const availability = updateAvailability(res.data.availability, service.duration)
-        console.log("AVAILABILITY:", availability)
-        setAvailability(availability)
-        setSelectedDate(
-          getFirstBookingDay(availability)
+        const availability = updateAvailability(
+          res.data.availability,
+          service.duration,
         );
+        console.log("AVAILABILITY:", availability);
+        setAvailability(availability);
+        setSelectedDate(getFirstBookingDay(availability));
       } catch (err) {
         alert(err);
       }
@@ -94,20 +100,19 @@ const BookingPopover = ({ service, barberId, bookingId = null, closeBooking }) =
   const confirmBooking = async () => {
     const { startTime, endTime } = createBooking_Start_End_Time(
       selectedTime,
-      service
+      service,
     );
 
     try {
       let res;
-      if (bookingId){
-      const booking = {
-            _id: bookingId,
-            startTime,
-            endTime,
-          };
+      if (bookingId) {
+        const booking = {
+          _id: bookingId,
+          startTime,
+          endTime,
+        };
         res = await putAPI(`/bookings/${bookingId}`, booking);
-      }
-      else{
+      } else {
         const booking = {
           barber,
           customer: user,
@@ -118,19 +123,16 @@ const BookingPopover = ({ service, barberId, bookingId = null, closeBooking }) =
         res = await postAPI(`/bookings`, booking);
       }
 
-      
-
       // If the booking was successful
       if (res.status === 200) {
         // Navigate to the booking confirmation page
         const updatedUser = {
           ...user,
-          appointments: [...(user.appointments || []), res.data]
+          appointments: [...(user.appointments || []), res.data],
         };
 
-        dispatch(setCurrentUser(updatedUser))
+        dispatch(setCurrentUser(updatedUser));
         setConfirmedBooking(true);
-        
       }
     } catch (err) {
       console.error("Booking failed:", err);

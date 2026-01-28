@@ -16,24 +16,23 @@ import { useDispatch } from "react-redux";
 import { setCurrentBarber } from "../../store/barber/barber.reducer";
 
 function BarberDashboardRoutes() {
-  const dispatch = useDispatch()
-  const user = useSelector(selectCurrentUser)
-  useEffect(()=>{    
-      const setBarber = async() =>{
-        try{
-          // update api so it checks user to get it maybe have me like user
-          if (user?.gid){
-            const barber = await getAPI(`/barbers/${user.gid}`)
-            dispatch(setCurrentBarber(barber.data))
-          }
+  const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
+  useEffect(() => {
+    const setBarber = async () => {
+      try {
+        // update api so it checks user to get it maybe have me like user
+        if (user) {
+          const barber = await getAPI(`/barbers/me`);
+          dispatch(setCurrentBarber(barber.data.barber));
         }
-        catch(err){
-          // alert("Not Barber")
-          console.log("Not a barber")
-        }
+      } catch (err) {
+        // alert("Not Barber")
+        console.error("Not a barber");
       }
-      setBarber()
-  }, [user])
+    };
+    setBarber();
+  }, [user]);
   return (
     <Routes>
       <Route path="barber-dashboard" element={<Layout />}>

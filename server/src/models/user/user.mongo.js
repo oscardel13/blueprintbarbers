@@ -14,46 +14,53 @@ const itemSchema = new Schema({
 });
 
 // Define the User schema
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    gid: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    barberId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "barber",
+    },
+    picture: {
+      type: String,
+      required: true,
+    },
+    items: {
+      type: [itemSchema], // Array of items bought by the user
+      default: [],
+    },
+    phone: {
+      type: String,
+      default: "",
+    },
+    address: {
+      type: String,
+      default: "",
+    },
+    accessLevel: {
+      type: Number,
+      default: 0,
+    },
+    appointments: {
+      type: [bookingSchema], // Update this to hold booking Schema
+      default: [],
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  gid: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  picture: {
-    type: String,
-    required: true,
-  },
-  items: {
-    type: [itemSchema], // Array of items bought by the user
-    default: [],
-  },
-  phone: {
-    type: String,
-    default: "",
-  },
-  address: {
-    type: String,
-    default: "",
-  },
-  accessLevel: {
-    type: Number,
-    default: 0,
-  },
-  appointments: {
-    type: [bookingSchema], // Update this to hold booking Schema
-    default: [],
-  },
-}, { timestamps: true });
+  { timestamps: true },
+);
 
 module.exports = {
   userSchema: userSchema,

@@ -3,10 +3,13 @@ const moment = require("moment");
 const {
   getBarbers,
   getBarber,
+  getBarberById,
   updateBarber,
   deleteBarber,
 } = require("../../models/barber/barber.data");
-const { getBarberAvailability } = require("../../services/barber/barber.service");
+const {
+  getBarberAvailability,
+} = require("../../services/barber/barber.service");
 const { getPagination } = require("../../utils/query");
 
 async function httpGetBarbers(req, res) {
@@ -22,7 +25,7 @@ async function httpGetBarbers(req, res) {
 async function httpGetBarber(req, res) {
   const barberID = req.params.id;
   try {
-    let barber = await getBarber(barberID);   
+    let barber = await getBarberById(barberID);
     res.status(200).json(barber);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
@@ -56,19 +59,44 @@ async function httpDeleteBarber(req, res) {
   }
 }
 
-async function httpCheckBarber(req, res) {
-  res.status(200).send(true);
+async function httpGetMyBarber(req, res) {
+  try {
+    // prefer user _id if available
+    let barber = null;
+    if (req.user?._id) {
+      barber = await getBarber({ user: req.user._id });
+    }
+
+    // fallback to gid (for older docs / transition)
+    if (!barber && req.user?.gid) {
+      barber = await getBarber({ gid: req.user.gid });
+    }
+
+    if (!barber) return res.status(404).json({ isBarber: false });
+
+    return res.status(200).json({ isBarber: true, barber });
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
 }
 
-async function httpGetBarberAvailability(req, res){
+async function httpGetBarberAvailability(req, res) {
   const barberId = req.params.id;
   try {
-    const barberAvailability = await getBarberAvailability(barberId)
-    
+    const barberAvailability = await getBarberAvailability(barberId);
+
     res.status(200).json(barberAvailability);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
+}
+
+async function httpGetMyBarberClients(req, res) {
+  // to be implemented
+}
+
+async function httpGetMyBarberBookings(req, res) {
+  // to be implemented
 }
 
 module.exports = {
@@ -76,6 +104,8 @@ module.exports = {
   httpGetBarber,
   httpUpdateBarber,
   httpDeleteBarber,
-  httpCheckBarber,
-  httpGetBarberAvailability
+  httpGetBarberAvailability,
+  httpGetMyBarber,
+  httpGetMyBarberClients,
+  httpGetMyBarberBookings,
 };

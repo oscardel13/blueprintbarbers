@@ -1,3 +1,3 @@
 export const selectCurrentUser = (state) => state.user.currentUser;
 
-export const selectIsSignInOpen = (state) => state.user.showSignInPopover;
+export const selectIsSignInOpenUser = (state) => state.user.showSignInPopover;

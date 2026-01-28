@@ -23,30 +23,33 @@ function buildBookingBody({
   };
 }
 
-function getBookingsParser(params){
-  let { start, end, barberId, clientId } = params
-  start = start ? new Date(start) : null
-  end = end ? new Date(end) : null
+function getBookingsParser(params) {
+  let { start, end, barberId, clientId } = params;
+  start = start ? new Date(start) : null;
+  end = end ? new Date(end) : null;
 
   let query = {};
   if (barberId) query.barber = barberId;
   if (clientId) query.customer = clientId;
 
-  query.startTime =
-    start && !end ? { $gt: start } :
-    !start && end ? { $lte: end } :
-    start && end  ? { $gte: start, $lte: end } :
-    undefined;
+  if (start || end)
+    query.startTime = !end
+      ? { $gt: start }
+      : !start
+        ? { $lte: end }
+        : { $gte: start, $lte: end };
 
   let sortDir =
-    start && !end ? 1 :     // future → ascending
-    !start && end ? -1 :    // past → descending
-    1;                      // default ascending
+    start && !end
+      ? 1 // future → ascending
+      : !start && end
+        ? -1 // past → descending
+        : 1; // default ascending
 
   return { query, sortDir };
 }
 
 module.exports = {
   buildBookingBody,
-  getBookingsParser
+  getBookingsParser,
 };

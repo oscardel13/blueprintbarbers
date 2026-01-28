@@ -12,7 +12,11 @@ const createBarber = async (barber) => {
   });
 };
 
-const getBarber = async (identifier) => {
+const getBarber = async (query) => {
+  return await barbersCollection.findOne(query);
+};
+
+const getBarberById = async (identifier) => {
   let query = {};
 
   if (mongoose.Types.ObjectId.isValid(identifier)) {
@@ -24,6 +28,14 @@ const getBarber = async (identifier) => {
   }
 
   return await barbersCollection.findOne(query);
+};
+
+const getBarberClients = async (barberId) => {
+  const barber = await barbersCollection.findById(barberId).populate({
+    path: "clients",
+    select: "name email phone",
+  });
+  return barber.clients;
 };
 
 const updateBarber = async (barber) => {
@@ -40,6 +52,7 @@ module.exports = {
   createBarber,
   getBarbers,
   getBarber,
+  getBarberById,
   updateBarber,
   deleteBarber,
 };

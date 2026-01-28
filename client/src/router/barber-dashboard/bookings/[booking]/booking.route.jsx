@@ -5,6 +5,10 @@ import { getAPI, putAPI } from "../../../../utils/api";
 import PageHeader from "../../components/page-header/page-header.component";
 import BookingPopover from "../../../../components/booking/booking.component";
 import Alert from "../components/alert/alert.component";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectLastBooking } from "../../../../store/barber/barber.selector";
+import { setLastBooking } from "../../../../store/barber/barber.reducer";
 
 const STATUS_COLOR = {
   pending: "bg-yellow-600",
@@ -15,7 +19,10 @@ const STATUS_COLOR = {
 };
 
 const BookingPage = () => {
+  const dispatch = useDispatch();
+  const lastBooking = useSelector(selectLastBooking);
   let { bookingId } = useParams();
+
   const [booking, setBooking] = useState(null);
   const [cancelPopover, setCancelPopover] = useState(false);
   const [noShowPopover, setNoShowPopover] = useState(false);
@@ -92,13 +99,15 @@ const BookingPage = () => {
     } catch (err) {
       alert(err);
     }
-  }
+  };
 
   useEffect(() => {
     const fetchBooking = async () => {
       try {
-        const res = await getAPI(`/bookings/${bookingId}`);
+        const bookingIdToFetch = bookingId !== ":id" ? bookingId : lastBooking;
+        const res = await getAPI(`/bookings/${bookingIdToFetch}`);
         setBooking(res.data);
+        dispatch(setLastBooking(res.data._id));
       } catch (err) {
         if (err.response.data.error === "Not the owner")
           window.alert("You are not the owner of this booking");
@@ -128,38 +137,40 @@ const BookingPage = () => {
           ) : (
             <div>
               <h1 className="text-xl font-semibold">Cancel Booking</h1>
-              <p>{`Are you sure you want to cancel booking: ${booking.customer.name} - ${booking.service.name} for ${new Date(booking.startTime).toLocaleDateString("en-US", {
-              weekday: "long",
-              month: "long",
-              day: "2-digit",
-              year: "numeric"
+              <p>{`Are you sure you want to cancel booking: ${booking.customer.name} - ${booking.service.name} for ${new Date(
+                booking.startTime,
+              ).toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "2-digit",
+                year: "numeric",
               })}`}</p>
             </div>
           )}
         </Alert>
       )}
-      {
-        noShowPopover && (
-          <Alert closeAlert={triggerNoShowBooking} confirmAlert={noShowBooking}>
-            {waiting ? (
-              <div>
-                <h1 className="text-xl font-semibold">No-Showed?</h1>
-                <p>Waiting...</p>
-              </div>
-            ) : (
-              <div>
-                <h1 className="text-xl font-semibold">No-Showed?</h1>
-                <p>{`Are you sure you want to No-Show booking: ${booking.customer.name} - ${booking.service.name} for ${new Date(booking.startTime).toLocaleDateString("en-US", {
+      {noShowPopover && (
+        <Alert closeAlert={triggerNoShowBooking} confirmAlert={noShowBooking}>
+          {waiting ? (
+            <div>
+              <h1 className="text-xl font-semibold">No-Showed?</h1>
+              <p>Waiting...</p>
+            </div>
+          ) : (
+            <div>
+              <h1 className="text-xl font-semibold">No-Showed?</h1>
+              <p>{`Are you sure you want to No-Show booking: ${booking.customer.name} - ${booking.service.name} for ${new Date(
+                booking.startTime,
+              ).toLocaleDateString("en-US", {
                 weekday: "long",
                 month: "long",
                 day: "2-digit",
-                year: "numeric"
-                })}`}</p>
-              </div>
-            )}
-          </Alert>
-        )
-      }
+                year: "numeric",
+              })}`}</p>
+            </div>
+          )}
+        </Alert>
+      )}
       {updatePopover && (
         <BookingPopover
           service={booking.service}
@@ -181,22 +192,26 @@ const BookingPage = () => {
         <div className="flex flex-row p-3 border border-gray-200 bg-white shadow-lg rounded-lg gap-5">
           <div className="flex flex-col">
             <span className="text-sm text-gray-400">Start</span>
-            <span>{new Date(booking.startTime).toLocaleTimeString("en-US", {
+            <span>
+              {new Date(booking.startTime).toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
-              })}</span>
+              })}
+            </span>
           </div>
 
           <div className="w-px bg-gray-300 mx-" />
 
           <div className="flex flex-col items-start">
             <span className="text-sm text-gray-400">Date</span>
-            <span>{new Date(booking.startTime).toLocaleDateString("en-US", {
-              weekday: "long",
-              month: "long",
-              day: "2-digit",
-              year: "numeric"
-              })}</span>
+            <span>
+              {new Date(booking.startTime).toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "2-digit",
+                year: "numeric",
+              })}
+            </span>
           </div>
         </div>
         <div className="flex flex-row p-2 items-center">
@@ -243,80 +258,78 @@ const BookingPage = () => {
 
         <hr />
 
-        {
-          booking?.status === "pending" ? 
-            <div className="flex flex-row gap-1">
-              <div className="w-1/2 text-white">
-                <button
-                  className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg"
-                  onClick={triggerCancelBooking}
-                >
-                  Deny
-                </button>
-              </div>
-              <div className="w-1/2 text-white">
-                <button
-                  className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
-                  onClick={confirmBooking}
-                >
-                  Confirm
-                </button>
-              </div>
+        {booking?.status === "pending" ? (
+          <div className="flex flex-row gap-1">
+            <div className="w-1/2 text-white">
+              <button
+                className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg"
+                onClick={triggerCancelBooking}
+              >
+                Deny
+              </button>
             </div>
-          
-          : booking?.status === "confirmed" ? 
-            <div className="flex flex-row gap-1">
-              <div className="w-1/2 text-white">
-                <button
-                  className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg"
-                  onClick={triggerCancelBooking}
-                >
-                  Cancel
-                </button>
-              </div>
-              <div className="w-1/2 text-white">
-                <button
-                  className="flex w-full h-10 rounded-lg justify-center items-center bg-gray-600 shadow-lg"
-                  onClick={triggerUpdateBooking}
-                >
-                  Edit
-                </button>
-              </div>
+            <div className="w-1/2 text-white">
+              <button
+                className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
+                onClick={confirmBooking}
+              >
+                Confirm
+              </button>
             </div>
-          :booking?.status === "canceled" ?
-            <div className="flex flex-row gap-1">
-              <div className="w-full text-white">
-                <button
-                  className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
-                  onClick={confirmBooking}
-                >
-                  Undo Cancel
-                </button>
-              </div>
+          </div>
+        ) : booking?.status === "confirmed" ? (
+          <div className="flex flex-row gap-1">
+            <div className="w-1/2 text-white">
+              <button
+                className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 shadow-lg"
+                onClick={triggerCancelBooking}
+              >
+                Cancel
+              </button>
             </div>
-          :booking?.status === "no-show" ?
-            <div className="flex flex-row gap-1">
-              <div className="w-full text-white">
-                <button
-                  className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
-                  onClick={undoNoShowBooking}
-                >
-                  Undo No-Show
-                </button>
-              </div>
+            <div className="w-1/2 text-white">
+              <button
+                className="flex w-full h-10 rounded-lg justify-center items-center bg-gray-600 shadow-lg"
+                onClick={triggerUpdateBooking}
+              >
+                Edit
+              </button>
             </div>
-          :
-           <div className="flex flex-row gap-1">
-              <div className="w-full text-white">
-                <button
-                  className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 hover:bg-red-400 shadow-lg"
-                  onClick={triggerNoShowBooking}
-                >
-                  No-Showed
-                </button>
-              </div>
+          </div>
+        ) : booking?.status === "canceled" ? (
+          <div className="flex flex-row gap-1">
+            <div className="w-full text-white">
+              <button
+                className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
+                onClick={confirmBooking}
+              >
+                Undo Cancel
+              </button>
             </div>
-        }
+          </div>
+        ) : booking?.status === "no-show" ? (
+          <div className="flex flex-row gap-1">
+            <div className="w-full text-white">
+              <button
+                className="flex w-full h-10 rounded-lg justify-center items-center bg-green-500 shadow-lg"
+                onClick={undoNoShowBooking}
+              >
+                Undo No-Show
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-row gap-1">
+            <div className="w-full text-white">
+              <button
+                className="flex w-full h-10 rounded-lg justify-center items-center bg-red-500 hover:bg-red-400 shadow-lg"
+                onClick={triggerNoShowBooking}
+              >
+                No-Showed
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
