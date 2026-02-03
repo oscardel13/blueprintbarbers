@@ -1,5 +1,12 @@
 const express = require("express");
-const { checkLoggedIn, checkIfAdmin } = require("../auth/auth.user");
+
+function checkLoggedIn(req, res, next) {
+  const isLoggedIn = req.isAuthenticated() && req.user;
+  if (!isLoggedIn) {
+    return res.status(401).json({ error: "You must log in!" });
+  }
+  next();
+}
 
 const {
   httpDeleteUser,
@@ -12,8 +19,8 @@ const {
 
 const UserAPI = express.Router();
 
-UserAPI.get("/", checkIfAdmin, httpGetUsers);
-UserAPI.get("/checkAdmin", checkIfAdmin, httpCheckIfAdmin);
+UserAPI.get("/", checkLoggedIn, httpGetUsers);
+UserAPI.get("/checkAdmin", checkLoggedIn, httpCheckIfAdmin);
 UserAPI.get("/me", checkLoggedIn, httpGetMyUser);
 UserAPI.get("/:id", checkLoggedIn, httpGetUser);
 UserAPI.put("/:id", checkLoggedIn, httpUpdateUser);

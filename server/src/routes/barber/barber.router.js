@@ -1,5 +1,4 @@
 const express = require("express");
-const { checkIfBarber } = require("../auth/auth.barber");
 
 const {
   httpGetBarbers,
@@ -10,17 +9,19 @@ const {
   httpGetBarberAvailability,
   httpGetMyBarberClients,
   httpGetMyBarberBookings,
+  httpGetMyTopClients,
 } = require("./barber.controller");
 
 const BarberRouter = express.Router();
 
 BarberRouter.get("/", httpGetBarbers);
-BarberRouter.get("/me", checkIfBarber, httpGetMyBarber);
-BarberRouter.get("/me/clients", checkIfBarber, httpGetMyBarberClients);
-BarberRouter.get("/me/bookings", checkIfBarber, httpGetMyBarberBookings);
+BarberRouter.get("/me", httpGetMyBarber);
+BarberRouter.put("/me", httpUpdateBarber);
+BarberRouter.delete("/me", httpDeleteBarber);
+BarberRouter.get("/me/clients", httpGetMyBarberClients);
+BarberRouter.get("/me/top-clients", httpGetMyTopClients);
+BarberRouter.get("/me/bookings", httpGetMyBarberBookings);
 BarberRouter.get("/:id", httpGetBarber);
-BarberRouter.put("/:id", checkIfBarber, httpUpdateBarber);
-BarberRouter.delete("/:id", checkIfBarber, httpDeleteBarber);
 BarberRouter.get("/:id/availability", httpGetBarberAvailability);
 
 module.exports = BarberRouter;

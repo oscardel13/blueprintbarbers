@@ -2,19 +2,17 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
-const path = require("path");
 const api = require("./routes/api");
 
 const cookieSession = require("cookie-session");
-const { config, userPassport } = require("./routes/auth/auth.user");
-const { barberPassport } = require("./routes/auth/auth.barber");
+const { passport, config } = require("./routes/auth/passport");
 
 const app = express();
 
 app.use(
   helmet({
     contentSecurityPolicy: false,
-  })
+  }),
 );
 
 app.use(
@@ -27,7 +25,7 @@ app.use(
       "https://beta.blueprintbarbers.co",
     ],
     credentials: true,
-  })
+  }),
 );
 
 app.use(
@@ -36,14 +34,12 @@ app.use(
     maxAge: config.COOKIE_MAX_AGE,
     keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
     sameSite: false,
-    // secure: true // Set to true if using HTTPS
-  })
+    // secure: true // enable in HTTPS
+  }),
 );
-app.use(userPassport.initialize());
-app.use(userPassport.session());
 
-app.use(barberPassport.initialize());
-app.use(barberPassport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(morgan("combined"));
 
@@ -59,11 +55,5 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", api);
-
-// app.use(express.static(path.join(__dirname, ".." , 'public')));
-
-// app.get('/*', (req,res) => {
-//   res.sendFile(path.join(__dirname,'..','public','index.html'));
-// });
 
 module.exports = app;

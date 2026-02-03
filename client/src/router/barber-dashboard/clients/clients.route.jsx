@@ -27,7 +27,7 @@ const ClientsPage = () => {
       try {
         // adjust endpoint to your API
         const res = await getAPI("/barbers/me/clients");
-        setClients(res.data.clients || []);
+        setClients(res.data || []);
       } catch (e) {
         setError(e);
       } finally {

@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 const statusStyles = {
-  finished: "bg-green-100 text-green-800",
-  confirmed: "bg-blue-100 text-blue-800",
-  pending: "bg-yellow-100 text-yellow-800",
-  canceled: "bg-gray-200 text-gray-800",
+  finished: "bg-gray-500 text-green-800",
+  confirmed: "bg-green-200 text-green-900",
+  pending: "bg-yellow-200 text-yellow-900",
+  canceled: "bg-red-200 text-red-900",
   "no-show": "bg-red-100 text-red-800",
 };
 
@@ -29,7 +31,10 @@ const BookingRow = ({ booking }) => {
   const pill = statusStyles[s] || "bg-gray-200 text-gray-800";
 
   return (
-    <div className="border rounded-xl bg-gray-50 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <Link
+      to={`/barber-dashboard/bookings/${booking._id}`}
+      className="border rounded-xl bg-gray-50 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+    >
       <div className="min-w-0">
         <p className="font-semibold text-gray-900 truncate">
           {booking.service?.name || "Service"}
@@ -50,7 +55,7 @@ const BookingRow = ({ booking }) => {
           {formatMoney(booking.service?.price)}
         </span>
       </div>
-    </div>
+    </Link>
   );
 };
 

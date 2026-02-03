@@ -24,8 +24,7 @@ const {
   httpGetPublishedProducts,
   httpGetItem,
 } = require("./product.controller");
-
-const { checkIfAdmin } = require("../auth/auth.user");
+const { requireRole } = require("../auth/middleware");
 
 const ProductAPI = express.Router();
 
@@ -39,24 +38,24 @@ ProductAPI.get("/:name/:id", httpGetItem);
 //ADMIN/TRAINER ONLY
 ProductAPI.post(
   "/",
-  checkIfAdmin,
+  requireRole("admin"),
   upload.fields([
     { name: "form", maxCount: 1 },
     { name: "images", maxCount: 10 },
   ]),
-  httpCreateProduct
+  httpCreateProduct,
 );
 ProductAPI.put(
   "/:name",
-  checkIfAdmin,
+  requireRole("admin"),
   upload.fields([
     { name: "form", maxCount: 1 },
     { name: "images", maxCount: 10 },
   ]),
-  httpUpdateProduct
+  httpUpdateProduct,
 );
-ProductAPI.delete("/:id", checkIfAdmin, httpDeleteProduct);
-ProductAPI.put("/archives/:id", checkIfAdmin, httpArchiveProduct);
-ProductAPI.put("/publish/:id", checkIfAdmin, httpPublishProduct);
+ProductAPI.delete("/:id", requireRole("admin"), httpDeleteProduct);
+ProductAPI.put("/archives/:id", requireRole("admin"), httpArchiveProduct);
+ProductAPI.put("/publish/:id", requireRole("admin"), httpPublishProduct);
 
 module.exports = ProductAPI;

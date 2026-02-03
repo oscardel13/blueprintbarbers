@@ -25,7 +25,7 @@ const Layout = () => {
   }, []);
   return (
     <DashboardGuard>
-      <div className="flex w-screen">
+      <div className="flex w-screen overflow-x-hidden">
         {/* Show DashboardNav based on screen size and openSidebar state */}
         {(isXlScreen || openSidebar) && (
           <DashboardNav
@@ -36,7 +36,7 @@ const Layout = () => {
           />
         )}
         <div
-          className={`xl:ml-[280px] w-[-webkit-fill-available] min-h-screen bg-gray-300 md:px-3 py-20`}
+          className={`xl:ml-[280px] w-[-webkit-fill-available] min-h-screen bg-gray-300 md:px-3 py-20 px transition-all duration-300 ease-in-out`}
           onClick={isXlScreen || openSidebar ? toggleSidebar : null}
         >
           {!isXlScreen && openSidebar && (

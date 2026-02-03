@@ -1,30 +1,41 @@
 const mongoose = require("mongoose");
-const { bookingSchema } = require("../booking/booking.mongo");
-const { userSchema } = require("../user/user.mongo");
+const { Schema } = mongoose;
 
-const ReviewSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
-  rating: { type: Number, required: true, min: 1, max: 5 },
-  comment: { type: String, default: "" },
-  date: { type: Date, default: Date.now },
-});
-
-const BarberSchema = new mongoose.Schema(
+const HoursWindowSchema = new Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
+    start: { type: String, required: true }, // "09:00"
+    end: { type: String, required: true }, // "17:00"
+  },
+  { _id: false },
+);
+
+const BarberSchema = new Schema(
+  {
+    // Ownership / single-login link
+    ownerUserId: {
+      type: Schema.Types.ObjectId,
       ref: "user",
+      required: true,
+      unique: true,
+      index: true,
     },
-    name: { type: String, required: true, unique: true },
-    contactEmail: { type: String, required: true, unique: true },
-    gid: { type: String, required: true },
+
+    // Public profile
+    displayName: { type: String, required: true }, // not unique
     nickname: { type: String, default: "" },
-    slug: { type: String, required: false, unique: true },
-    barbershop: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "barbershop",
-    },
+    slug: { type: String, unique: true, sparse: true, index: true },
+
     picture: { type: String, default: "" },
+    about: { type: String, default: "" },
+
+    contact: {
+      email: { type: String, default: "" }, // not unique
+      phone: { type: String, default: "" },
+      instagramUrl: { type: String, default: "" },
+      booksyUrl: { type: String, default: "" },
+    },
+
+    // Location
     address: {
       street1: { type: String, default: "" },
       street2: { type: String, default: "" },
@@ -32,61 +43,117 @@ const BarberSchema = new mongoose.Schema(
       state: { type: String, default: "" },
       zip: { type: String, default: "" },
       country: { type: String, default: "USA" },
-
-      formatted: { type: String, default: "" }, // "123 Main St, Denver, CO 80202"
+      formatted: { type: String, default: "" },
       location: {
         type: { type: String, enum: ["Point"], default: "Point" },
-        coordinates: { type: [Number] }, // [lng, lat]
+        coordinates: { type: [Number], default: undefined }, // [lng, lat]
       },
     },
-    phone: { type: String, default: "" },
-    about: { type: String, default: "" },
-    instagramUrl: { type: String, default: "" },
-    booksyUrl: { type: String },
+
+    timeZone: { type: String, default: "America/Denver" },
+
+    // Gallery (phase 1)
     gallery: { type: [String], default: [] },
+
+    // Hours (phase 1 — structured windows)
     hours: {
-      sunday: { type: [[String]], default: [] },
-      monday: { type: [[String]], default: [] },
-      tuesday: { type: [[String]], default: [] },
-      wednesday: { type: [[String]], default: [] },
-      thursday: { type: [[String]], default: [] },
-      friday: { type: [[String]], default: [] },
-      saturday: { type: [[String]], default: [] },
+      sunday: { type: [HoursWindowSchema], default: [] },
+      monday: { type: [HoursWindowSchema], default: [] },
+      tuesday: { type: [HoursWindowSchema], default: [] },
+      wednesday: { type: [HoursWindowSchema], default: [] },
+      thursday: { type: [HoursWindowSchema], default: [] },
+      friday: { type: [HoursWindowSchema], default: [] },
+      saturday: { type: [HoursWindowSchema], default: [] },
     },
+
+    // Services (phase 1 — embedded)
     services: [
       {
         name: { type: String, required: true },
         description: { type: String, default: "" },
         images: { type: [String], default: [] },
-        price: { type: Number, required: true },
-        duration: { type: Number, required: true }, // Duration in minutes
+        price: { type: Number, required: true }, // consider cents later
+        duration: { type: Number, required: true }, // minutes
+        isActive: { type: Boolean, default: true },
       },
     ],
+    clients: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+
+    // Aggregated reviews only (details should move to reviews collection later)
     reviews: {
-      details: { type: [ReviewSchema], default: [] }, // Array of individual reviews
-      averageRating: { type: Number, default: 0 }, // Store pre-calculated average
-      totalReviews: { type: Number, default: 0 }, // Store total number of reviews
+      averageRating: { type: Number, default: 0 },
+      totalReviews: { type: Number, default: 0 },
     },
-    availability: {
-      type: [
-        {
-          date: {
-            type: {
-              year: { type: Number, required: true },
-              month: { type: String, required: true },
-              day: { type: Number, required: true },
-              dayOfWeek: { type: String, required: true },
-            },
-            required: true,
-          },
-          slots: { type: [String], required: true },
+
+    // Settings / policies (your requested stuff)
+    settings: {
+      bookingPolicy: {
+        type: String,
+        enum: ["instant", "request"],
+        default: "instant",
+      },
+
+      cancellation: {
+        // e.g. customer must cancel >= X hours before start
+        windowHours: { type: Number, default: 24 },
+        allowCustomerCancel: { type: Boolean, default: true },
+        allowCustomerReschedule: { type: Boolean, default: true },
+      },
+
+      latePolicy: {
+        graceMinutes: { type: Number, default: 10 },
+        autoCancelAfterMinutes: { type: Number, default: 15 }, // optional
+        noShowFeeCents: { type: Number, default: 0 }, // optional
+      },
+
+      notifications: {
+        email: {
+          bookingRequested: { type: Boolean, default: true },
+          bookingAccepted: { type: Boolean, default: true },
+          bookingCanceled: { type: Boolean, default: true },
+          dailySummary: { type: Boolean, default: false },
         },
-      ],
-      default: [],
-    }, // Array of strings
-    clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+        sms: {
+          bookingRequested: { type: Boolean, default: false },
+          bookingAccepted: { type: Boolean, default: false },
+          bookingCanceled: { type: Boolean, default: false },
+        },
+        push: {
+          bookingRequested: { type: Boolean, default: true },
+          bookingAccepted: { type: Boolean, default: true },
+          bookingCanceled: { type: Boolean, default: true },
+        },
+      },
+
+      security: {
+        // If barber wants to require approval even in instant mode (future use)
+        requireManualApproval: { type: Boolean, default: false },
+
+        // Optional: restrict who can request (future)
+        allowNewClients: { type: Boolean, default: true },
+
+        // Optional: anti-spam throttling knobs (future)
+        maxActiveRequestsPerCustomer: { type: Number, default: 3 },
+      },
+    },
+
+    // Optional: status/onboarding
+    status: {
+      type: String,
+      enum: ["draft", "active", "suspended"],
+      default: "draft",
+      index: true,
+    },
   },
   { timestamps: true },
 );
+
+// Geo index for search
+BarberSchema.index({ "address.location": "2dsphere" });
 
 module.exports = mongoose.model("barber", BarberSchema);

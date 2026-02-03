@@ -24,6 +24,15 @@ const Footer = () => {
             </p>
           </div>
 
+          <div>
+            <a
+              href="/download-app"
+              className="text-white hover:text-blue-200 transition"
+            >
+              Download App
+            </a>
+          </div>
+
           <div className="flex items-center">
             <a
               href="https://www.facebook.com/profile.php?id=61554102161708"

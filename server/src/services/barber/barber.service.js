@@ -43,7 +43,8 @@ async function calculateAvailability(futureBookings, hours) {
     let daySlots = [];
 
     // Generate the available slots based on the hours provided
-    dayHours.forEach(([start, end]) => {
+    dayHours.forEach((slot) => {
+      const { start, end } = slot;
       daySlots = daySlots.concat(generateTimeSlots(date, start, end));
     });
 

@@ -6,10 +6,16 @@ const {
   getBarberById,
   updateBarber,
   deleteBarber,
+  getBarberClients,
 } = require("../../models/barber/barber.data");
 const {
   getBarberAvailability,
 } = require("../../services/barber/barber.service");
+
+const {
+  getTopClientsForBarber,
+} = require("../../models/booking/booking.analytics");
+
 const { getPagination } = require("../../utils/query");
 
 async function httpGetBarbers(req, res) {
@@ -90,14 +96,100 @@ async function httpGetBarberAvailability(req, res) {
     res.status(500).json({ message: "Server error" });
   }
 }
-
 async function httpGetMyBarberClients(req, res) {
-  // to be implemented
+  try {
+    const barberId = req.user?.barberId; // easiest if you store this on user
+    if (!barberId)
+      return res.status(404).json({ error: "No barber profile found" });
+
+    const clients = await getBarberClients(barberId);
+    return res.status(200).json(clients);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Server error" });
+  }
 }
 
 async function httpGetMyBarberBookings(req, res) {
-  // to be implemented
+  try {
+    const barberId = req.user?.barberId;
+    if (!barberId)
+      return res.status(404).json({ error: "No barber profile found" });
+
+    const {
+      clientId,
+      status,
+      start,
+      end,
+      skip = "0",
+      limit = "50",
+      sortDir = "1",
+    } = req.query;
+
+    const query = { barber: barberId };
+
+    // Optional: filter by one client
+    if (clientId) {
+      if (!mongoose.Types.ObjectId.isValid(clientId)) {
+        return res.status(400).json({ error: "Invalid clientId" });
+      }
+      query.customer = new mongoose.Types.ObjectId(clientId);
+    }
+
+    // Optional: filter by status
+    if (status) {
+      query.status = status; // you can validate against enum if you want
+    }
+
+    // Optional: date range filter (by startTime)
+    const startDate = parseDateOrUndefined(start);
+    const endDate = parseDateOrUndefined(end);
+
+    if (startDate || endDate) {
+      query.startTime = {};
+      if (startDate) query.startTime.$gte = startDate;
+      if (endDate) query.startTime.$lt = endDate; // < end is usually best
+    }
+
+    const bookings = await getBookings(
+      query,
+      Math.max(parseInt(skip, 10), 0),
+      Math.min(Math.max(parseInt(limit, 10), 0), 200),
+      parseInt(sortDir, 10) === -1 ? -1 : 1,
+    );
+
+    return res.status(200).json(bookings);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Server error" });
+  }
 }
+
+async function httpGetMyTopClients(req, res) {
+  try {
+    const barberId = req.user?.barberId;
+    if (!barberId)
+      return res.status(404).json({ error: "No barber profile found" });
+
+    const { limit, start, end } = req.query;
+
+    const clients = await getTopClientsForBarber({
+      barberId,
+      limit,
+      start,
+      end,
+      statuses: ["confirmed", "finished"], // decide your rule
+    });
+    console.log("Top clients:", clients);
+
+    return res.status(200).json(clients);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Server error" });
+  }
+}
+
+module.exports = { httpGetMyTopClients };
 
 module.exports = {
   httpGetBarbers,
@@ -108,4 +200,5 @@ module.exports = {
   httpGetMyBarber,
   httpGetMyBarberClients,
   httpGetMyBarberBookings,
+  httpGetMyTopClients,
 };

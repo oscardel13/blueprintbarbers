@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAPI } from "../../../../../utils/api";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentBarber } from "../../../../../store/barber/barber.selector";
 
 const STATUS_TO_COLOR = {
   confirmed: "border-green-600",
@@ -9,30 +11,30 @@ const STATUS_TO_COLOR = {
 };
 
 const Day = ({ selectedDay, setSelectedDay }) => {
+  const barber = useSelector(selectCurrentBarber);
   const [bookings, setBookings] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const getBookings = async () => {
-                try{
-                    const start = new Date(selectedDay)
-                    const end = new Date(selectedDay);
-                    end.setDate(end.getDate() + 1);
-                    const params = {
-                      // barber: null,
-                      start,
-                      end
-                    }
-                    const res = await getAPI('/bookings', params)
-                    console.log()
-                    setBookings(res.data)
-                }
-                catch(err){
-                    console.log(err)
-                }
-            }
-            
-            getBookings()
-  }, [selectedDay])
+      try {
+        const start = new Date(selectedDay);
+        const end = new Date(selectedDay);
+        end.setDate(end.getDate() + 1);
+        const params = {
+          // barberId: barber._id,
+          start,
+          end,
+        };
+        const res = await getAPI("/bookings", params);
+        console.log();
+        setBookings(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getBookings();
+  }, [selectedDay]);
 
   const goToPreviousDay = () => {
     const prev = new Date(selectedDay);
@@ -51,10 +53,24 @@ const Day = ({ selectedDay, setSelectedDay }) => {
 
   // calculate top offset and height in px
   const getBookingStyles = ({ startTime, endTime }) => {
-    const sh = Number(new Date(startTime).toLocaleTimeString("en-US", { hour: "numeric", hourCycle: "h23" }));
-    const sm = Number(new Date(startTime).toLocaleTimeString("en-US", { minute: "numeric" }));
-    const eh = Number(new Date(endTime).toLocaleTimeString("en-US", { hour: "numeric", hourCycle: "h23" }));
-    const em = Number(new Date(endTime).toLocaleTimeString("en-US", { minute: "numeric" }));
+    const sh = Number(
+      new Date(startTime).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        hourCycle: "h23",
+      }),
+    );
+    const sm = Number(
+      new Date(startTime).toLocaleTimeString("en-US", { minute: "numeric" }),
+    );
+    const eh = Number(
+      new Date(endTime).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        hourCycle: "h23",
+      }),
+    );
+    const em = Number(
+      new Date(endTime).toLocaleTimeString("en-US", { minute: "numeric" }),
+    );
 
     const startTotal = sh * 60 + sm;
     const endTotal = eh * 60 + em;
@@ -65,9 +81,9 @@ const Day = ({ selectedDay, setSelectedDay }) => {
 
   const formatFullTime = (h) =>
     new Date(h).toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-              });
+      hour: "numeric",
+      minute: "numeric",
+    });
 
   return (
     <div className="py-4 lg:px-60">
@@ -110,9 +126,9 @@ const Day = ({ selectedDay, setSelectedDay }) => {
               <div className="absolute top-0 left-0 right-0 flex items-center">
                 <div className="w-[70px] text-right pr-2 text-sm font-medium">
                   {new Date(0, 0, 0, hour, 0).toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    })}
+                    hour: "numeric",
+                    minute: "2-digit",
+                  })}
                 </div>
                 <div className="flex-1 border-t border-gray-700" />
               </div>
@@ -124,7 +140,7 @@ const Day = ({ selectedDay, setSelectedDay }) => {
                   style={{ top: m * pxPerMinute }}
                 >
                   <div className="w-[70px] text-right pr-2 text-xs text-gray-500">{`${String(
-                    m
+                    m,
                   ).padStart(2, "0")}`}</div>
                   <div className="flex-1 border-t border-dashed border-gray-500" />
                 </div>
@@ -147,7 +163,6 @@ const Day = ({ selectedDay, setSelectedDay }) => {
                 left: 71, // match paddingLeft
                 right: 1,
               }}
-              
             >
               <div className="flex flex-row items-center gap-2 font-semibold text-white">
                 <div>{b.name}</div>

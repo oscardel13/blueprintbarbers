@@ -22,7 +22,7 @@ const UpcomingBookingsCard = ({ clientId }) => {
       setLoading(true);
       setError(null);
       try {
-        const res = await getAPI(`/bookings?`, params);
+        const res = await getAPI(`/bookings`, params);
         const all = res.data || [];
 
         // Client-side filter for "upcoming" for now (even if API doesn't support scope yet)

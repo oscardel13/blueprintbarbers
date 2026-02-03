@@ -1,7 +1,7 @@
 const { bookingCollection } = require("./booking.mongo");
 
 // SHOULD TAKE INTO ACCOUNT barberID,
-const getBookings = async (query = {}, skip = 0, limit = 0, sortDir = 1) => {
+const getBookings = async (query = {}, skip = 0, limit = 50, sortDir = 1) => {
   return await bookingCollection
     .find(query)
     .skip(skip)
@@ -16,7 +16,7 @@ const upsertBooking = async (filter, update) => {
     .findOneAndUpdate(
       filter, // Usually _id
       { $set: update },
-      { new: true, upsert: true, returnDocument: "after", }
+      { new: true, upsert: true, returnDocument: "after" },
     )
     .populate("customer", "name picture email phone")
     .populate("barber", "name nickname picture address phone");
@@ -39,7 +39,9 @@ const getBooking = async (id) => {
 
 const updateBooking = async (booking) => {
   return await bookingCollection
-    .findOneAndUpdate({ _id: booking._id }, booking, { returnDocument: "after" })
+    .findOneAndUpdate({ _id: booking._id }, booking, {
+      returnDocument: "after",
+    })
     .populate("customer", "name picture email phone")
     .populate("barber", "name nickname picture address phone");
 };

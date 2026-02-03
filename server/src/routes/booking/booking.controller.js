@@ -22,14 +22,17 @@ const httpGetBookings = async (req, res) => {
   }
 };
 
-/* TODO 
-add check to see if they own it if not return error not owner
-make it more specific instead of id say barberId
-or clientId
-*/
 const httpGetBooking = async (req, res) => {
+  const userId = req.user._id;
+  const barberId = req.user.barberId;
   try {
     const booking = await getBooking(req.params.id);
+    if (
+      String(booking.barber._id) !== String(barberId) &&
+      String(booking.customer._id) !== String(userId)
+    ) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     res.status(200).json(booking);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
@@ -40,7 +43,7 @@ const httpsCreateBooking = async (req, res) => {
   try {
     const bookingBody = buildBookingBody(req.body);
     const booking = await upsertBooking(bookingBody);
-    // bookingEmitters.emitCreateBookingEvent(booking);
+    bookingEmitters.emitCreateBookingEvent(booking);
     res.status(200).json(booking);
   } catch (err) {
     console.log(err);
@@ -70,6 +73,7 @@ const httpUpdateBooking = async (req, res) => {
   }
 };
 
+// TODO make sure only barber or customer can delete
 const httpDeleteBooking = async (req, res) => {
   try {
     const booking = await deleteBooking(req.params.id);

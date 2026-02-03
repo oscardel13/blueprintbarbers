@@ -232,6 +232,7 @@ const EditPage = () => {
       setError(null);
       try {
         const response = await getAPI(`/barbers/me`);
+        console.log("Barber data:", response.data);
         const data = response.data.barber;
 
         setBarberData(safeClone(data));

@@ -38,7 +38,7 @@ const ContactAndHoursSection = ({ phone, hours }) => {
                 {hours[day].length > 0
                   ? hours[day].map((time, index) => (
                       <span key={index}>
-                        {formatTime(time[0])} - {formatTime(time[1])}
+                        {formatTime(time.start)} - {formatTime(time.end)}
                       </span>
                     ))
                   : "Closed"}

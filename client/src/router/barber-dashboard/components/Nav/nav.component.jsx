@@ -51,7 +51,10 @@ const DashboardNav = ({ style, toggleSidebar }) => {
           <Link to="/barber-dashboard/clients" onClick={onClickLink}>
             List
           </Link>
-          <Link to="/barber-dashboard/clients/:id" onClick={onClickLink}>
+          <Link
+            to="/barber-dashboard/clients/last-viewed"
+            onClick={onClickLink}
+          >
             Last Viewed Client
           </Link>
         </NavLinkDropdown>
@@ -63,7 +66,10 @@ const DashboardNav = ({ style, toggleSidebar }) => {
           <Link to="/barber-dashboard/bookings" onClick={onClickLink}>
             List
           </Link>
-          <Link to="/barber-dashboard/bookings/:id" onClick={onClickLink}>
+          <Link
+            to="/barber-dashboard/bookings/last-viewed"
+            onClick={onClickLink}
+          >
             Last Viewed Booking
           </Link>
         </NavLinkDropdown>

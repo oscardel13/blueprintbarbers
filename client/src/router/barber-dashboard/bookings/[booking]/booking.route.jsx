@@ -104,7 +104,8 @@ const BookingPage = () => {
   useEffect(() => {
     const fetchBooking = async () => {
       try {
-        const bookingIdToFetch = bookingId !== ":id" ? bookingId : lastBooking;
+        const bookingIdToFetch =
+          bookingId !== "last-viewed" ? bookingId : lastBooking;
         const res = await getAPI(`/bookings/${bookingIdToFetch}`);
         setBooking(res.data);
         dispatch(setLastBooking(res.data._id));

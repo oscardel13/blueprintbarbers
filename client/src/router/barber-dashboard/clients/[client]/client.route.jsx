@@ -26,7 +26,7 @@ const ClientPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const clientIdToFetch = id !== ":id" ? id : lastClient;
+        const clientIdToFetch = id !== "last-viewed" ? id : lastClient;
         const res = await getAPI(`/users/${clientIdToFetch}`);
         setClient(res.data);
         dispatch(setLastClient(res.data._id));

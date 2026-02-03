@@ -18,11 +18,13 @@ const toMinutes = (t) => {
   return h * 60 + m;
 };
 
+const DEFAULT_BLOCK = { start: "09:00", end: "17:00" };
+
 const WorkingHoursComponent = ({
   barberData,
   setField,
 
-  // ✅ new (from EditPage)
+  // from EditPage
   errorCount = 0,
   errors = [],
   forceOpen,
@@ -35,12 +37,12 @@ const WorkingHoursComponent = ({
   };
 
   const toggleClosed = (dayKey, isClosed) => {
-    setDayBlocks(dayKey, isClosed ? [] : [["09:00", "17:00"]]);
+    setDayBlocks(dayKey, isClosed ? [] : [{ ...DEFAULT_BLOCK }]);
   };
 
   const addBlock = (dayKey) => {
     const blocks = hours[dayKey] || [];
-    setDayBlocks(dayKey, [...blocks, ["09:00", "17:00"]]);
+    setDayBlocks(dayKey, [...blocks, { ...DEFAULT_BLOCK }]);
   };
 
   const removeBlock = (dayKey, index) => {
@@ -51,20 +53,17 @@ const WorkingHoursComponent = ({
     );
   };
 
-  const updateBlock = (dayKey, index, which, value) => {
+  const updateBlock = (dayKey, index, field, value) => {
     const blocks = hours[dayKey] || [];
-    const next = blocks.map((b, i) => {
-      if (i !== index) return b;
-      const [start, end] = b;
-      return which === "start" ? [value, end] : [start, value];
-    });
+    const next = blocks.map((b, i) =>
+      i === index ? { ...b, [field]: value } : b,
+    );
     setDayBlocks(dayKey, next);
   };
 
   const dayErrorMap = useMemo(() => {
     const map = {};
     errors.forEach((e) => {
-      // ids like hours.monday or hours.monday.0
       const parts = e.id.split(".");
       if (parts[0] !== "hours") return;
       const day = parts[1];
@@ -75,18 +74,22 @@ const WorkingHoursComponent = ({
   }, [errors]);
 
   const blockHasError = (dayKey, idx) => {
-    return errors.some((e) => e.id === `hours.${dayKey}.${idx}`);
+    // support either `hours.monday.0` (block-level) OR `hours.monday.0.start`
+    return errors.some(
+      (e) =>
+        e.id === `hours.${dayKey}.${idx}` ||
+        e.id.startsWith(`hours.${dayKey}.${idx}.`),
+    );
   };
 
-  // light client-side hinting even before save:
   const computeDayOverlap = (dayKey, blocks) => {
     const normalized = (blocks || [])
       .map((b, idx) => ({
         idx,
-        start: b?.[0],
-        end: b?.[1],
-        s: toMinutes(b?.[0]),
-        e: toMinutes(b?.[1]),
+        start: b?.start,
+        end: b?.end,
+        s: toMinutes(b?.start),
+        e: toMinutes(b?.end),
       }))
       .filter((b) => Number.isFinite(b.s) && Number.isFinite(b.e))
       .sort((a, b) => a.s - b.s);
@@ -128,7 +131,6 @@ const WorkingHoursComponent = ({
                       : `${blocks.length} time block${blocks.length > 1 ? "s" : ""}`}
                   </p>
 
-                  {/* day-level error */}
                   {dayErrors.length > 0 ? (
                     <p className="text-sm text-red-600 mt-1">
                       {dayErrors[0]}
@@ -169,8 +171,11 @@ const WorkingHoursComponent = ({
 
               {!closed && (
                 <div className="space-y-3">
-                  {blocks.map(([start, end], idx) => {
+                  {blocks.map((block, idx) => {
                     const hasErr = blockHasError(key, idx);
+                    const start = block?.start || "09:00";
+                    const end = block?.end || "17:00";
+
                     return (
                       <div
                         key={idx}
@@ -183,11 +188,13 @@ const WorkingHoursComponent = ({
                           </label>
                           <input
                             type="time"
-                            value={start || "09:00"}
+                            value={start}
                             onChange={(e) =>
                               updateBlock(key, idx, "start", e.target.value)
                             }
-                            className={`w-full border p-2 rounded bg-white ${hasErr ? "border-red-400" : ""}`}
+                            className={`w-full border p-2 rounded bg-white ${
+                              hasErr ? "border-red-400" : ""
+                            }`}
                           />
                         </div>
 
@@ -197,11 +204,13 @@ const WorkingHoursComponent = ({
                           </label>
                           <input
                             type="time"
-                            value={end || "17:00"}
+                            value={end}
                             onChange={(e) =>
                               updateBlock(key, idx, "end", e.target.value)
                             }
-                            className={`w-full border p-2 rounded bg-white ${hasErr ? "border-red-400" : ""}`}
+                            className={`w-full border p-2 rounded bg-white ${
+                              hasErr ? "border-red-400" : ""
+                            }`}
                           />
                         </div>
 

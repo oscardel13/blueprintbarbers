@@ -1,9 +1,19 @@
+// booking.listeners.js
 const bookingEvents = require("./booking.events");
+const {
+  handleBookingCreated,
+  handleBookingUpdated,
+} = require("./booking.handlers");
 
-bookingEvents.on("bookingCreated", async (data) => {
-  // Notification Logic
+// Register listeners ONCE
+bookingEvents.on("bookingCreated", (booking) => {
+  Promise.resolve(handleBookingCreated(booking)).catch((err) => {
+    console.error("bookingCreated handler failed", err);
+  });
 });
 
-bookingEvents.on("bookingUpdated", async (data) => {
-  // Notification Logic
+bookingEvents.on("bookingUpdated", (booking) => {
+  Promise.resolve(handleBookingUpdated(booking)).catch((err) => {
+    console.error("bookingUpdated handler failed", err);
+  });
 });
