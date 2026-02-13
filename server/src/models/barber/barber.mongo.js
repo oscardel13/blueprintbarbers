@@ -48,6 +48,17 @@ const BarberSchema = new Schema(
         type: { type: String, enum: ["Point"], default: "Point" },
         coordinates: { type: [Number], default: undefined }, // [lng, lat]
       },
+      geocode: {
+        provider: {
+          type: String,
+          enum: ["mapbox", "google"],
+          default: "mapbox",
+        },
+        placeId: { type: String, default: "" }, // Google place_id (optional)
+        featureId: { type: String, default: "" }, // Mapbox feature id (optional)
+        precision: { type: String, default: "" }, // "rooftop" | "street" | etc. (optional)
+        geocodedAt: { type: Date, default: null },
+      },
     },
 
     timeZone: { type: String, default: "America/Denver" },
@@ -81,6 +92,7 @@ const BarberSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "user",
+        index: true,
       },
     ],
 

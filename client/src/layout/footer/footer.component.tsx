@@ -9,28 +9,35 @@ const Footer = () => {
     <div className="bg-dark">
       <div className="container mx-auto py-3">
         <div className="flex justify-between items-center flex-col space-y-5">
-          <div className="flex flex-col justify-center items-center">
-            <h3 className="text-white text-center lg:text-left">
-              <Logo styling={"scale-50"} />
-            </h3>
-            <p className="text-lg text-white font-medium">
-              Schedule Appointment:{" "}
+          <div className="w-full flex justify-between items-center xl:px-40">
+            <div className="flex flex-col justify-center items-center">
+              <h3 className="text-white text-center lg:text-left">
+                <Logo styling={"scale-50"} />
+              </h3>
+              <p className="text-lg text-white font-medium">
+                Schedule Appointment:{" "}
+                <a
+                  href="tel:7202335047"
+                  className="font-semibold hover:underline hover:text-blue-200 transition"
+                >
+                  720-233-5047
+                </a>
+              </p>
+            </div>
+            <div className="flex flex-col space-y-2">
               <a
-                href="tel:7202335047"
-                className="font-semibold hover:underline hover:text-blue-200 transition"
+                href="/download-app"
+                className="text-white hover:text-blue-200 transition"
               >
-                720-233-5047
+                Download App
               </a>
-            </p>
-          </div>
-
-          <div>
-            <a
-              href="/download-app"
-              className="text-white hover:text-blue-200 transition"
-            >
-              Download App
-            </a>
+              <a
+                href="/become-a-barber"
+                className="text-white hover:text-blue-200 transition"
+              >
+                Become a Barber
+              </a>
+            </div>
           </div>
 
           <div className="flex items-center">

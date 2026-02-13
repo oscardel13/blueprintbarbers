@@ -10,6 +10,7 @@ const {
 } = require("../../models/barber/barber.data");
 const {
   getBarberAvailability,
+  createNewBarber,
 } = require("../../services/barber/barber.service");
 
 const {
@@ -17,6 +18,10 @@ const {
 } = require("../../models/booking/booking.analytics");
 
 const { getPagination } = require("../../utils/query");
+
+const { uploadImagesToS3 } = require("../../utils/global");
+
+const { shouldGeocodeAddress, geocodeAddress } = require("../../utils/geocode");
 
 async function httpGetBarbers(req, res) {
   const { skip, limit } = getPagination(req.query);
@@ -38,14 +43,66 @@ async function httpGetBarber(req, res) {
   }
 }
 
+async function httpPostBarber(req, res) {
+  const { user, body } = req;
+  try {
+    // Check if user already has a barber profile
+    const existingBarber = await getBarber({ user: user._id });
+    if (existingBarber) {
+      return res.status(400).json({ message: "Barber profile already exists" });
+    }
+
+    const geocodeAddress = geocodeAddress(body.address || {});
+    // todo handle geocode result
+
+    // Create new barber profile
+    const newBarberData = {
+      ownerUserId: user._id,
+      displayName: user.name,
+      picture: user.picture || "",
+      ...body,
+    };
+    const newBarber = await createNewBarber(newBarberData);
+    res.status(201).json(newBarber);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
 // needs a lot of work to update images of all kinds. profilePicure, gallery, or service images
 async function httpUpdateBarber(req, res) {
-  const { session, body, files } = req;
-  if (session.passport.user.gid !== body.gid) {
+  const { user, body, files } = req;
+  let barberUpdate = JSON.parse(body.form);
+  // console.log("Files received:", files);
+  // Check authorization
+
+  if (String(user.barberId) !== barberUpdate._id) {
     return res.status(401).json({ message: "Unauthorized" });
   }
   try {
-    // const barber = await updateBarber(req.body); TURNED OFF UNTIL DONE
+    const existingBarber = await getBarberById(barberUpdate._id);
+    if (!existingBarber) {
+      return res.status(404).json({ message: "Barber not found" });
+    }
+
+    barberUpdate.gallery = await uploadImagesToS3(
+      barberUpdate.gallery,
+      files.images,
+      `barbers/${barberUpdate._id}`,
+    );
+
+    const isNewAddress = shouldGeocodeAddress(
+      barberUpdate.address,
+      existingBarber.address || {},
+    );
+    if (isNewAddress) {
+      const geo = await geocodeAddress(barberUpdate.address || {});
+      barberUpdate.address.formatted = geo.formatted;
+      barberUpdate.address.location = geo.location;
+      barberUpdate.address.geocode = geo.geocode;
+    }
+
+    const barber = await updateBarber(barberUpdate);
     res.status(200).json(barber);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
@@ -68,16 +125,8 @@ async function httpDeleteBarber(req, res) {
 async function httpGetMyBarber(req, res) {
   try {
     // prefer user _id if available
-    let barber = null;
-    if (req.user?._id) {
-      barber = await getBarber({ user: req.user._id });
-    }
-
-    // fallback to gid (for older docs / transition)
-    if (!barber && req.user?.gid) {
-      barber = await getBarber({ gid: req.user.gid });
-    }
-
+    console.log("User info:", req.user);
+    const barber = await getBarber({ _id: req.user.barberId });
     if (!barber) return res.status(404).json({ isBarber: false });
 
     return res.status(200).json({ isBarber: true, barber });
@@ -194,6 +243,7 @@ module.exports = { httpGetMyTopClients };
 module.exports = {
   httpGetBarbers,
   httpGetBarber,
+  httpPostBarber,
   httpUpdateBarber,
   httpDeleteBarber,
   httpGetBarberAvailability,

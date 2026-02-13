@@ -37,13 +37,11 @@ const BookingPopover = ({
     const getBarber = async () => {
       try {
         const res = await getAPI(`/barbers/${barberId}/availability`);
-        console.log("Barber data:", res.data);
         setBarber(res.data.barber);
         const availability = updateAvailability(
           res.data.availability,
           service.duration,
         );
-        console.log("AVAILABILITY:", availability);
         setAvailability(availability);
         setSelectedDate(getFirstBookingDay(availability));
       } catch (err) {

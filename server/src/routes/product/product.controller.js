@@ -10,10 +10,10 @@ const {
 const { getUser } = require("../../models/user/user.data");
 const {
   createProductItemList,
-  processImages,
   createReducedSizeList,
 } = require("./product.helper");
 const { getPagination } = require("../../utils/query");
+const { uploadImagesToS3 } = require("../../utils/global");
 
 async function httpGetProducts(req, res) {
   const { skip, limit } = getPagination(req.query);
@@ -30,7 +30,7 @@ async function httpGetArchivedProducts(req, res) {
   try {
     const products = await getProducts();
     const archivedProducts = products.filter(
-      (product) => product.archived === true
+      (product) => product.archived === true,
     );
     return res.status(200).json(archivedProducts);
   } catch (e) {
@@ -43,7 +43,7 @@ async function httpGetPublishedProducts(req, res) {
   try {
     const products = await getProducts();
     const publishedProducts = products.filter(
-      (product) => product.published === true
+      (product) => product.published === true,
     );
     return res.status(200).json(publishedProducts);
   } catch (e) {
@@ -100,7 +100,11 @@ async function httpCreateProduct(req, res) {
   product.sizes = createReducedSizeList(product.sizes);
   product.name = product.name.replace(/\s+$/, ""); // deletes trailing whitespace
   try {
-    product.images = await processImages(product, files.images);
+    product.images = await uploadImagesToS3(
+      product.images,
+      files.images,
+      `products/${product.name}`,
+    );
     const productRes = await createProduct(product);
     return res.status(200).json(productRes);
   } catch (e) {
@@ -122,7 +126,11 @@ async function httpUpdateProduct(req, res) {
 
   product.updatedAt = Date.now();
   try {
-    product.images = await processImages(product, files.images);
+    product.images = await uploadImagesToS3(
+      product.images,
+      files.images,
+      `products/${product.name}`,
+    );
     const updatedProduct = await updateProduct(req.params.name, product);
     return res.status(200).json(updatedProduct);
   } catch (e) {

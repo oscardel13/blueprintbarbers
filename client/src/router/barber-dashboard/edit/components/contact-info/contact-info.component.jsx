@@ -26,10 +26,10 @@ const ContactInfoComponent = ({
   const handlePhoneChange = (e) => {
     const inputValue = e.target.value;
     const digitsOnly = inputValue.replace(/\D/g, "").slice(0, 10);
-    setField("phone", digitsOnly);
+    setField("contact.phone", digitsOnly);
   };
 
-  const phoneDisplayValue = formatPhone(barberData.phone || "");
+  const phoneDisplayValue = formatPhone(barberData.contact?.phone || "");
 
   const errorMap = useMemo(() => {
     const map = {};
@@ -77,12 +77,12 @@ const ContactInfoComponent = ({
           Contact Email
         </label>
         <input
-          data-error-id="contact.contactEmail"
-          name="contactEmail"
+          data-error-id="contact.email"
+          name="email"
           type="email"
           placeholder="you@shop.com"
-          value={barberData.contactEmail || ""}
-          onChange={(e) => setField("contactEmail", e.target.value)}
+          value={barberData.contact?.email || ""}
+          onChange={(e) => setField("contact.email", e.target.value)}
           className={`w-full border p-2 rounded ${has("contact.contactEmail") ? "border-red-400" : ""}`}
         />
         {has("contact.contactEmail") ? (
@@ -220,10 +220,11 @@ const ContactInfoComponent = ({
         </label>
         <input
           data-error-id="contact.instagramUrl"
+          name="instagramUrl"
           type="url"
           placeholder="https://instagram.com/yourhandle"
-          value={barberData.instagramUrl || ""}
-          onChange={(e) => setField("instagramUrl", e.target.value)}
+          value={barberData.contact?.instagramUrl || ""}
+          onChange={(e) => setField("contact.instagramUrl", e.target.value)}
           className={`w-full border p-2 rounded ${has("contact.instagramUrl") ? "border-red-400" : ""}`}
         />
         {has("contact.instagramUrl") ? (

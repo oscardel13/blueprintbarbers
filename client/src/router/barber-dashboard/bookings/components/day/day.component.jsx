@@ -21,7 +21,7 @@ const Day = ({ selectedDay, setSelectedDay }) => {
         const end = new Date(selectedDay);
         end.setDate(end.getDate() + 1);
         const params = {
-          // barberId: barber._id,
+          barberId: barber._id,
           start,
           end,
         };

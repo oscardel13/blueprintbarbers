@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import InfoCard from "../components/info-card/info-card.component";
 import BookingHero from "../components/hero-section/hero-section.component";
 import Services from "../components/services/services.component";
+import Gallery from "../components/gallery/gallery.component";
 import { getAPI } from "../../../utils/api";
 import { Link, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -17,6 +18,7 @@ const Barber = ({ index }) => {
         setLoading(true);
         const res = await getAPI(`/barbers/${barberId}`);
         const data = res.data;
+        console.log("Fetched barber data:", data);
         setBarber(data);
         setLoading(false);
       } catch (e) {
@@ -27,13 +29,13 @@ const Barber = ({ index }) => {
   }, []);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center w-screen">
       {loading ? (
         <div className="h-96 flex items-center justify-center">
           <div className="animate-spin">Loading...</div>
         </div>
       ) : barber ? (
-        <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
+        <div className="py-2 lg:py-5 mx-2 flex flex-col max-w-full lg:max-w-[1250px] lg:flex-row lg:justify-between w-full gap-10">
           <div className="relative flex flex-col w-full lg:w-2/3">
             <div className="flex justify-between items-center mb-4 flex-wrap py-3">
               <Link
@@ -62,17 +64,18 @@ const Barber = ({ index }) => {
               booksyUrl={barber.booksyUrl}
             />
             {/* See Our Work */}
+            <Gallery images={barber.gallery || []} />
             {/* Reviews */}
           </div>
 
           <div className="fle flex-col w-full lg:w-1/3">
             <InfoCard
               name={barber.nickname}
-              phone={barber.phone}
+              phone={barber.contact.phone}
               address={barber.address}
               hours={barber.hours}
               about={barber.about}
-              instagramUrl={barber.instagramUrl}
+              instagramUrl={barber.contact.instagramUrl}
               booksyUrl={barber.booksyUrl}
               profilePicture={barber.picture}
             />

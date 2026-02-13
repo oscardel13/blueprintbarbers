@@ -8,7 +8,7 @@ const getBookings = async (query = {}, skip = 0, limit = 50, sortDir = 1) => {
     .limit(limit)
     .sort({ startTime: sortDir })
     .populate("customer", "name picture email phone") // only these fields
-    .populate("barber", "name nickname picture address phone");
+    .populate("barber", "name nickname picture address phone ownerUserId"); // only these fields
 };
 
 const upsertBooking = async (filter, update) => {
@@ -19,7 +19,7 @@ const upsertBooking = async (filter, update) => {
       { new: true, upsert: true, returnDocument: "after" },
     )
     .populate("customer", "name picture email phone")
-    .populate("barber", "name nickname picture address phone");
+    .populate("barber", "name nickname picture address phone ownerUserId");
 };
 
 const createBooking = async (booking) => {
@@ -27,14 +27,14 @@ const createBooking = async (booking) => {
   return await bookingCollection
     .findById(newBooking._id)
     .populate("customer", "name picture email phone")
-    .populate("barber", "name nickname picture address phone");
+    .populate("barber", "name nickname picture address phone ownerUserId");
 };
 
 const getBooking = async (id) => {
   return await bookingCollection
     .findOne({ _id: id })
     .populate("customer", "name picture email phone")
-    .populate("barber", "name nickname picture address phone");
+    .populate("barber", "name nickname picture address phone ownerUserId");
 };
 
 const updateBooking = async (booking) => {
@@ -43,7 +43,7 @@ const updateBooking = async (booking) => {
       returnDocument: "after",
     })
     .populate("customer", "name picture email phone")
-    .populate("barber", "name nickname picture address phone");
+    .populate("barber", "name nickname picture address phone ownerUserId");
 };
 
 const deleteBooking = async (id) => {

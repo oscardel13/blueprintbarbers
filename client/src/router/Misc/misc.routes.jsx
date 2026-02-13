@@ -6,6 +6,7 @@ import Cart from "./cart/cart.route";
 import Checkout from "./checkout/checkout.route";
 import BookingConfirmed from "./booking-confirmed/booking-confirmed.route";
 import DownloadAppPage from "./download-app/download-app.route";
+import BecomeABarberPage from "./become-a-barber/become-a-barber.route";
 
 function MiscRoutes() {
   return (
@@ -21,6 +22,7 @@ function MiscRoutes() {
       <Route path="checkout" element={<Checkout />} />
       <Route path="booking-confirmed" element={<BookingConfirmed />} />
       <Route path="download-app" element={<DownloadAppPage />} />
+      <Route path="become-a-barber" element={<BecomeABarberPage />} />
     </>
   );
 }

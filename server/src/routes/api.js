@@ -7,6 +7,7 @@ const OrderRouter = require("./order/order.router");
 const PaymentRouter = require("./payment/payment.router");
 const BarberRouter = require("./barber/barber.router");
 const BookingRouter = require("./booking/booking.router");
+const NotificationRouter = require("./notification/notification.router");
 const api = express.Router();
 
 api.use("/users", express.json(), UserRouter);
@@ -16,5 +17,6 @@ api.use("/payment", PaymentRouter);
 api.use("/orders", express.json(), OrderRouter);
 api.use("/barbers", express.json(), BarberRouter);
 api.use("/bookings", express.json(), BookingRouter);
+api.use("/notifications", express.json(), NotificationRouter);
 
 module.exports = api;

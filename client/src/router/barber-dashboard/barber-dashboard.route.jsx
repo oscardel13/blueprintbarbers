@@ -12,7 +12,6 @@ import { selectCurrentBarber } from "../../store/barber/barber.selector";
 
 const BarberDashboardHome = () => {
   const barber = useSelector(selectCurrentBarber);
-  console.log("Current barber in dashboard:", barber);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

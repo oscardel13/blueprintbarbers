@@ -2,8 +2,10 @@ const moment = require("moment");
 const {
   getBarberById,
   updateBarber,
+  createBarber,
 } = require("../../models/barber/barber.data");
 const { getBookings } = require("../../models/booking/booking.data");
+const { updateUser } = require("../../models/user/user.data");
 
 // TODO: make sure if booking is canceled it doesn't consider it.
 async function calculateAvailability(futureBookings, hours) {
@@ -105,6 +107,7 @@ async function getBarberAvailability(barberId) {
       _id: barber._id,
       name: barber.name,
       picture: barber.picture,
+      ownerUserId: barber.ownerUserId,
     };
 
     return { barber: simplifiedBarber, availability };
@@ -113,4 +116,14 @@ async function getBarberAvailability(barberId) {
   }
 }
 
-module.exports = { getBarberAvailability };
+const createNewBarber = async (barberData) => {
+  const newBarber = await createBarber(barberData);
+  const userWithBarber = {
+    _id: newBarber.ownerUserId,
+    barberId: newBarber._id,
+  };
+  await updateUser(userWithBarber);
+  return newBarber;
+};
+
+module.exports = { getBarberAvailability, createNewBarber };

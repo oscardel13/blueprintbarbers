@@ -9,7 +9,16 @@ const {
 const { bookingEmitters } = require("../../events/events");
 
 const { getPagination } = require("../../utils/query");
-const { buildBookingBody, getBookingsParser } = require("./booking.helpers");
+const {
+  buildBookingBody,
+  getBookingsParser,
+  buildBookingEventPayload,
+} = require("./booking.helpers");
+
+const {
+  getBookingIfAllowed,
+  getBarberOwnerUserIdFromBooking,
+} = require("./booking.auth");
 
 const httpGetBookings = async (req, res) => {
   const { skip, limit } = getPagination(req.query);
@@ -41,36 +50,147 @@ const httpGetBooking = async (req, res) => {
 
 const httpsCreateBooking = async (req, res) => {
   try {
+    // Always set customer from session to prevent spoofing
     const bookingBody = buildBookingBody(req.body);
+    bookingBody.customer = req.user._id;
+
     const booking = await upsertBooking(bookingBody);
-    bookingEmitters.emitCreateBookingEvent(booking);
-    res.status(200).json(booking);
+    // Derive barberOwnerUserId from DB (don’t trust req.body.barber.ownerUserId)
+    const barberOwnerUserId = await getBarberOwnerUserIdFromBooking(booking);
+    const payload = await buildBookingEventPayload(
+      booking,
+      "booking.created",
+      barberOwnerUserId,
+      req.user,
+    );
+
+    bookingEmitters.emitCreateBookingEvent(payload);
+    return res.status(200).json(booking);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 const httpUpdateBooking = async (req, res) => {
-  // not sure if this does what i think it does
-  if (!req.body._id) {
-    req.body._id = req.params.id;
-  }
-  if (
-    req.body._id === undefined ||
-    req.body._id === null ||
-    req.body._id === ""
-  ) {
-    res.status(401).json({ message: "unauthorized" });
-  }
-
   try {
-    const booking = await updateBooking(req.body);
-    // bookingEmitters.emitUpdatingBookingEvent(booking);
-    res.status(200).json(booking);
+    const bookingId = req.body._id || req.params.id;
+    if (!bookingId)
+      return res.status(400).json({ message: "Missing booking id" });
+
+    // Auth: must own (customer) or own barber (barberId)
+    const existing = await getBookingIfAllowed({ bookingId, user: req.user });
+    if (!existing) return res.status(403).json({ message: "Forbidden" });
+
+    // Optional: prevent changing protected fields
+    const update = { ...req.body, _id: bookingId };
+    delete update.customer;
+    delete update.barber; // if you don’t want them changing ownership
+
+    const booking = await updateBooking(update);
+
+    const barberOwnerUserId = await getBarberOwnerUserIdFromBooking(booking);
+
+    const payload = await buildBookingEventPayload(
+      booking,
+      "booking.updated",
+      barberOwnerUserId,
+      req.user,
+    );
+
+    bookingEmitters.emitUpdatingBookingEvent(payload);
+    return res.status(200).json(booking);
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.log(err);
+    return res.status(500).json({ message: "Server error" });
   }
+};
+
+const httpConfirmBooking = async (req, res) => {
+  try {
+    const bookingId = req.body._id || req.params.id;
+    if (!bookingId)
+      return res.status(400).json({ message: "Missing booking id" });
+
+    const existing = await getBookingIfAllowed({ bookingId, user: req.user });
+    if (!existing) return res.status(403).json({ message: "Forbidden" });
+
+    // Barber-only confirm
+    const isBarberForThisBooking =
+      req.user.barberId &&
+      String(existing.barber) === String(req.user.barberId);
+
+    if (!isBarberForThisBooking) {
+      return res
+        .status(403)
+        .json({ message: "Only the barber can confirm this booking" });
+    }
+
+    const booking = await updateBooking({
+      ...req.body,
+      _id: bookingId,
+      status: "confirmed",
+    });
+
+    const barberOwnerUserId = await getBarberOwnerUserIdFromBooking(booking);
+
+    const payload = await buildBookingEventPayload(
+      booking,
+      "booking.confirmed",
+      barberOwnerUserId,
+      req.user,
+    );
+
+    bookingEmitters.emitConfirmBookingEvent(payload);
+    return res.status(200).json(booking);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const httpCancelBooking = async (req, res) => {
+  try {
+    const bookingId = req.body._id || req.params.id;
+    if (!bookingId)
+      return res.status(400).json({ message: "Missing booking id" });
+
+    const existing = await getBookingIfAllowed({ bookingId, user: req.user });
+    if (!existing) return res.status(403).json({ message: "Forbidden" });
+
+    const booking = await updateBooking({
+      ...req.body,
+      _id: bookingId,
+      status: "canceled",
+    });
+
+    const barberOwnerUserId = await getBarberOwnerUserIdFromBooking(booking);
+
+    const payload = await buildBookingEventPayload(
+      booking,
+      "booking.canceled",
+      barberOwnerUserId,
+      req.user,
+    );
+
+    bookingEmitters.emitCancelBookingEvent(payload);
+    return res.status(200).json(booking);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const httpRescheduleBooking = async (req, res) => {
+  // TODO
+};
+
+const httpRescheduleBookingConfirm = async (req, res) => {
+  // TODO
+};
+
+const httpRescheduleBookingDenied = async (req, res) => {
+  // TODO
 };
 
 // TODO make sure only barber or customer can delete
@@ -88,5 +208,10 @@ module.exports = {
   httpGetBooking,
   httpsCreateBooking,
   httpUpdateBooking,
+  httpRescheduleBooking,
+  httpRescheduleBookingConfirm,
+  httpRescheduleBookingDenied,
+  httpCancelBooking,
+  httpConfirmBooking,
   httpDeleteBooking,
 };

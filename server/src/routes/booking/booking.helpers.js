@@ -49,7 +49,89 @@ function getBookingsParser(params) {
   return { query, sortDir };
 }
 
+function inferActor({ bookingCustomerId, barberOwnerUserId, reqUser }) {
+  if (!reqUser?._id)
+    return { type: "system", userId: null, name: "", picture: "" };
+
+  const reqUserId = String(reqUser._id);
+
+  if (bookingCustomerId && reqUserId === String(bookingCustomerId)) {
+    return {
+      type: "customer",
+      userId: reqUser._id,
+      name: reqUser.name || "",
+      picture: reqUser.picture || "",
+    };
+  }
+
+  if (barberOwnerUserId && reqUserId === String(barberOwnerUserId)) {
+    return {
+      type: "barber",
+      userId: reqUser._id,
+      name: reqUser.name || "",
+      picture: reqUser.picture || "",
+    };
+  }
+
+  // if authorized but not matching either (admin/support)
+  return {
+    type: "system",
+    userId: reqUser._id,
+    name: reqUser.name || "",
+    picture: reqUser.picture || "",
+  };
+}
+
+async function buildBookingEventPayload(
+  booking,
+  eventName, // "booking.created" | "booking.updated" | ...
+  barberOwnerUserId,
+  reqUser, // optional
+  actor, // optional override
+  barberSnapshot, // optional
+  customerSnapshot, // optional
+) {
+  console.log("Building booking event payload with booking:", booking);
+  const barberId = booking.barber?._id || booking.barber;
+  const customerId = booking.customer?._id || booking.customer;
+
+  const finalActor =
+    actor ||
+    inferActor({
+      bookingCustomerId: customerId,
+      barberOwnerUserId,
+      reqUser,
+    });
+
+  return {
+    eventId: `${eventName}:${booking._id}`,
+    occurredAt: new Date().toISOString(),
+
+    bookingId: booking._id,
+    status: booking.status,
+    startTime: booking.startTime,
+    endTime: booking.endTime,
+
+    barberId,
+    barberOwnerUserId,
+    customerUserId: customerId,
+
+    actor: finalActor,
+
+    // optional snapshots for notifications/UI
+    barber: barberSnapshot || undefined,
+    customer: customerSnapshot || undefined,
+
+    service: {
+      name: booking.service?.name,
+      price: booking.service?.price,
+      duration: booking.service?.duration,
+    },
+  };
+}
+
 module.exports = {
   buildBookingBody,
   getBookingsParser,
+  buildBookingEventPayload,
 };
