@@ -17,7 +17,7 @@ const {
 
 const {
   getBookingIfAllowed,
-  getBarberOwnerUserIdFromBooking,
+  getBarberOwnerFromBooking,
 } = require("./booking.auth");
 
 const httpGetBookings = async (req, res) => {
@@ -56,11 +56,11 @@ const httpsCreateBooking = async (req, res) => {
 
     const booking = await upsertBooking(bookingBody);
     // Derive barberOwnerUserId from DB (don’t trust req.body.barber.ownerUserId)
-    const barberOwnerUserId = await getBarberOwnerUserIdFromBooking(booking);
+    const barberOwner = await getBarberOwnerFromBooking(booking);
     const payload = await buildBookingEventPayload(
       booking,
       "booking.created",
-      barberOwnerUserId,
+      barberOwner.barberOwner,
       req.user,
     );
 
@@ -72,6 +72,7 @@ const httpsCreateBooking = async (req, res) => {
   }
 };
 
+// ADMIN ONLY NEW ENDPOINTS WILL BE CREATED
 const httpUpdateBooking = async (req, res) => {
   try {
     const bookingId = req.body._id || req.params.id;
@@ -89,12 +90,12 @@ const httpUpdateBooking = async (req, res) => {
 
     const booking = await updateBooking(update);
 
-    const barberOwnerUserId = await getBarberOwnerUserIdFromBooking(booking);
+    const barberOwner = await getBarberOwnerFromBooking(booking);
 
     const payload = await buildBookingEventPayload(
       booking,
       "booking.updated",
-      barberOwnerUserId,
+      barberOwner.barberOwner,
       req.user,
     );
 
@@ -132,13 +133,14 @@ const httpConfirmBooking = async (req, res) => {
       status: "confirmed",
     });
 
-    const barberOwnerUserId = await getBarberOwnerUserIdFromBooking(booking);
+    const barberOwner = await getBarberOwnerFromBooking(booking);
 
     const payload = await buildBookingEventPayload(
       booking,
       "booking.confirmed",
-      barberOwnerUserId,
-      req.user,
+      barberOwner.ownerUserId,
+      actor = req.user,
+      barberSnapshot = barberOwner
     );
 
     bookingEmitters.emitConfirmBookingEvent(payload);
@@ -164,12 +166,12 @@ const httpCancelBooking = async (req, res) => {
       status: "canceled",
     });
 
-    const barberOwnerUserId = await getBarberOwnerUserIdFromBooking(booking);
+    const barberOwner= await getBarberOwnerFromBooking(booking);
 
     const payload = await buildBookingEventPayload(
       booking,
       "booking.canceled",
-      barberOwnerUserId,
+      barberOwner.barberOwner,
       req.user,
     );
 

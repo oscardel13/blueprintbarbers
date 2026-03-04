@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getAPI, putAPI } from "../../../../utils/api";
+import { getAPI, patchAPI } from "../../../../utils/api";
 
 import PageHeader from "../../components/page-header/page-header.component";
 import BookingPopover from "../../../../components/booking/booking.component";
@@ -47,7 +47,7 @@ const BookingPage = () => {
       const body = {
         status: "canceled",
       };
-      const res = await putAPI(`/bookings/${booking._id}`, body);
+      const res = await patchAPI(`/bookings/${booking._id}`, body);
       setCancelPopover(false);
       setWaiting(false);
       setBooking(res.data);
@@ -62,7 +62,7 @@ const BookingPage = () => {
       const body = {
         status: "no-show",
       };
-      const res = await putAPI(`/bookings/${booking._id}`, body);
+      const res = await patchAPI(`/bookings/${booking._id}`, body);
       setNoShowPopover(false);
       setWaiting(false);
       setBooking(res.data);
@@ -77,7 +77,7 @@ const BookingPage = () => {
       const body = {
         status: "finished",
       };
-      const res = await putAPI(`/bookings/${booking._id}`, body);
+      const res = await patchAPI(`/bookings/${booking._id}`, body);
       setNoShowPopover(false);
       setWaiting(false);
       setBooking(res.data);
@@ -92,7 +92,7 @@ const BookingPage = () => {
       const body = {
         status: "confirmed",
       };
-      const res = await putAPI(`/bookings/${booking._id}`, body);
+      const res = await patchAPI(`/bookings/${booking._id}/confirm`, body);
       setCancelPopover(false);
       setWaiting(false);
       setBooking(res.data);

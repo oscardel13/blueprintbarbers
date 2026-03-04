@@ -33,6 +33,15 @@ export const putAPI = async (path, body) => {
     return response
 }
 
+export const patchAPI = async(path, body) => {
+    const response = await API.patch(`${API_URL}${path}`, JSON.stringify(body),{
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    return response
+}
+
 export const deleteAPI = async (path, body) => {
     const response = await API.delete(`${API_URL}${path}`,JSON.stringify(body),{
         headers: {

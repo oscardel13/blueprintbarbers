@@ -20,13 +20,13 @@ async function getBookingIfAllowed({ bookingId, user }) {
   return booking;
 }
 
-async function getBarberOwnerUserIdFromBooking(booking) {
+async function getBarberOwnerFromBooking(booking) {
   const barberId = booking.barber?._id || booking.barber;
   const barber = await getBarberById(barberId);
-  return barber?.ownerUserId || null;
+  return barber || null;
 }
 
 module.exports = {
   getBookingIfAllowed,
-  getBarberOwnerUserIdFromBooking,
+  getBarberOwnerFromBooking,
 };
